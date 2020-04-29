@@ -8,22 +8,18 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<includes>
-				<include>pom.xml</include>
-			</includes>
-		</fileSet>
-
-		<fileSet>
-			<directory>src</directory>
-		</fileSet>
-
-		<fileSet>
-			<directory>target</directory>
-			<includes>
-				<include>changelog.xml</include>
-				<include>changelog.html</include>
-			</includes>
-			<outputDirectory>docs</outputDirectory>
+			<directory>../..</directory>
+			<excludes>
+				<exclude>iMage/.idea/**</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
+	<files>
+			<file>
+				<source>../../.gitignore</source>
+				<outputDirectory>.</outputDirectory>
+			</file>
+	</files>
+
+
 </assembly>
