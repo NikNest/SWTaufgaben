@@ -1,4 +1,10 @@
 <changelog><commit>
+					<time>1588327782</time>
+					<sha1>056cf6159230ec299deab63003ace65f74fcab35</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>changelog files were moved to docs directory. pom.xml peeked plugins from pom.xml of the first UB. src.xml was changed for correctly zip layout</msg>
+				</commit><commit>
 					<time>1588322958</time>
 					<sha1>e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8</sha1>
 					<author>Nikita Nesterov</author>
