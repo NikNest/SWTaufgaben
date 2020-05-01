@@ -8,7 +8,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>../..</directory>
+			<directory>.</directory>
 			<excludes>
 				<exclude>iMage/.idea/**</exclude>
 			</excludes>
