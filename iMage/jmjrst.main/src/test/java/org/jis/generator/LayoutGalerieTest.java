@@ -1,10 +1,7 @@
 package org.jis.generator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
@@ -14,13 +11,22 @@ import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
+
+
+import static org.junit.Assert.*;
 
 public class LayoutGalerieTest {
 	
 	private LayoutGalerie galerieUnderTest;
 	private File fromFile;
 	private File toFile;
+
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
 
 	/**
 	 * Before-Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
@@ -36,6 +42,32 @@ public class LayoutGalerieTest {
 	@After
 	public final void tearDown() {
 		galerieUnderTest = null;
+	}
+
+
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 */
+	@Test
+	public final void testCopyFileWithFolder() throws IOException {
+		File createdFile = folder.newFile("myfile.txt");
+		File createdFolder = folder.newFolder("subfolder");
+		assertThrows(FileNotFoundException.class, () -> {
+			galerieUnderTest.copyFile(createdFolder, createdFile);
+		});
+	}
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 */
+	@Test
+	public final void testCopyFileWithNotExistingFile() throws IOException {
+		File createdFile = new File("myfile1.txt");
+		File createdFile2 = folder.newFile("myfile2.txt");
+		assertThrows(FileNotFoundException.class, () -> {
+			galerieUnderTest.copyFile(createdFile, createdFile2);
+		});
 	}
 
 	/**
