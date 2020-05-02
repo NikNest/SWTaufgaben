@@ -7,13 +7,13 @@ import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 
@@ -44,8 +44,6 @@ public class LayoutGalerieTest {
 		galerieUnderTest = null;
 	}
 
-
-
 	/**
 	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
 	 */
@@ -68,6 +66,20 @@ public class LayoutGalerieTest {
 		assertThrows(FileNotFoundException.class, () -> {
 			galerieUnderTest.copyFile(createdFile, createdFile2);
 		});
+	}
+
+	@Test
+	public final void testCopyToExistingFile() throws IOException {
+		toFile = folder.newFile("to.txt");
+		fromFile = folder.newFile("from.txt");
+		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());
+		Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());
+		Files.writeString(toPath, "pupa");
+		Files.writeString(fromPath, "lupa");
+		galerieUnderTest.copyFile(fromFile, toFile);
+		String contentsFrom = Files.readString(fromPath);
+		String contentsTo = Files.readString(toPath);
+		assertEquals(contentsFrom, contentsTo);
 	}
 
 	/**
