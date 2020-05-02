@@ -1,0 +1,346 @@
+Index: iMage/jmjrst.main/docs/changelog.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- iMage/jmjrst.main/docs/changelog.html	(revision 056cf6159230ec299deab63003ace65f74fcab35)
++++ iMage/jmjrst.main/docs/changelog.html	(revision 056cf6159230ec299deab63003ace65f74fcab35)
+@@ -0,0 +1,70 @@
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
++<html>
++<head>
++<meta charset="UTF-8" />
++</head>
++<body>
++
++<table>
++	<thead>
++		<tr>
++			<th>Commit Time</th>
++			<th>Commit</th>
++			<th>Author</th>
++			<th>Branches</th>
++			<th>Message</th>
++		</tr>
++	</thead>
++	<tr>
++		<td>1588322958</td>
++		<td>e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8</td>
++		<td>PersonIdent[Nikita Nesterov, nik.nest1@gmail.com, Fri May 1 10:32:54 2020 +0200]</td>
++		<td>refs/heads/master</td>
++		<td><p>maven-checkstyle-plugin was added to pom.xml. In file iMage/jmjrst.main/src/main/java/org/jis/listner/MenuListner.java checkstyle warnings were corrected: on line 73 at column 3 [LeftCurlymaven-checkstyle-plugin]; on line 75 at column 5 [LeftCurly]; on line 76 at column 5 [RightCurly]
++</p></td>
++	</tr>
++	<tr>
++		<td>1588272053</td>
++		<td>a1258b2bd23bf2f8e1cec9756fb3e1fd91102df6</td>
++		<td>PersonIdent[Nikita Nesterov, nik.nest1@gmail.com, Thu Apr 30 20:40:53 2020 +0200]</td>
++		<td>refs/heads/master</td>
++		<td><p>pom.xml was edited(maven-jar-plugin added) for executable jar archive creation
++</p></td>
++	</tr>
++	<tr>
++		<td>1588182213</td>
++		<td>369046e824f2f5744f65bc5589813a6f2fc2bc87</td>
++		<td>PersonIdent[Nikita Nesterov, nik.nest1@gmail.com, Wed Apr 29 19:43:33 2020 +0200]</td>
++		<td>refs/heads/master</td>
++		<td><p>src.xml of jmjrst.main edited: now zip created by maven assembly plugin includes the whole iMage and .gitignore
++</p></td>
++	</tr>
++	<tr>
++		<td>1588175769</td>
++		<td>af78306e09da1bcb1a6b691cf0e8e6d8e2680a58</td>
++		<td>PersonIdent[Nikita Nesterov, nik.nest1@gmail.com, Wed Apr 29 17:56:09 2020 +0200]</td>
++		<td>refs/heads/master</td>
++		<td><p>maven project with jmjrst.main module added
++</p></td>
++	</tr>
++	<tr>
++		<td>1588175533</td>
++		<td>8c1e6abc08af5ceefdc0ffbc44d7bce0069d259c</td>
++		<td>PersonIdent[Nikita Nesterov, nik.nest1@gmail.com, Wed Apr 29 17:52:13 2020 +0200]</td>
++		<td>refs/heads/master</td>
++		<td><p>.gitignore edited to untrack .idea folder
++</p></td>
++	</tr>
++	<tr>
++		<td>1587976422</td>
++		<td>5aa0b174ef80b9e6e99ec91ed9be6fa3f55e6c5f</td>
++		<td>PersonIdent[Nikita Nesterov, nik.nest1@gmail.com, Mon Apr 27 10:33:42 2020 +0200]</td>
++		<td>refs/heads/master</td>
++		<td><p>git init
++</p></td>
++	</tr>
++</table>
++
++<p>generated on Fri May 01 12:02:00 CEST 2020</p>
++</body>
++</html>
+Index: iMage/jmjrst.main/docs/changelog.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- iMage/jmjrst.main/docs/changelog.xml	(revision 056cf6159230ec299deab63003ace65f74fcab35)
++++ iMage/jmjrst.main/docs/changelog.xml	(revision 056cf6159230ec299deab63003ace65f74fcab35)
+@@ -0,0 +1,37 @@
++<changelog><commit>
++					<time>1588322958</time>
++					<sha1>e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8</sha1>
++					<author>Nikita Nesterov</author>
++					<branches>refs/heads/master</branches>
++					<msg>maven-checkstyle-plugin was added to pom.xml. In file iMage/jmjrst.main/src/main/java/org/jis/listner/MenuListner.java checkstyle warnings were corrected: on line 73 at column 3 [LeftCurlymaven-checkstyle-plugin]; on line 75 at column 5 [LeftCurly]; on line 76 at column 5 [RightCurly]</msg>
++				</commit><commit>
++					<time>1588272053</time>
++					<sha1>a1258b2bd23bf2f8e1cec9756fb3e1fd91102df6</sha1>
++					<author>Nikita Nesterov</author>
++					<branches>refs/heads/master</branches>
++					<msg>pom.xml was edited(maven-jar-plugin added) for executable jar archive creation</msg>
++				</commit><commit>
++					<time>1588182213</time>
++					<sha1>369046e824f2f5744f65bc5589813a6f2fc2bc87</sha1>
++					<author>Nikita Nesterov</author>
++					<branches>refs/heads/master</branches>
++					<msg>src.xml of jmjrst.main edited: now zip created by maven assembly plugin includes the whole iMage and .gitignore</msg>
++				</commit><commit>
++					<time>1588175769</time>
++					<sha1>af78306e09da1bcb1a6b691cf0e8e6d8e2680a58</sha1>
++					<author>Nikita Nesterov</author>
++					<branches>refs/heads/master</branches>
++					<msg>maven project with jmjrst.main module added</msg>
++				</commit><commit>
++					<time>1588175533</time>
++					<sha1>8c1e6abc08af5ceefdc0ffbc44d7bce0069d259c</sha1>
++					<author>Nikita Nesterov</author>
++					<branches>refs/heads/master</branches>
++					<msg>.gitignore edited to untrack .idea folder</msg>
++				</commit><commit>
++					<time>1587976422</time>
++					<sha1>5aa0b174ef80b9e6e99ec91ed9be6fa3f55e6c5f</sha1>
++					<author>Nikita Nesterov</author>
++					<branches>refs/heads/master</branches>
++					<msg>git init</msg>
++				</commit></changelog>
+\ No newline at end of file
+Index: iMage/jmjrst.main/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- iMage/jmjrst.main/pom.xml	(revision e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8)
++++ iMage/jmjrst.main/pom.xml	(revision 056cf6159230ec299deab63003ace65f74fcab35)
+@@ -12,6 +12,12 @@
+     <artifactId>2259058</artifactId>
+     <version>1.0-SNAPSHOT</version>
+ 
++    <properties>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <maven.compiler.source>14</maven.compiler.source>
++        <maven.compiler.target>14</maven.compiler.target>
++    </properties>
++
+     <build>
+         <plugins>
+             <plugin>
+@@ -36,7 +42,74 @@
+                     <configLocation>${basedir}/src/test/resources/checkstyle_swt1.xml</configLocation>
+                 </configuration>
+             </plugin>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-assembly-plugin</artifactId>
++                <version>3.2.0</version>
++                <configuration>
++                    <descriptors>
++                        <descriptor>${basedir}/src/assembly/src.xml</descriptor>
++                    </descriptors>
++                </configuration>
++                <executions>
++                    <execution>
++                        <phase>package</phase>
++                        <goals>
++                            <goal>single</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin>
++
+         </plugins>
++        <pluginManagement>
++            <plugins>
++                <plugin>
++                    <groupId>org.apache.maven.plugins</groupId>
++                    <artifactId>maven-compiler-plugin</artifactId>
++                    <version>3.8.1</version>
++                </plugin>
++            </plugins>
++        </pluginManagement>
+     </build>
++    <scm>
++        <connection>scm:git:file:///</connection>
++        <url>scm:git:file:///</url>
++    </scm>
+ 
++    <dependencyManagement>
++        <dependencies>
++            <dependency>
++                <groupId>org.slf4j</groupId>
++                <artifactId>slf4j-api</artifactId>
++                <version>1.7.30</version>
++            </dependency>
++            <dependency>
++                <groupId>org.slf4j</groupId>
++                <artifactId>slf4j-log4j12</artifactId>
++                <version>1.7.30</version>
++            </dependency>
++            <dependency>
++                <groupId>junit</groupId>
++                <artifactId>junit</artifactId>
++                <version>4.13</version>
++                <scope>test</scope>
++            </dependency>
++        </dependencies>
++    </dependencyManagement>
++    <dependencies>
++        <dependency>
++            <groupId>junit</groupId>
++            <artifactId>junit</artifactId>
++            <scope>test</scope>
++        </dependency>
++        <dependency>
++            <groupId>org.slf4j</groupId>
++            <artifactId>slf4j-log4j12</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.slf4j</groupId>
++            <artifactId>slf4j-api</artifactId>
++        </dependency>
++    </dependencies>
+ </project>
+\ No newline at end of file
+Index: iMage/jmjrst.main/src/assembly/src.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- iMage/jmjrst.main/src/assembly/src.xml	(revision e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8)
++++ iMage/jmjrst.main/src/assembly/src.xml	(revision 056cf6159230ec299deab63003ace65f74fcab35)
+@@ -8,7 +8,7 @@
+ 	</formats>
+ 	<fileSets>
+ 		<fileSet>
+-			<directory>../..</directory>
++			<directory>.</directory>
+ 			<excludes>
+ 				<exclude>iMage/.idea/**</exclude>
+ 			</excludes>
+Index: iMage/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- iMage/pom.xml	(revision e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8)
++++ iMage/pom.xml	(revision 056cf6159230ec299deab63003ace65f74fcab35)
+@@ -9,6 +9,12 @@
+         <version>0.0.1-SNAPSHOT</version>
+     </parent>
+ 
++    <properties>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <maven.compiler.source>14</maven.compiler.source>
++        <maven.compiler.target>14</maven.compiler.target>
++    </properties>
++
+     <modelVersion>4.0.0</modelVersion>
+     <groupId>swt1</groupId>
+     <artifactId>iMage</artifactId>
+@@ -24,4 +30,88 @@
+             <url>http://bob.ipd.kit.edu/nexus/repository/maven-public-all/</url>
+         </repository>
+     </repositories>
++
++    <build>
++        <plugins>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-checkstyle-plugin</artifactId>
++                <version>3.1.1</version>
++                <configuration>
++                    <consoleOutput>true</consoleOutput>
++                    <configLocation>${basedir}/src/test/resources/checkstyle_swt1.xml</configLocation>
++                </configuration>
++            </plugin>
++
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-assembly-plugin</artifactId>
++                <version>3.2.0</version>
++                <configuration>
++                    <descriptors>
++                        <descriptor>${basedir}/src/assembly/src.xml</descriptor>
++                    </descriptors>
++                </configuration>
++                <executions>
++                    <execution>
++                        <phase>package</phase>
++                        <goals>
++                            <goal>single</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin>
++
++        </plugins>
++        <pluginManagement>
++            <plugins>
++                <plugin>
++                    <groupId>org.apache.maven.plugins</groupId>
++                    <artifactId>maven-compiler-plugin</artifactId>
++                    <version>3.8.1</version>
++                </plugin>
++            </plugins>
++        </pluginManagement>
++    </build>
++    <scm>
++        <connection>scm:git:file:///</connection>
++        <url>scm:git:file:///</url>
++    </scm>
++
++    <dependencyManagement>
++        <dependencies>
++            <dependency>
++                <groupId>org.slf4j</groupId>
++                <artifactId>slf4j-api</artifactId>
++                <version>1.7.30</version>
++            </dependency>
++            <dependency>
++                <groupId>org.slf4j</groupId>
++                <artifactId>slf4j-log4j12</artifactId>
++                <version>1.7.30</version>
++            </dependency>
++            <dependency>
++                <groupId>junit</groupId>
++                <artifactId>junit</artifactId>
++                <version>4.13</version>
++                <scope>test</scope>
++            </dependency>
++        </dependencies>
++    </dependencyManagement>
++    <dependencies>
++        <dependency>
++            <groupId>junit</groupId>
++            <artifactId>junit</artifactId>
++            <scope>test</scope>
++        </dependency>
++        <dependency>
++            <groupId>org.slf4j</groupId>
++            <artifactId>slf4j-log4j12</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.slf4j</groupId>
++            <artifactId>slf4j-api</artifactId>
++        </dependency>
++    </dependencies>
++
+ </project>
+\ No newline at end of file
