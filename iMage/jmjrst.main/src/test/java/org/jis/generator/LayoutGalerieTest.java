@@ -27,6 +27,9 @@ public class LayoutGalerieTest {
 	private File fromFile;
 	private File toFile;
 
+	/**
+	 * file for testing {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} with temporary files
+	 */
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
@@ -47,7 +50,7 @@ public class LayoutGalerieTest {
 	}
 
 	/**
-	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 * Test method {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with a folder instead of file
 	 */
 	@Test
 	public final void testCopyFileWithFolder() throws IOException {
@@ -59,7 +62,7 @@ public class LayoutGalerieTest {
 	}
 
 	/**
-	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with not existing file
 	 */
 	@Test
 	public final void testCopyFileWithNotExistingFile() throws IOException {
@@ -70,6 +73,9 @@ public class LayoutGalerieTest {
 		});
 	}
 
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with a fromFile with no write permission
+	 */
 	@Test
 	public final void testCopyWithLockedToFile() throws IOException, ExecutionException, InterruptedException {
 		toFile = folder.newFile("to.txt");
@@ -91,6 +97,9 @@ public class LayoutGalerieTest {
 		});
 	}
 
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with no read permission
+	 */
 	@Test
 	public final void testCopyWithLockedFromFile() throws IOException {
 		toFile = folder.newFile("to.txt");
@@ -113,6 +122,9 @@ public class LayoutGalerieTest {
 		});
 	}
 
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with coping to an existing file
+	 */
 	@Test
 	public final void testCopyToExistingFile() throws IOException {
 		toFile = folder.newFile("to.txt");
