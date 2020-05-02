@@ -1,9 +1,7 @@
 package org.jis.generator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
 
 import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
@@ -15,10 +13,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -232,8 +236,24 @@ public class GeneratorTest {
     return true;
   }
 
-  @Test
-  public void testCreateZip() {
+  @Rule
+  public TemporaryFolder folder = new TemporaryFolder();
 
+  @Test
+  public void testGenerateImg() throws IOException {
+    File origin = new File("src/test/resources/image.jpg");
+    File fileTo = folder.newFile();
+    int width = 100;
+    int height = 1040;
+    generator.generateImage(origin, fileTo, false, width, height, "");
+    BufferedImage bimg1 = ImageIO.read(origin);
+    int originalWidth          = bimg1.getWidth();
+    int originalHeight         = bimg1.getHeight();
+    BufferedImage bimg2 = ImageIO.read(fileTo);
+    int scaledWidth          = bimg2.getWidth();
+    int scaledHeight         = bimg2.getHeight();
+    int countedWidth = height * originalWidth / originalHeight;
+    assertEquals(height, scaledHeight);
+    assertEquals(countedWidth, scaledWidth);
   }
 }
