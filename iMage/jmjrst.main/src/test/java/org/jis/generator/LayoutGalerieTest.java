@@ -2,9 +2,6 @@ package org.jis.generator;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.nio.file.*;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashSet;
