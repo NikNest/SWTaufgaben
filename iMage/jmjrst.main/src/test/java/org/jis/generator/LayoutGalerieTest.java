@@ -1,14 +1,16 @@
 package org.jis.generator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.file.*;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -65,6 +67,49 @@ public class LayoutGalerieTest {
 		File createdFile2 = folder.newFile("myfile2.txt");
 		assertThrows(FileNotFoundException.class, () -> {
 			galerieUnderTest.copyFile(createdFile, createdFile2);
+		});
+	}
+
+	@Test
+	public final void testCopyWithLockedToFile() throws IOException, ExecutionException, InterruptedException {
+		toFile = folder.newFile("to.txt");
+		fromFile = folder.newFile("from.txt");
+		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());
+		Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());
+		Files.writeString(toPath, "pupa");
+		Files.writeString(fromPath, "lupa");
+
+		Set permissions = new HashSet<>(Files.getPosixFilePermissions(toPath));
+		permissions.remove(PosixFilePermission.OWNER_WRITE);
+		permissions.remove(PosixFilePermission.GROUP_WRITE);
+		permissions.remove(PosixFilePermission.OTHERS_WRITE);
+
+		Files.setPosixFilePermissions(toPath, permissions);
+
+		assertThrows(IOException.class, () -> {
+			galerieUnderTest.copyFile(fromFile, toFile);
+		});
+	}
+
+	@Test
+	public final void testCopyWithLockedFromFile() throws IOException {
+		toFile = folder.newFile("to.txt");
+		fromFile = folder.newFile("from.txt");
+		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());
+		Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());
+		Files.writeString(toPath, "pupa");
+		Files.writeString(fromPath, "lupa");
+
+		Set permissions = new HashSet<>(Files.getPosixFilePermissions(fromPath));
+		permissions.remove(PosixFilePermission.OWNER_READ);
+		permissions.remove(PosixFilePermission.GROUP_READ);
+		permissions.remove(PosixFilePermission.OTHERS_READ);
+
+		Files.setPosixFilePermissions(fromPath, permissions);
+
+
+		assertThrows(IOException.class, () -> {
+			galerieUnderTest.copyFile(fromFile, toFile);
 		});
 	}
 
