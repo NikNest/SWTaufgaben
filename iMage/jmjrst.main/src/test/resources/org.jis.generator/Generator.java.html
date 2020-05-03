@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Generator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iMage$GeneratorTest.exec</a> &gt; <a href="index.source.html" class="el_package">org.jis.generator</a> &gt; <span class="el_source">Generator.java</span></div><h1>Generator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2007 - 2009 Johannes Geppert
+ *
+ * Licensed under the GPL, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ * http://www.fsf.org/licensing/licenses/gpl.txt
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on
+ * an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+package org.jis.generator;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Vector;
+import java.util.zip.Deflater;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataController;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.ProgressMonitor;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
+
+import org.jis.Main;
+import org.jis.options.Options;
+
+/**
+ * @author &lt;a href=&quot;http://www.jgeppert.com&quot;&gt;Johannes Geppert&lt;/a&gt;
+ *
+ * &lt;p&gt;
+ * This class do the main work and resize the images.
+ * &lt;/p&gt;
+ */
+public class Generator {
+<span class="fc" id="L69">  public final static double ROTATE_90 = Math.toRadians(90);</span>
+<span class="fc" id="L70">  public final static double ROTATE_270 = Math.toRadians(270);</span>
+<span class="fc" id="L71">  public final static double ROTATE_M90 = Math.toRadians(-90);</span>
+<span class="fc" id="L72">  public final static double ROTATE_M270 = Math.toRadians(-270);</span>
+
+  private Main m;
+  private Options o;
+<span class="fc" id="L76">  private File zipFile = null;</span>
+  private Vector&lt;File&gt; zipIt;
+<span class="fc" id="L78">  private boolean zippen = false;</span>
+  private float quality;
+
+  /**
+   * @param m
+   * 		a reference to the Main Class.
+   */
+  public Generator(Main m, float quality) {
+<span class="fc" id="L86">    super();</span>
+<span class="fc" id="L87">    this.m = m;</span>
+<span class="fc" id="L88">    this.o = Options.getInstance();</span>
+<span class="fc" id="L89">    this.quality = quality;</span>
+<span class="fc" id="L90">  }</span>
+
+  /**
+   * @param zipFileName
+   * 		File, the Name of the new ZIP-File
+   * @param selected
+   * 		Vector, the Images for the ZIP-File
+   */
+  public void createZip(File zipFileName, Vector&lt;File&gt; selected) {
+    try {
+<span class="fc" id="L100">      byte[] buffer = new byte[4096];</span>
+
+      // Create the new ZIP-Fiel and set the Options
+<span class="fc" id="L103">      ZipOutputStream out = new ZipOutputStream(</span>
+          new BufferedOutputStream(new FileOutputStream(zipFileName), 8096));
+<span class="fc" id="L105">      out.setLevel(Deflater.BEST_COMPRESSION);</span>
+<span class="fc" id="L106">      out.setMethod(ZipOutputStream.DEFLATED);</span>
+
+      // Loop about the Files and put it into the new ZIP-File
+<span class="fc bfc" id="L109" title="All 2 branches covered.">      for (int i = 0; i &lt; selected.size(); i++) {</span>
+<span class="fc" id="L110">        FileInputStream in = new FileInputStream(selected.get(i));</span>
+
+<span class="fc" id="L112">        String file = selected.get(i).getPath();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (file.indexOf(&quot;\\&quot;) != -1)</span>
+<span class="nc" id="L114">          file = file.substring(file.lastIndexOf(Options.fs) + 1, file.length());</span>
+
+<span class="fc" id="L116">        ZipEntry ze = new ZipEntry(file);</span>
+<span class="fc" id="L117">        out.putNextEntry(ze);</span>
+        int len;
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        while ((len = in.read(buffer)) &gt; 0)</span>
+<span class="fc" id="L120">          out.write(buffer, 0, len);</span>
+<span class="fc" id="L121">        out.closeEntry();</span>
+<span class="fc" id="L122">        in.close();</span>
+
+        // Delete the temp image
+<span class="fc" id="L125">        selected.get(i).delete();</span>
+      }
+<span class="fc" id="L127">      out.close();</span>
+<span class="nc" id="L128">    } catch (IllegalArgumentException iae) {</span>
+<span class="nc" id="L129">      iae.printStackTrace();</span>
+<span class="nc" id="L130">    } catch (FileNotFoundException fnfe) {</span>
+<span class="nc" id="L131">      fnfe.printStackTrace();</span>
+<span class="nc" id="L132">    } catch (IOException ioe) {</span>
+<span class="nc" id="L133">      ioe.printStackTrace();</span>
+<span class="pc" id="L134">    }</span>
+<span class="fc" id="L135">  }</span>
+
+  /**
+   * @param zip
+   * 		boolean, should the output zipped?
+   */
+  public void generate(boolean zip) {
+    //check if folder empty
+<span class="nc bnc" id="L143" title="All 2 branches missed.">    if (!zip) {</span>
+<span class="nc" id="L144">      File outputDir = new File(o.getOutput_dir());</span>
+
+<span class="nc bnc" id="L146" title="All 4 branches missed.">      if (outputDir.isDirectory() &amp;&amp; outputDir.listFiles().length &gt; 0) {</span>
+<span class="nc" id="L147">        int response = JOptionPane.showConfirmDialog(m.list,</span>
+<span class="nc" id="L148">            m.mes.getString(&quot;Generator.53&quot;) + &quot; &quot; + o.getOutput_dir() + &quot; &quot; + m.mes</span>
+<span class="nc" id="L149">                .getString(&quot;Generator.54&quot;), m.mes.getString(&quot;Generator.52&quot;),</span>
+            JOptionPane.YES_NO_OPTION);
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (response != JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L152">          return;</span>
+        }
+      }
+    }
+
+<span class="nc" id="L157">    this.quality = o.getQuality();</span>
+    try {
+<span class="nc" id="L159">      zipIt = new Vector&lt;File&gt;();</span>
+<span class="nc" id="L160">      zippen = false;</span>
+<span class="nc" id="L161">      zipFile = null;</span>
+
+      // if zip true, get the ZIP-File
+<span class="nc bnc" id="L164" title="All 2 branches missed.">      if (zip) {</span>
+<span class="nc" id="L165">        zippen = true;</span>
+<span class="nc" id="L166">        JFileChooser fo = new JFileChooser();</span>
+<span class="nc" id="L167">        fo.setFileFilter(new FileFilter() {</span>
+          public boolean accept(File f) {
+<span class="nc bnc" id="L169" title="All 4 branches missed.">            return f.isDirectory() || f.getName().toLowerCase().endsWith(&quot;.zip&quot;);</span>
+          }
+
+          public String getDescription() {
+<span class="nc" id="L173">            return &quot;ZIP-Datei&quot;;</span>
+          }
+        });
+
+<span class="nc" id="L177">        fo.setFileSelectionMode(JFileChooser.FILES_ONLY);</span>
+<span class="nc" id="L178">        fo.setCurrentDirectory(</span>
+<span class="nc" id="L179">            FileSystemView.getFileSystemView().getParentDirectory(new File(o.getOutput_dir())));</span>
+<span class="nc" id="L180">        int returnVal = fo.showOpenDialog(null);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (returnVal == JFileChooser.APPROVE_OPTION)</span>
+<span class="nc" id="L182">          zipFile = fo.getSelectedFile();</span>
+      }
+
+<span class="nc" id="L185">      File[] dir = new File[0];</span>
+      // generate only selected Images or the whole directory?
+<span class="nc bnc" id="L187" title="All 2 branches missed.">      if (m.list.getSelectedValues().size() == 0)</span>
+<span class="nc" id="L188">        dir = m.list.getPictures();</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">      else if (m.list.getSelectedValues().size() &gt; 0 &amp;&amp; m.list.getSelectedValues().size() &lt; m.list</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">          .getPictures().length) {</span>
+<span class="nc" id="L191">        int response = JOptionPane.showConfirmDialog(m.list, m.mes.getString(&quot;Generator.23&quot;),</span>
+<span class="nc" id="L192">            m.mes.getString(&quot;Generator.24&quot;), JOptionPane.YES_NO_CANCEL_OPTION);</span>
+<span class="nc bnc" id="L193" title="All 5 branches missed.">        switch (response) {</span>
+        case JOptionPane.YES_OPTION:
+<span class="nc" id="L195">          Vector&lt;File&gt; vf = m.list.getSelectedValues();</span>
+<span class="nc" id="L196">          dir = new File[vf.size()];</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">          for (int i = 0; i &lt; dir.length; i++)</span>
+<span class="nc" id="L198">            dir[i] = vf.get(i);</span>
+          ;
+<span class="nc" id="L200">          break; // generate only the selected images</span>
+        case JOptionPane.NO_OPTION:
+<span class="nc" id="L202">          dir = m.list.getPictures();</span>
+<span class="nc" id="L203">          break; // generate the whole directory</span>
+        case JOptionPane.CANCEL_OPTION:
+<span class="nc" id="L205">          return; // do nothing</span>
+        case JOptionPane.CLOSED_OPTION:
+<span class="nc" id="L207">          return; // do nothing</span>
+        }
+<span class="nc" id="L209">      } else {</span>
+<span class="nc" id="L210">        Vector&lt;File&gt; vf = m.list.getSelectedValues();</span>
+<span class="nc" id="L211">        dir = new File[vf.size()];</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">        for (int i = 0; i &lt; dir.length; i++) {</span>
+<span class="nc" id="L213">          dir[i] = vf.get(i);</span>
+        }
+      }
+
+<span class="nc" id="L217">      final File files[] = dir;</span>
+<span class="nc" id="L218">      Thread t = new Thread() {</span>
+        public void run() {
+<span class="nc" id="L220">          String p_titel =</span>
+<span class="nc" id="L221">              files.length + m.mes.getString(&quot;Generator.28&quot;) + files[0].getParent() + m.mes</span>
+<span class="nc" id="L222">                  .getString(&quot;Generator.29&quot;) + (Options.getInstance().getQuality() * 100) + m.mes</span>
+<span class="nc" id="L223">                  .getString(&quot;Generator.30&quot;);</span>
+<span class="nc" id="L224">          m.p_monitor = new ProgressMonitor(m, p_titel, m.mes.getString(&quot;Generator.10&quot;), 0,</span>
+              files.length);
+<span class="nc" id="L226">          m.p_monitor.setMillisToPopup(0);</span>
+<span class="nc" id="L227">          m.p_monitor.setMillisToDecideToPopup(0);</span>
+<span class="nc" id="L228">          m.status.setStatusOn();</span>
+<span class="nc" id="L229">          Element[] elements = new Element[files.length];</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">          for (int i = 0; i &lt; files.length; i++)</span>
+<span class="nc" id="L231">            elements[i] = new Element(i, files[i], Options.getInstance().getHmax(),</span>
+<span class="nc" id="L232">                Options.getInstance().getVmax(), new File(Options.getInstance().getOutput_dir()));</span>
+
+<span class="nc" id="L234">          Producer producer = new Producer(m, elements, m.mes.getString(&quot;Generator.22&quot;));</span>
+<span class="nc" id="L235">          Thread producerThread = new Thread(producer);</span>
+<span class="nc" id="L236">          int cpus = Runtime.getRuntime().availableProcessors();</span>
+<span class="nc" id="L237">          Thread consumerThreads[] = new Thread[cpus];</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">          for (int i = 0; i &lt; cpus; i++) {</span>
+<span class="nc" id="L239">            consumerThreads[i] = new Thread(new Consumer(producer, m, zippen, zipIt));</span>
+          }
+
+<span class="nc" id="L242">          producerThread.start();</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">          for (int i = 0; i &lt; cpus; i++) {</span>
+<span class="nc" id="L244">            consumerThreads[i].start();</span>
+          }
+
+          try {
+<span class="nc" id="L248">            producerThread.join();</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            for (int i = 0; i &lt; cpus; i++) {</span>
+<span class="nc" id="L250">              consumerThreads[i].join();</span>
+            }
+<span class="nc" id="L252">          } catch (InterruptedException ignore) {</span>
+<span class="nc" id="L253">          }</span>
+
+          try {
+<span class="nc" id="L256">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(),</span>
+<span class="nc" id="L257">                Options.ls + m.mes.getString(&quot;Generator.44&quot;) + o.getOutput_dir() + m.mes</span>
+<span class="nc" id="L258">                    .getString(&quot;Generator.45&quot;) + Options.ls, m.readyAtr);</span>
+<span class="nc" id="L259">            m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+<span class="nc" id="L260">          } catch (Exception e) {</span>
+<span class="nc" id="L261">            System.out.println(Options.ls + m.mes.getString(&quot;Generator.46&quot;) + Options.ls);</span>
+<span class="nc" id="L262">          }</span>
+
+          // if zip, then zip
+<span class="nc bnc" id="L265" title="All 4 branches missed.">          if (zippen &amp;&amp; zipFile != null) {</span>
+<span class="nc" id="L266">            m.p_monitor.setNote(&quot;Erstelle Zipdatei&quot;);</span>
+<span class="nc" id="L267">            createZip(zipFile, zipIt);</span>
+          }
+<span class="nc" id="L269">          m.status.setStatusOff();</span>
+<span class="nc" id="L270">          m.p_monitor.close();</span>
+<span class="nc" id="L271">        }</span>
+      };
+<span class="nc" id="L273">      t.start();</span>
+
+<span class="nc" id="L275">    } catch (Exception ex) {</span>
+<span class="nc" id="L276">      System.out.println(ex);</span>
+<span class="nc" id="L277">    }</span>
+<span class="nc" id="L278">  }</span>
+
+  /**
+   * &lt;p&gt;
+   * scale the Image and write it to a specified Directory or File
+   * &lt;/p&gt;
+   *
+   * @param file
+   * 		String, filename for the outputimage
+   * @param image
+   * 		Image, the input image
+   * @param iout
+   * 		File, the directory or file for the scaled image
+   * @param print
+   * 		boolean, Logs for GUI
+   * @param width
+   * 		int, width of the scaled image
+   * @param height
+   * 		int, heigth of the scaled image
+   * @return File
+   * @throws IOException
+   */
+  public File generateImage(File imageFile, File iout, boolean print, int width, int height,
+      String praefix) throws IOException {
+
+    // Output Image
+<span class="fc" id="L304">    File fo = new File(iout, praefix + imageFile.getName());</span>
+
+<span class="fc" id="L306">    ImageInputStream iis = ImageIO.createImageInputStream(imageFile);</span>
+<span class="fc" id="L307">    Iterator&lt;ImageReader&gt; readers = ImageIO.getImageReaders(iis);</span>
+<span class="fc" id="L308">    ImageReader reader = readers.next();</span>
+<span class="fc" id="L309">    reader.setInput(iis, true);</span>
+<span class="fc" id="L310">    BufferedImage image = reader.read(0, null);</span>
+
+<span class="fc" id="L312">    IIOMetadata imageMetadata = reader.getImageMetadata(0);</span>
+
+    try {
+      // get width and height of the origianl image
+<span class="fc" id="L316">      int w = image.getWidth(null);</span>
+<span class="fc" id="L317">      int h = image.getHeight(null);</span>
+
+      // if image in landscape format?
+<span class="pc bpc" id="L320" title="4 of 6 branches missed.">      if ((w &gt;= h || height == 0) &amp;&amp; width &gt; 0) {</span>
+<span class="nc" id="L321">        double tmp = (double) w / width;</span>
+<span class="nc" id="L322">        double h1 = h;</span>
+<span class="nc" id="L323">        height = (int) (h1 / tmp);</span>
+<span class="nc" id="L324">      } else {</span>
+<span class="fc" id="L325">        double tmp = (double) h / height;</span>
+<span class="fc" id="L326">        double w1 = w;</span>
+<span class="fc" id="L327">        width = (int) (w1 / tmp);</span>
+      }
+
+      // Create new Image
+<span class="fc" id="L331">      BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);</span>
+
+      // get graphics of the new Image
+<span class="fc" id="L334">      Graphics2D g = bimage.createGraphics();</span>
+
+      // set quality of the new Image
+<span class="fc" id="L337">      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,</span>
+          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+<span class="pc bpc" id="L340" title="3 of 4 branches missed.">      switch (Options.getInstance().getModus()) {</span>
+      case Options.MODUS_QUALITY:
+<span class="fc" id="L342">        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);</span>
+<span class="fc" id="L343">        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,</span>
+            RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+<span class="fc" id="L345">        break;</span>
+
+      case Options.MODUS_DEFAULT:
+<span class="nc" id="L348">        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);</span>
+<span class="nc" id="L349">        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,</span>
+            RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+<span class="nc" id="L351">        break;</span>
+
+      case Options.MODUS_SPEED:
+<span class="nc" id="L354">        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);</span>
+<span class="nc" id="L355">        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,</span>
+            RenderingHints.VALUE_COLOR_RENDER_SPEED);
+<span class="nc" id="L357">        break;</span>
+
+      default:
+<span class="nc" id="L360">        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);</span>
+<span class="nc" id="L361">        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,</span>
+            RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+        break;
+      }
+
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">      if (Options.getInstance().isAntialiasing()) {</span>
+<span class="fc" id="L367">        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);</span>
+      } else {
+<span class="nc" id="L369">        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);</span>
+      }
+<span class="fc" id="L371">      g.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);</span>
+
+      // set white Background of the new Image
+<span class="fc" id="L374">      g.setColor(Color.WHITE);</span>
+<span class="fc" id="L375">      g.fillRect(0, 0, width, height);</span>
+
+      // create a scaled instance of the new Image
+      Image scale;
+
+<span class="pc bpc" id="L380" title="2 of 4 branches missed.">      if (width &lt; 300 || height &lt; 300)</span>
+<span class="nc" id="L381">        scale = image.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);</span>
+      else
+<span class="fc" id="L383">        scale = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);</span>
+<span class="fc" id="L384">      g.drawImage(scale, 0, 0, null);</span>
+
+<span class="fc" id="L386">      int font_size = (int) (width * 0.02);</span>
+
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">      if (o.isCopyright()) {</span>
+<span class="nc" id="L389">        g.setColor(new Color(o.getCopyright_r(), o.getCopyright_g(), o.getCopyright_b()));</span>
+<span class="nc" id="L390">        Font font1 = new Font(&quot;Helvetica&quot;, Font.BOLD, font_size);</span>
+<span class="nc" id="L391">        g.setFont(font1);</span>
+<span class="nc" id="L392">        g.drawString(o.getCopyrightText(), font_size, height - (2 * font_size));</span>
+      }
+
+      // Print process info for the GUI
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">      if (print)</span>
+        try {
+<span class="nc" id="L398">          m.jOutputDoc</span>
+<span class="nc" id="L399">              .insertString(m.jOutputDoc.getLength(), m.mes.getString(&quot;Generator.20&quot;), m.outputAtr);</span>
+<span class="nc" id="L400">          m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+
+<span class="nc" id="L402">        } catch (Exception e) {</span>
+<span class="nc" id="L403">          System.out.print(&quot;. . &quot;);</span>
+<span class="nc" id="L404">        }</span>
+
+      // create new File for the new Image
+<span class="fc" id="L407">      ImageWriter writer = ImageIO.getImageWritersByFormatName(&quot;jpg&quot;).next();</span>
+      ImageOutputStream ios;
+
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">      if (iout.isDirectory()) {</span>
+<span class="nc" id="L411">        ios = new MemoryCacheImageOutputStream(new FileOutputStream(fo));</span>
+      } else {
+<span class="fc" id="L413">        ios = new MemoryCacheImageOutputStream(new FileOutputStream(iout));</span>
+      }
+<span class="fc" id="L415">      writer.setOutput(ios);</span>
+
+<span class="fc" id="L417">      JPEGImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());</span>
+<span class="fc" id="L418">      iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);</span>
+
+      // set JPEG Quality
+<span class="fc" id="L421">      iwparam.setCompressionQuality(o.getQuality());</span>
+<span class="fc" id="L422">      iwparam.setOptimizeHuffmanTables(true);</span>
+
+      // copy the metadata
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">      if (o.isCopyMetadata()) {</span>
+<span class="fc" id="L426">        writer.write(null, new IIOImage(bimage, null, imageMetadata), iwparam);</span>
+      } else {
+<span class="nc" id="L428">        writer.write(null, new IIOImage(bimage, null, null), iwparam);</span>
+      }
+
+<span class="fc" id="L431">      bimage.getGraphics().dispose();</span>
+<span class="fc" id="L432">      writer.dispose();</span>
+
+<span class="nc" id="L434">    } catch (Exception l) {</span>
+<span class="nc" id="L435">      m.error = true;</span>
+<span class="fc" id="L436">    }</span>
+
+<span class="fc" id="L438">    return fo;</span>
+  }
+
+  /**
+   * &lt;p&gt;
+   * rotate the Image and write it to the File
+   * &lt;/p&gt;
+   *
+   * @param file
+   * 		File
+   */
+  public void rotate(File file) {
+<span class="nc" id="L450">    BufferedImage i = null;</span>
+<span class="nc" id="L451">    IIOMetadata imeta = null;</span>
+
+    try {
+<span class="nc" id="L454">      ImageInputStream iis = ImageIO.createImageInputStream(file);</span>
+<span class="nc" id="L455">      ImageReader reader = ImageIO.getImageReadersByFormatName(&quot;jpg&quot;).next();</span>
+<span class="nc" id="L456">      reader.setInput(iis, true);</span>
+<span class="nc" id="L457">      ImageReadParam params = reader.getDefaultReadParam();</span>
+<span class="nc" id="L458">      i = reader.read(0, params);</span>
+<span class="nc" id="L459">      imeta = reader.getImageMetadata(0);</span>
+<span class="nc" id="L460">    } catch (IOException e) {</span>
+<span class="nc" id="L461">      System.err.println(&quot;Error while reading File: &quot; + file.getAbsolutePath());</span>
+<span class="nc" id="L462">      e.printStackTrace();</span>
+<span class="nc" id="L463">      return;</span>
+<span class="nc" id="L464">    }</span>
+
+    try {
+      // get width and height of the original image
+<span class="nc" id="L468">      int w = i.getWidth(null);</span>
+<span class="nc" id="L469">      int h = i.getHeight(null);</span>
+<span class="nc" id="L470">      System.out.println(&quot;Width: &quot; + w + &quot; Height :&quot; + h);</span>
+
+<span class="nc" id="L472">      System.out.println(&quot;Drehe Bild:&quot; + file.getAbsolutePath());</span>
+<span class="nc" id="L473">      AffineTransform rotation = new AffineTransform();</span>
+      AffineTransformOp rotator;
+<span class="nc" id="L475">      rotation.translate(h, 0);</span>
+<span class="nc" id="L476">      rotation.rotate(90.0 * Math.PI / 180.0);</span>
+
+<span class="nc" id="L478">      rotator = new AffineTransformOp(rotation, AffineTransformOp.TYPE_BICUBIC);</span>
+<span class="nc" id="L479">      i = rotator.filter(i, null);</span>
+<span class="nc" id="L480">      w = i.getWidth(null);</span>
+<span class="nc" id="L481">      h = i.getHeight(null);</span>
+<span class="nc" id="L482">      System.out.println(&quot;Width: &quot; + w + &quot; Height :&quot; + h);</span>
+
+<span class="nc" id="L484">      System.out.println(&quot;Speichere Bild:&quot; + file.getAbsolutePath());</span>
+<span class="nc" id="L485">      ImageWriter writer = ImageIO.getImageWritersByFormatName(&quot;jpg&quot;).next();</span>
+
+<span class="nc" id="L487">      writer.setOutput(new MemoryCacheImageOutputStream(new FileOutputStream(file)));</span>
+<span class="nc" id="L488">      ImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());</span>
+<span class="nc" id="L489">      iwparam.setCompressionMode(ImageWriteParam.MODE_COPY_FROM_METADATA);</span>
+<span class="nc" id="L490">      IIOMetadata meta_convert = writer</span>
+<span class="nc" id="L491">          .convertImageMetadata(imeta, new ImageTypeSpecifier(i), iwparam);</span>
+<span class="nc" id="L492">      IIOMetadataController imc = meta_convert.getController();</span>
+<span class="nc" id="L493">      imc.activate(meta_convert);</span>
+
+<span class="nc" id="L495">      writer.write(meta_convert, new IIOImage(i, null, imeta), iwparam);</span>
+<span class="nc" id="L496">      writer.dispose();</span>
+<span class="nc" id="L497">      System.out.println(&quot;Bild gespeichert!&quot;);</span>
+<span class="nc" id="L498">    } catch (Exception l) {</span>
+<span class="nc" id="L499">      m.error = true;</span>
+<span class="nc" id="L500">    }</span>
+<span class="nc" id="L501">  }</span>
+
+  /**
+   * &lt;p&gt;
+   * Resize a single image
+   * &lt;/p&gt;
+   *
+   * @param file
+   * 		File, input Image File
+   * @param image
+   * 		BufferedImage, input Image
+   */
+  public void generateSingle(File file, BufferedImage image) {
+
+    // where shuld the image saved?
+<span class="nc" id="L516">    JOptionPane.showMessageDialog(null, m.mes.getString(&quot;Generator.15&quot;));</span>
+
+    // select the output image
+<span class="nc" id="L519">    JFileChooser fo = new JFileChooser();</span>
+<span class="nc" id="L520">    fo.setFileFilter(new FileFilter() {</span>
+      public boolean accept(File f) {
+<span class="nc bnc" id="L522" title="All 4 branches missed.">        return f.isDirectory() || f.getName().toLowerCase().endsWith(&quot;.jpg&quot;) || f.getName()</span>
+<span class="nc bnc" id="L523" title="All 2 branches missed.">            .toLowerCase().endsWith(&quot;.jpeg&quot;);</span>
+      }
+
+      public String getDescription() {
+<span class="nc" id="L527">        return &quot;JPEG-Datei&quot;;</span>
+      }
+    });
+
+<span class="nc" id="L531">    fo.setFileSelectionMode(JFileChooser.FILES_ONLY);</span>
+<span class="nc" id="L532">    fo.setCurrentDirectory(FileSystemView.getFileSystemView().getParentDirectory(file));</span>
+<span class="nc" id="L533">    int returnVal = fo.showOpenDialog(null);</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">    if (returnVal == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L535">      m.status.setStatusOn();</span>
+      try {
+        // resize the image
+<span class="nc" id="L538">        generateImage(file, fo.getSelectedFile(), false, o.getHmax(), o.getVmax(), &quot;&quot;);</span>
+<span class="nc" id="L539">      } catch (Exception e) {</span>
+<span class="nc" id="L540">        e.printStackTrace();</span>
+<span class="nc" id="L541">      }</span>
+<span class="nc" id="L542">      m.status.setStatusOff();</span>
+
+      // show success message
+<span class="nc" id="L545">      JOptionPane.showMessageDialog(null, m.mes.getString(&quot;Generator.19&quot;));</span>
+    }
+<span class="nc" id="L547">  }</span>
+
+  /**
+   * &lt;p&gt;
+   * Resize the Images without the GUI, when the Programm is started with Arguments
+   * &lt;/p&gt;
+   *
+   * @param input
+   * 		File, the Input Directory
+   * @param output
+   * 		File, the Output Directory
+   * @param width
+   * 		int, width of the scaled image
+   * @param height
+   * 		int, heigth of the scaled image
+   */
+  public void generateText(File input, File output, int width, int height) {
+
+    // check if mass resize or single picture resize
+<span class="nc bnc" id="L566" title="All 4 branches missed.">    if (input.isDirectory() &amp;&amp; output.isDirectory())</span>
+      try {
+
+        // get all JPEGs of the directory
+<span class="nc" id="L570">        File[] dir = input.listFiles();</span>
+<span class="nc" id="L571">        Vector&lt;File&gt; v = new Vector&lt;File&gt;();</span>
+<span class="nc bnc" id="L572" title="All 2 branches missed.">        for (int i = 0; i &lt; dir.length; i++)</span>
+          // text.setText(text.getText() + dir[i].toString() + &quot;\n&quot;);
+          try {
+<span class="nc" id="L575">            String end = dir[i].toString()</span>
+<span class="nc" id="L576">                .substring(dir[i].toString().lastIndexOf(&quot;.&quot;) + 1, dir[i].toString().length());</span>
+<span class="nc bnc" id="L577" title="All 6 branches missed.">            if (dir[i].isFile() &amp;&amp; (end.equalsIgnoreCase(&quot;jpg&quot;) || end.equalsIgnoreCase(&quot;jpeg&quot;)))</span>
+<span class="nc" id="L578">              v.addElement(dir[i]);</span>
+<span class="nc" id="L579">          } catch (Exception st) {</span>
+<span class="nc" id="L580">          }</span>
+
+        // print info message
+<span class="nc" id="L583">        System.out.println(v.size() + m.mes.getString(&quot;Generator.28&quot;) + input.toString() + m.mes</span>
+<span class="nc" id="L584">            .getString(&quot;Generator.29&quot;) + quality + m.mes.getString(&quot;Generator.30&quot;) + Options.ls</span>
+            + Options.ls);
+
+        // resize the images
+<span class="nc bnc" id="L588" title="All 2 branches missed.">        for (int i = 0; i &lt; v.size(); i++) {</span>
+<span class="nc" id="L589">          System.out</span>
+<span class="nc" id="L590">              .print(m.mes.getString(&quot;Generator.10&quot;) + v.elementAt(i).getName() + &quot;\t . . . &quot;);</span>
+<span class="nc" id="L591">          generateImage(v.elementAt(i), output, true, o.getHmax(), o.getVmax(),</span>
+<span class="nc" id="L592">              m.mes.getString(&quot;Generator.22&quot;));</span>
+<span class="nc" id="L593">          System.out.println(m.mes.getString(&quot;Generator.12&quot;));</span>
+        }
+<span class="nc" id="L595">        System.out.println(Options.ls + v.size() + m.mes.getString(&quot;Generator.46&quot;) + Options.ls);</span>
+<span class="nc" id="L596">      } catch (Exception ex) {</span>
+<span class="nc" id="L597">        System.out.println(ex);</span>
+<span class="nc" id="L598">      }</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">    else if (input.isFile()) {</span>
+      try {
+        // resize single image
+<span class="nc" id="L602">        generateImage(input, output, true, o.getHmax(), o.getVmax(),</span>
+<span class="nc" id="L603">            m.mes.getString(&quot;Generator.22&quot;));</span>
+<span class="nc" id="L604">      } catch (Exception e) {</span>
+<span class="nc" id="L605">        e.printStackTrace();</span>
+<span class="nc" id="L606">      }</span>
+    }
+<span class="nc" id="L608">  }</span>
+
+  /**
+   * &lt;p&gt;
+   * &lt;b&gt;Not used because loose of Metadata and Quality&lt;/b&gt; rotate the Image and
+   * write it to the File
+   * &lt;/p&gt;
+   *
+   * @param file
+   * 		File
+   */
+  public void rotate(File file, int angel) {
+<span class="nc" id="L620">    BufferedImage i = null;</span>
+<span class="nc" id="L621">    IIOMetadata imeta = null;</span>
+
+    try {
+<span class="nc" id="L624">      ImageInputStream iis = ImageIO.createImageInputStream(file);</span>
+<span class="nc" id="L625">      ImageReader reader = ImageIO.getImageReadersByFormatName(&quot;jpg&quot;).next();</span>
+<span class="nc" id="L626">      reader.setInput(iis, true);</span>
+<span class="nc" id="L627">      ImageReadParam params = reader.getDefaultReadParam();</span>
+<span class="nc" id="L628">      i = reader.read(0, params);</span>
+<span class="nc" id="L629">      imeta = reader.getImageMetadata(0);</span>
+<span class="nc" id="L630">    } catch (IOException e) {</span>
+<span class="nc" id="L631">      System.err.println(&quot;Error while reading File: &quot; + file.getAbsolutePath());</span>
+<span class="nc" id="L632">      e.printStackTrace();</span>
+<span class="nc" id="L633">      return;</span>
+<span class="nc" id="L634">    }</span>
+
+    try {
+      // get width and height of the origianl image
+<span class="nc" id="L638">      int w = i.getWidth(null);</span>
+<span class="nc" id="L639">      int h = i.getHeight(null);</span>
+<span class="nc" id="L640">      rotateImage(i, 90);</span>
+<span class="nc" id="L641">      System.out.println(&quot;Width: &quot; + w + &quot; Height :&quot; + h);</span>
+
+<span class="nc" id="L643">      System.out.println(&quot;Drehe Bild:&quot; + file.getAbsolutePath());</span>
+<span class="nc" id="L644">      i = rotateImage(i, angel);</span>
+
+<span class="nc" id="L646">      FileOutputStream fos = new FileOutputStream(file);</span>
+
+<span class="nc" id="L648">      ImageWriter writer = ImageIO.getImageWritersByFormatName(&quot;jpg&quot;).next();</span>
+<span class="nc" id="L649">      ImageOutputStream ios = ImageIO.createImageOutputStream(fos);</span>
+<span class="nc" id="L650">      writer.setOutput(ios);</span>
+<span class="nc" id="L651">      ImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());</span>
+<span class="nc" id="L652">      iwparam.setCompressionMode(ImageWriteParam.MODE_COPY_FROM_METADATA);</span>
+
+      // set JPEG Quality
+<span class="nc" id="L655">      iwparam.setCompressionQuality(0.92f);</span>
+<span class="nc" id="L656">      writer.write(imeta, new IIOImage(i, null, null), iwparam);</span>
+<span class="nc" id="L657">      ios.flush();</span>
+<span class="nc" id="L658">      writer.dispose();</span>
+<span class="nc" id="L659">      ios.close();</span>
+<span class="nc" id="L660">      fos.close();</span>
+
+<span class="nc" id="L662">      System.out.println(&quot;Bild gespeichert!&quot;);</span>
+<span class="nc" id="L663">    } catch (Exception l) {</span>
+<span class="nc" id="L664">      m.error = true;</span>
+<span class="nc" id="L665">    }</span>
+<span class="nc" id="L666">  }</span>
+
+  public BufferedImage rotateImage(BufferedImage image, double rotate) {
+<span class="fc bfc" id="L669" title="All 2 branches covered.">    if (rotate == 0)</span>
+<span class="fc" id="L670">      return image;</span>
+
+<span class="fc" id="L672">    AffineTransform transform = new AffineTransform();</span>
+
+    // get width and height of the original image
+<span class="fc" id="L675">    int width = image.getWidth(null);</span>
+<span class="fc" id="L676">    int height = image.getHeight(null);</span>
+
+<span class="fc" id="L678">    double positiveRotate = rotate;</span>
+<span class="fc bfc" id="L679" title="All 2 branches covered.">    if (rotate &lt; 0) {</span>
+<span class="fc" id="L680">      positiveRotate += Math.toRadians(360);</span>
+    }
+<span class="fc bfc" id="L682" title="All 2 branches covered.">    if (positiveRotate == Generator.ROTATE_90) {</span>
+<span class="fc" id="L683">      transform.translate(height, 0);</span>
+<span class="fc" id="L684">      transform.rotate(Generator.ROTATE_90);</span>
+<span class="fc" id="L685">      width = image.getHeight(); // swap</span>
+<span class="fc" id="L686">      height = image.getWidth();</span>
+<span class="fc bfc" id="L687" title="All 2 branches covered.">    } else if (positiveRotate == Generator.ROTATE_270) {</span>
+<span class="fc" id="L688">      transform.translate(0, width);</span>
+<span class="fc" id="L689">      transform.rotate(Generator.ROTATE_270);</span>
+<span class="fc" id="L690">      width = image.getHeight(null); // swap</span>
+<span class="fc" id="L691">      height = image.getWidth(null);</span>
+    } else {
+<span class="fc" id="L693">      throw new IllegalArgumentException(&quot;degree must be a multiple of 90!&quot;);</span>
+    }
+
+    // Return a new Image
+<span class="fc" id="L697">    BufferedImage returnImage = new BufferedImage(width, height,</span>
+<span class="fc" id="L698">        image.getColorModel().getColorSpace().getType());</span>
+<span class="fc" id="L699">    Graphics2D g = returnImage.createGraphics();</span>
+<span class="fc" id="L700">    g.drawImage(image, transform, null);</span>
+
+<span class="fc" id="L702">    return returnImage;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

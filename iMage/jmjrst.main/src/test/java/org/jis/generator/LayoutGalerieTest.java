@@ -74,7 +74,7 @@ public class LayoutGalerieTest {
 	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with a fromFile with no write permission
 	 */
 	@Test
-	public final void testCopyWithLockedToFile() throws IOException, ExecutionException, InterruptedException {
+	public final void testCopyWithLockedToFile() throws IOException {
 		toFile = folder.newFile("to.txt");
 		fromFile = folder.newFile("from.txt");
 		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());

@@ -8,21 +8,21 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.nio.file.attribute.PosixFilePermission;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static org.junit.Assert.*;
 
@@ -238,6 +238,43 @@ public class GeneratorTest {
 
   @Rule
   public TemporaryFolder folder = new TemporaryFolder();
+
+  @Test
+  public void testZipAFile() throws IOException {
+    File copyTo = folder.newFile();
+    File origin = new File("src/test/resources/image.jpg");
+    File zipFile = folder.newFile();
+    Files.copy(origin.toPath(), copyTo.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    Vector<File> images = new Vector<>();
+    images.add(copyTo);
+    generator.createZip(zipFile, images);
+    //unzipping
+    File unzipDir = folder.newFolder();
+    byte[] buffer = new byte[1024];
+    ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+    ZipEntry zipEntry = zis.getNextEntry();
+    while (zipEntry != null) {
+      String imgname = zipEntry.getName().split("/")[zipEntry.getName().split("/").length - 1];
+      File newFile = new File(unzipDir, imgname);
+      FileOutputStream fos = new FileOutputStream(newFile);
+      int len;
+      while ((len = zis.read(buffer)) > 0) {
+        fos.write(buffer, 0, len);
+      }
+      fos.close();
+      zipEntry = zis.getNextEntry();
+    }
+    zis.closeEntry();
+    zis.close();
+    //asserting
+    assertEquals(1, unzipDir.listFiles().length);
+    byte[] originContent = Files.readAllBytes(origin.toPath());
+    byte[] unzippedContent = Files.readAllBytes(unzipDir.listFiles()[0].toPath());
+    assertArrayEquals(originContent, unzippedContent);
+
+  }
+
+
 
   @Test
   public void testGenerateImg() throws IOException {

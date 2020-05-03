@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TableGalerie.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iMage$GeneratorTest.exec</a> &gt; <a href="index.source.html" class="el_package">org.jis.generator</a> &gt; <span class="el_source">TableGalerie.java</span></div><h1>TableGalerie.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2007 - 2009 Johannes Geppert 
+ * 
+ * Licensed under the GPL, Version 2.0 (the &quot;License&quot;); 
+ * you may not use this file except in compliance with the License.
+ * 
+ * You may obtain a copy of the License at
+ * http://www.fsf.org/licensing/licenses/gpl.txt 
+ * 
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the License is distributed on 
+ * an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ */
+package org.jis.generator;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
+import javax.swing.ProgressMonitor;
+
+import org.jis.Main;
+import org.jis.options.Options;
+
+/**
+ * @author &lt;a href=&quot;http://www.jgeppert.com&quot;&gt;Johannes Geppert&lt;/a&gt;
+ * 
+ * &lt;p&gt;
+ * this class build the Web Gallerie
+ * &lt;/p&gt;
+ */
+public class TableGalerie {
+<span class="nc" id="L37">  private final String ls = System.getProperty(&quot;line.separator&quot;);</span>
+  private File[]       images;
+  private File         directory;
+  private Main         m;
+  private Options      o;
+
+  /**
+   * @param main
+   *          the main class
+   */
+  public TableGalerie(Main main) {
+<span class="nc" id="L48">    super();</span>
+<span class="nc" id="L49">    o = Options.getInstance();</span>
+<span class="nc" id="L50">    this.directory = new File(o.getOutput_dir_gallerie());</span>
+<span class="nc" id="L51">    this.m = main;</span>
+
+<span class="nc bnc" id="L53" title="All 2 branches missed.">    if (m.list.getSelectedValues().size() == 0) this.images = m.list.getPictures();</span>
+<span class="nc bnc" id="L54" title="All 4 branches missed.">    else if (m.list.getSelectedValues().size() &gt; 0 &amp;&amp; m.list.getSelectedValues().size() &lt; m.list.getPictures().length)</span>
+    {
+<span class="nc" id="L56">      int response = JOptionPane.showConfirmDialog(m.list, m.mes.getString(&quot;Generator.23&quot;), m.mes.getString(&quot;Generator.24&quot;), JOptionPane.YES_NO_CANCEL_OPTION);</span>
+<span class="nc bnc" id="L57" title="All 5 branches missed.">      switch (response)</span>
+      {
+      case JOptionPane.YES_OPTION:
+<span class="nc" id="L60">        Vector&lt;File&gt; vf = m.list.getSelectedValues();</span>
+<span class="nc" id="L61">        this.images = new File[vf.size()];</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (int i = 0; i &lt; this.images.length; i++)</span>
+<span class="nc" id="L63">          this.images[i] = vf.get(i);</span>
+        ;
+<span class="nc" id="L65">        break; // generate only the selected images</span>
+      case JOptionPane.NO_OPTION:
+<span class="nc" id="L67">        this.images = m.list.getPictures();</span>
+<span class="nc" id="L68">        break; // generate the whole directory</span>
+      case JOptionPane.CANCEL_OPTION:
+<span class="nc" id="L70">        return; // do nothing</span>
+      case JOptionPane.CLOSED_OPTION:
+<span class="nc" id="L72">        return; // do nothing</span>
+      }
+<span class="nc" id="L74">    }</span>
+    else
+    {
+<span class="nc" id="L77">      Vector&lt;File&gt; vf = m.list.getSelectedValues();</span>
+<span class="nc" id="L78">      this.images = new File[vf.size()];</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">      for (int i = 0; i &lt; this.images.length; i++)</span>
+<span class="nc" id="L80">        this.images[i] = vf.get(i);</span>
+    }
+
+    // print main info
+    try
+    {
+<span class="nc" id="L86">      m.jOutputDoc.remove(0, m.jOutputDoc.getLength());</span>
+<span class="nc" id="L87">      m.jOutputDoc.insertString(m.jOutputDoc.getLength(), images.length + m.mes.getString(&quot;Generator.28&quot;) + images[0].getParent() + m.mes.getString(&quot;Generator.29&quot;) + o.getQuality() + m.mes.getString(&quot;Generator.30&quot;) + ls + ls, m.outputAtr);</span>
+<span class="nc" id="L88">      m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+    }
+<span class="nc" id="L90">    catch (Exception e)</span>
+    {
+<span class="nc" id="L92">      System.out.println(images.length + m.mes.getString(&quot;Generator.31&quot;) + images[0].getPath().toString() + m.mes.getString(&quot;Generator.32&quot;) + o.getQuality() + m.mes.getString(&quot;Generator.33&quot;) + ls + ls);</span>
+<span class="nc" id="L93">    }</span>
+
+<span class="nc" id="L95">    String p_titel = images.length + m.mes.getString(&quot;Generator.28&quot;) + this.images[0].getParentFile().getPath() + m.mes.getString(&quot;Generator.29&quot;) + (o.getQuality()*100) + m.mes.getString(&quot;Generator.30&quot;);</span>
+<span class="nc" id="L96">    m.p_monitor = new ProgressMonitor(m,p_titel,m.mes.getString(&quot;Generator.10&quot;), 0, this.images.length+1);</span>
+<span class="nc" id="L97">    m.p_monitor.setMillisToPopup(1);</span>
+<span class="nc" id="L98">    m.p_monitor.setProgress(1);</span>
+
+<span class="nc" id="L100">    Thread t = new Thread()</span>
+<span class="nc" id="L101">    {</span>
+      public void run()
+      {
+<span class="nc" id="L104">        m.status.setStatusOn();</span>
+<span class="nc" id="L105">        createCSS();</span>
+<span class="nc" id="L106">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L107">        sb.append(getHeader(o.getGallerieTitle(), true));</span>
+
+<span class="nc" id="L109">        sb.append(&quot;   &lt;table&gt;\n&quot;);</span>
+
+        // generate the 3 images small, medium, big
+<span class="nc" id="L112">        File small = new File(directory, &quot;small&quot;);</span>
+<span class="nc" id="L113">        File medium = new File(directory, &quot;medium&quot;);</span>
+<span class="nc" id="L114">        File big = new File(directory, &quot;big&quot;);</span>
+        try
+        {
+<span class="nc" id="L117">          small.mkdir();</span>
+<span class="nc" id="L118">          medium.mkdir();</span>
+<span class="nc" id="L119">          big.mkdir();</span>
+        }
+<span class="nc" id="L121">        catch (Exception e)</span>
+        {
+<span class="nc" id="L123">          e.printStackTrace();</span>
+<span class="nc" id="L124">        }</span>
+
+<span class="nc" id="L126">        int j = 0;</span>
+<span class="nc" id="L127">        int count = 0;</span>
+<span class="nc" id="L128">        int page = 0;</span>
+
+<span class="nc" id="L130">        int max = images.length;</span>
+<span class="nc" id="L131">        int x = o.getGallerieHeigth() * o.getGallerieWidth();</span>
+
+<span class="nc" id="L133">        int lastPage = (int) Math.ceil((double) images.length / (double) x);</span>
+
+        File out_s;
+        File out_m;
+        File out_b;
+<span class="nc" id="L138">        ArrayList&lt;Element&gt; elements = new ArrayList&lt;Element&gt;();</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (int i = 0; i &lt; images.length; i++)</span>
+        {
+          try
+          {
+<span class="nc" id="L144">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), m.mes.getString(&quot;Generator.10&quot;), m.outputAtr);</span>
+<span class="nc" id="L145">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), images[i].getName(), m.fileAtr);</span>
+<span class="nc" id="L146">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), &quot;\t . . &quot;, m.outputAtr);</span>
+<span class="nc" id="L147">            m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+          }
+<span class="nc" id="L149">          catch (Exception e)</span>
+          {
+<span class="nc" id="L151">            System.out.print(m.mes.getString(&quot;Generator.10&quot;) + images[i].getName() + &quot;\t . . . &quot;);</span>
+<span class="nc" id="L152">          }</span>
+
+<span class="nc" id="L154">          j++;</span>
+<span class="nc" id="L155">          count++;</span>
+
+
+          // generate small image
+<span class="nc" id="L159">          out_s = new File(small, images[i].getName());</span>
+<span class="nc" id="L160">          elements.add(new Element(i, images[i], 159, 119, small));</span>
+
+          try
+          {
+<span class="nc" id="L164">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), &quot;. &quot;, m.outputAtr);</span>
+<span class="nc" id="L165">            m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+
+          }
+<span class="nc" id="L168">          catch (Exception e)</span>
+          {
+<span class="nc" id="L170">            System.out.print(&quot;. . .  &quot;);</span>
+<span class="nc" id="L171">          }</span>
+
+          // generate medium image
+<span class="nc" id="L174">          out_m = new File(medium, images[i].getName());</span>
+<span class="nc" id="L175">          elements.add(new Element(i, images[i], 450, 338, medium));</span>
+
+          try
+          {
+<span class="nc" id="L179">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), &quot;. &quot;, m.outputAtr);</span>
+<span class="nc" id="L180">            m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+
+          }
+<span class="nc" id="L183">          catch (Exception e)</span>
+          {
+<span class="nc" id="L185">            System.out.print(&quot;. . .  &quot;);</span>
+<span class="nc" id="L186">          }</span>
+
+          // generate big image
+<span class="nc" id="L189">          out_b = new File(big, images[i].getName());</span>
+<span class="nc" id="L190">          elements.add(new Element(i, images[i], o.getHmax(), o.getVmax(), big));</span>
+
+<span class="nc bnc" id="L192" title="All 2 branches missed.">          if (i == 0) createPreview(i, medium, out_m.getName(), out_b.getName(), false, true);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">          else if (i == (images.length - 1)) createPreview(i, medium, out_m.getName(), out_b.getName(), true, false);</span>
+<span class="nc" id="L194">          else createPreview(i, medium, out_m.getName(), out_b.getName(), true, true);</span>
+
+          try
+          {
+<span class="nc" id="L198">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), &quot;.  &quot;, m.outputAtr);</span>
+<span class="nc" id="L199">            m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+
+          }
+<span class="nc" id="L202">          catch (Exception e)</span>
+          {
+<span class="nc" id="L204">            System.out.print(&quot;. . .  &quot;);</span>
+<span class="nc" id="L205">          }</span>
+
+          // ROW BEGIN
+<span class="nc bnc" id="L208" title="All 2 branches missed.">          if (j == 1) sb.append(&quot;    &lt;tr&gt;\n&quot;);</span>
+
+          // TABLE CELL
+<span class="nc" id="L211">          String titel = createTitle(out_s.getName());</span>
+<span class="nc" id="L212">          sb.append(&quot;      &lt;td&gt;&lt;a href=\&quot;medium/image&quot; + i + &quot;.html\&quot; title=\&quot;&quot;+ titel +&quot;\&quot;&gt;&lt;img src=\&quot;small/&quot; + out_s.getName() + &quot;\&quot; alt=\&quot;&quot; + titel + &quot;\&quot; /&gt;&lt;/a&gt;&lt;/td&gt;\n&quot;);</span>
+
+          // ROW END
+<span class="nc bnc" id="L215" title="All 2 branches missed.">          if (j == o.getGallerieWidth())</span>
+          {
+<span class="nc" id="L217">            sb.append(&quot;    &lt;/tr&gt;\n&quot;);</span>
+<span class="nc" id="L218">            j = 0;</span>
+          }
+<span class="nc bnc" id="L220" title="All 4 branches missed.">          else if (j &lt; o.getGallerieWidth() &amp;&amp; i == (max - 1))</span>
+          {
+            // create empty td and complete row
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            for (int k = 0; k &lt; (o.getGallerieWidth() - j); k++)</span>
+            {
+<span class="nc" id="L225">              sb.append(&quot;     &lt;td&gt;&amp;nbsp;&lt;/td&gt;\n&quot;);</span>
+            }
+<span class="nc" id="L227">            sb.append(&quot;    &lt;/tr&gt;\n&quot;);</span>
+<span class="nc" id="L228">            j = 0;</span>
+          }
+
+          // end of page
+<span class="nc bnc" id="L232" title="All 4 branches missed.">          if (count == x || i == (max - 1))</span>
+          {
+<span class="nc" id="L234">            count = 0;</span>
+<span class="nc" id="L235">            page++;</span>
+
+<span class="nc" id="L237">            sb.append(&quot;    &lt;tr&gt;\n&quot;);</span>
+<span class="nc" id="L238">            sb.append(&quot;     &lt;td colspan=\&quot;&quot; + o.getGallerieWidth() + &quot;\&quot; style=\&quot;width: 100%; background-color: rgb(&quot; + o.getBackground_r() + &quot;,&quot; + o.getBackground_g() + &quot;,&quot; + o.getBackground_b() + &quot;); vertical-align: top;\&quot;&gt;\n&quot;);</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if(lastPage &gt; 1)</span>
+            {
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (page == 1) sb.append(&quot;      &lt;a href=\&quot;index&quot; + (page + 1) + &quot;.html\&quot; class=\&quot;next\&quot;&gt;&amp;gt;&amp;gt;&lt;/a&gt;\n&quot;);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">            else if (page == lastPage)</span>
+            {
+<span class="nc bnc" id="L244" title="All 2 branches missed.">              if (page == 2) sb.append(&quot;      &lt;a href=\&quot;index.html\&quot; class=\&quot;next\&quot;&gt;&amp;lt;&amp;lt;&lt;/a&gt;\n&quot;);</span>
+<span class="nc" id="L245">              else sb.append(&quot;      &lt;a href=\&quot;index&quot; + (page - 1) + &quot;.html\&quot; class=\&quot;next\&quot;&gt;&amp;lt;&amp;lt;&lt;/a&gt;\n&quot;);</span>
+
+            }
+            else
+            {
+<span class="nc bnc" id="L250" title="All 2 branches missed.">              if (page == 2) sb.append(&quot;      &lt;div class=\&quot;next\&quot;&gt;&lt;a href=\&quot;index.html\&quot; class=\&quot;next\&quot;&gt;&amp;lt;&amp;lt;&lt;/a&gt;&amp;nbsp;|&amp;nbsp;&lt;a href=\&quot;index&quot; + (page + 1) + &quot;.html\&quot; class=\&quot;next\&quot;&gt;&amp;gt;&amp;gt;&lt;/a&gt;&lt;/div&gt;\n&quot;);</span>
+<span class="nc" id="L251">              else sb.append(&quot;      &lt;div class=\&quot;next\&quot;&gt;&lt;a href=\&quot;index&quot; + (page - 1) + &quot;.html\&quot; class=\&quot;next\&quot;&gt;&amp;lt;&amp;lt;&lt;/a&gt;&amp;nbsp;|&amp;nbsp;&lt;a href=\&quot;index&quot; + (page + 1) + &quot;.html\&quot; class=\&quot;next\&quot;&gt;&amp;gt;&amp;gt;&lt;/a&gt;&lt;/div&gt;\n&quot;);</span>
+            }
+            }
+            else
+            {
+<span class="nc" id="L256">              sb.append(&quot;       &amp;nbsp;\n&quot;);</span>
+            }
+<span class="nc" id="L258">            sb.append(&quot;     &lt;/td&gt;\n&quot;);</span>
+<span class="nc" id="L259">            sb.append(&quot;    &lt;/tr&gt;\n&quot;);</span>
+<span class="nc" id="L260">            sb.append(&quot;   &lt;/table&gt;\n&quot;);</span>
+<span class="nc" id="L261">            sb.append(getFooter());</span>
+            try
+            {
+
+<span class="nc" id="L265">              String index = &quot;index.html&quot;;</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">              if (page &gt; 1) index = &quot;index&quot; + page + &quot;.html&quot;;</span>
+<span class="nc" id="L267">              FileOutputStream fos = new FileOutputStream(new File(directory, index));</span>
+<span class="nc" id="L268">              fos.write(sb.toString().getBytes());</span>
+<span class="nc" id="L269">              fos.close();</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">              if ((i + 1) == max)</span>
+              {
+                try
+                {
+<span class="nc" id="L274">                  m.jOutputDoc.insertString(m.jOutputDoc.getLength(), m.mes.getString(&quot;Generator.40&quot;) + ls, m.readyAtr);</span>
+<span class="nc" id="L275">                  m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+<span class="nc" id="L276">                  m.jOutputDoc.insertString(m.jOutputDoc.getLength(), ls + images.length + m.mes.getString(&quot;Generator.44&quot;) + o.getOutput_dir_gallerie() + m.mes.getString(&quot;Generator.45&quot;) + ls, m.readyAtr);</span>
+<span class="nc" id="L277">                  m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+                }
+<span class="nc" id="L279">                catch (Exception e)</span>
+                {
+<span class="nc" id="L281">                  System.out.println(m.mes.getString(&quot;Generator.40&quot;));</span>
+<span class="nc" id="L282">                }</span>
+<span class="nc" id="L283">                break;</span>
+              }
+            }
+<span class="nc" id="L286">            catch (Exception e)</span>
+            {
+<span class="nc" id="L288">            }</span>
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">            if (i &lt; (max - 1))</span>
+            {
+<span class="nc" id="L292">              sb = new StringBuilder();</span>
+<span class="nc" id="L293">              sb.append(getHeader(o.getGallerieTitle(), true));</span>
+<span class="nc" id="L294">              sb.append(&quot;   &lt;table&gt;\n&quot;);</span>
+            }
+
+          } // end of page
+
+          // print ready info
+          try
+          {
+<span class="nc" id="L302">            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), m.mes.getString(&quot;Generator.40&quot;) + ls, m.readyAtr);</span>
+<span class="nc" id="L303">            m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+          }
+<span class="nc" id="L305">          catch (Exception e)</span>
+          {
+<span class="nc" id="L307">            System.out.println(m.mes.getString(&quot;Generator.40&quot;));</span>
+<span class="nc" id="L308">          }</span>
+
+        } // end of for loop
+
+        try
+        {
+<span class="nc" id="L314">          m.jOutputDoc.insertString(m.jOutputDoc.getLength(), ls + images.length + m.mes.getString(&quot;Generator.44&quot;) + o.getOutput_dir_gallerie() + m.mes.getString(&quot;Generator.45&quot;) + ls, m.readyAtr);</span>
+<span class="nc" id="L315">          m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+        }
+<span class="nc" id="L317">        catch (Exception e)</span>
+        {
+<span class="nc" id="L319">          System.out.println(ls + images.length + m.mes.getString(&quot;Generator.46&quot;) + ls);</span>
+<span class="nc" id="L320">        }</span>
+        
+<span class="nc" id="L322">        Element[] els = new Element[elements.size()];</span>
+<span class="nc" id="L323">        Producer producer = new Producer(m,elements.toArray(els),&quot;&quot;);</span>
+<span class="nc" id="L324">        Thread producerThread = new Thread(producer);</span>
+<span class="nc" id="L325">        int cpus = Runtime.getRuntime().availableProcessors();</span>
+<span class="nc" id="L326">        Thread consumerThreads[] = new Thread[cpus];</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">        for (int i = 0; i &lt; cpus; i++)</span>
+        {
+<span class="nc" id="L329">          consumerThreads[i] = new Thread(new Consumer(producer,m,false,null)); </span>
+        }
+
+<span class="nc" id="L332">        producerThread.start();</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">        for (int i = 0; i &lt; cpus; i++)</span>
+        {
+<span class="nc" id="L335">          consumerThreads[i].start(); </span>
+        }
+
+        try {
+<span class="nc" id="L339">          producerThread.join();</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">          for (int i = 0; i &lt; cpus; i++)</span>
+          {
+<span class="nc" id="L342">            consumerThreads[i].join(); </span>
+          }
+<span class="nc" id="L344">        } catch (InterruptedException ignore) {}</span>
+
+
+        
+<span class="nc" id="L348">        m.status.setStatusOff();</span>
+<span class="nc" id="L349">        m.p_monitor.close();</span>
+<span class="nc" id="L350">      }</span>
+    };
+<span class="nc" id="L352">    t.start();</span>
+
+<span class="nc" id="L354">  }</span>
+
+  private void createPreview(int t, File file, String m_name, String b_name, boolean back, boolean next)
+  {
+<span class="nc" id="L358">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L359">    String titel = createTitle(m_name);</span>
+<span class="nc" id="L360">    sb.append(getHeader(o.getGallerieTitle() + &quot; - &quot; + titel, false));</span>
+<span class="nc" id="L361">    sb.append(&quot;    &lt;table&gt;\n&quot;);</span>
+<span class="nc" id="L362">    sb.append(&quot;     &lt;tr&gt;\n&quot;);</span>
+
+<span class="nc" id="L364">    sb.append(&quot;      &lt;td&gt;\n&quot;);</span>
+
+<span class="nc bnc" id="L366" title="All 2 branches missed.">    if (back)</span>
+<span class="nc" id="L367">        sb.append(&quot;       &lt;h1&gt;&lt;a href=\&quot;image&quot; + (t - 1) + &quot;.html\&quot;&gt;&amp;lt;&lt;/a&gt;&lt;/h1&gt;\n&quot;);</span>
+    else
+<span class="nc" id="L369">        sb.append(&quot;       &amp;nbsp;\n&quot;);</span>
+
+<span class="nc" id="L371">    sb.append(&quot;      &lt;/td&gt;\n&quot;);</span>
+
+<span class="nc" id="L373">    sb.append(&quot;      &lt;td style=\&quot;width: 460px;\&quot;&gt;\n&quot;);</span>
+<span class="nc" id="L374">    sb.append(&quot;       &lt;a href=\&quot;../big/&quot; + b_name + &quot;\&quot; title=\&quot;&quot;+ titel +&quot;\&quot;&gt;&lt;img src=\&quot;&quot; + m_name + &quot;\&quot; alt=\&quot;&quot; + titel + &quot;\&quot; /&gt;&lt;/a&gt;\n&quot;);</span>
+<span class="nc" id="L375">    sb.append(&quot;      &lt;/td&gt;\n&quot;);</span>
+
+<span class="nc" id="L377">    sb.append(&quot;      &lt;td&gt;\n&quot;);</span>
+
+<span class="nc bnc" id="L379" title="All 2 branches missed.">    if (next)</span>
+<span class="nc" id="L380">      sb.append(&quot;       &lt;h1&gt;&lt;a href=\&quot;image&quot; + (t + 1) + &quot;.html\&quot;&gt;&amp;gt;&lt;/a&gt;&lt;/h1&gt;\n&quot;);</span>
+    else
+<span class="nc" id="L382">      sb.append(&quot;       &amp;nbsp;\n&quot;);</span>
+
+<span class="nc" id="L384">    sb.append(&quot;      &lt;/td&gt;\n&quot;);</span>
+
+<span class="nc" id="L386">    sb.append(&quot;     &lt;/tr&gt;\n&quot;);</span>
+<span class="nc" id="L387">    sb.append(&quot;    &lt;/table&gt;\n&quot;);</span>
+
+<span class="nc" id="L389">    sb.append(getFooter());</span>
+    try
+    {
+<span class="nc" id="L392">      FileOutputStream fos = new FileOutputStream(new File(file, &quot;image&quot; + t + &quot;.html&quot;));</span>
+<span class="nc" id="L393">      fos.write(sb.toString().getBytes());</span>
+<span class="nc" id="L394">      fos.close();</span>
+    }
+<span class="nc" id="L396">    catch (Exception e)</span>
+    {
+<span class="nc" id="L398">      e.printStackTrace();</span>
+<span class="nc" id="L399">    }</span>
+<span class="nc" id="L400">  }</span>
+
+  private String getHeader(String t, boolean css)
+  {
+<span class="nc" id="L404">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L405">    sb.append(&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;utf-8\&quot;?&gt;\n&quot;);</span>
+<span class="nc" id="L406">    sb.append(&quot;&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.1//EN\&quot; \&quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\&quot;&gt;\n&quot;);</span>
+<span class="nc" id="L407">    sb.append(&quot;&lt;html xmlns=\&quot;http://www.w3.org/1999/xhtml\&quot; xml:lang=\&quot;LC\&quot;&gt;\n&quot;);</span>
+<span class="nc" id="L408">    sb.append(&quot; &lt;head&gt;\n&quot;);</span>
+<span class="nc" id="L409">    sb.append(&quot;  &lt;title&gt;&quot; + t + &quot;&lt;/title&gt;\n&quot;);</span>
+<span class="nc" id="L410">    sb.append(&quot;  &lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;text/html; charset=utf-8\&quot; /&gt;\n&quot;);</span>
+<span class="nc" id="L411">    sb.append(&quot;  &lt;meta name=\&quot;Generator\&quot; content=\&quot;&quot; + m.mes.getString(&quot;Main.0&quot;) + &quot;\&quot; /&gt;\n&quot;);</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">    if (css) sb.append(&quot;  &lt;link rel=\&quot;stylesheet\&quot; type=\&quot;text/css\&quot; href=\&quot;styles.css\&quot; /&gt;\n&quot;);</span>
+<span class="nc" id="L413">    else sb.append(&quot;  &lt;link rel=\&quot;stylesheet\&quot; type=\&quot;text/css\&quot; href=\&quot;../styles.css\&quot; /&gt;\n&quot;);</span>
+<span class="nc" id="L414">    sb.append(&quot; &lt;/head&gt;\n&quot;);</span>
+
+<span class="nc" id="L416">    sb.append(&quot; &lt;body&gt;\n&quot;);</span>
+<span class="nc" id="L417">    sb.append(&quot;  &lt;div style=\&quot;text-align: center; margin: 0 auto; \&quot;&gt;\n&quot;);</span>
+
+<span class="nc" id="L419">    sb.append(&quot;   &lt;h1&gt;&quot; + t + &quot;&lt;/h1&gt;\n&quot;);</span>
+<span class="nc" id="L420">    return sb.toString();</span>
+  }
+
+  private String getFooter()
+  {
+<span class="nc" id="L425">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L426">    sb.append(&quot;   &lt;br /&gt;\n&quot;);</span>
+<span class="nc" id="L427">    sb.append(&quot;   &lt;br /&gt;\n&quot;);</span>
+<span class="nc" id="L428">    sb.append(&quot;   &lt;a href=\&quot;http://jmjrst.sourceforge.net/\&quot; style=\&quot;font-size: 9pt\&quot;&gt;Web Gallery created by &quot; + m.mes.getString(&quot;Main.0&quot;) + &quot; &quot; + m.mes.getString(&quot;AboutBox.22&quot;) + &quot;&lt;/a&gt;\n&quot;);</span>
+<span class="nc" id="L429">    sb.append(&quot;   &lt;br /&gt;\n&quot;);</span>
+<span class="nc" id="L430">    sb.append(&quot;   &lt;br /&gt;\n&quot;);</span>
+<span class="nc" id="L431">    sb.append(&quot;  &lt;/div&gt;\n&quot;);</span>
+<span class="nc" id="L432">    sb.append(&quot; &lt;/body&gt;\n&quot;);</span>
+<span class="nc" id="L433">    sb.append(&quot;&lt;/html&gt;\n&quot;);</span>
+<span class="nc" id="L434">    return sb.toString();</span>
+  }
+
+  private void createCSS()
+  {
+<span class="nc" id="L439">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L440">    sb.append(&quot;html, body {\n&quot;);</span>
+<span class="nc" id="L441">    sb.append(&quot;  height: 100%;\n&quot;);</span>
+<span class="nc" id="L442">    sb.append(&quot;  padding: 0;\n&quot;);</span>
+<span class="nc" id="L443">    sb.append(&quot;  margin: 0;\n&quot;);</span>
+<span class="nc" id="L444">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L445">    sb.append(&quot;body {\n&quot;);</span>
+<span class="nc" id="L446">    sb.append(&quot;  font-family: Arial, Helvetica, sans-serif; \n&quot;);</span>
+<span class="nc" id="L447">    sb.append(&quot;  background-color: rgb(&quot; + o.getBackground_r() + &quot;,&quot; + o.getBackground_g() + &quot;,&quot; + o.getBackground_b() + &quot;); \n&quot;);</span>
+<span class="nc" id="L448">    sb.append(&quot;  font-size: 12pt;  \n&quot;);</span>
+<span class="nc" id="L449">    sb.append(&quot;  color: rgb(&quot; + o.getForeground_r() + &quot;,&quot; + o.getForeground_g() + &quot;,&quot; + o.getForeground_b() + &quot;); \n &quot;);</span>
+<span class="nc" id="L450">    sb.append(&quot;  text-align:center;  \n&quot;);</span>
+<span class="nc" id="L451">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L452">    sb.append(&quot;h1 {\n&quot;);</span>
+<span class="nc" id="L453">    sb.append(&quot;  font-size: 23pt; \n&quot;);</span>
+<span class="nc" id="L454">    sb.append(&quot;  text-align:center;  \n&quot;);</span>
+<span class="nc" id="L455">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L456">    sb.append(&quot;img {\n&quot;);</span>
+<span class="nc" id="L457">    sb.append(&quot;  border: 0px;\n&quot;);</span>
+<span class="nc" id="L458">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L459">    sb.append(&quot;table {\n&quot;);</span>
+<span class="nc" id="L460">    sb.append(&quot;  margin-left: auto;\n&quot;);</span>
+<span class="nc" id="L461">    sb.append(&quot;  margin-right: auto;\n&quot;);</span>
+<span class="nc" id="L462">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L463">    sb.append(&quot;a   {   \n&quot;);</span>
+<span class="nc" id="L464">    sb.append(&quot;  font-family: Arial, Helvetica, sans-serif; \n&quot;);</span>
+<span class="nc" id="L465">    sb.append(&quot;  color: rgb(&quot; + o.getForeground_r() + &quot;,&quot; + o.getForeground_g() + &quot;,&quot; + o.getForeground_b() + &quot;); \n&quot;);</span>
+<span class="nc" id="L466">    sb.append(&quot;  text-decoration: none;\n&quot;);</span>
+<span class="nc" id="L467">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L468">    sb.append(&quot;td {\n&quot;);</span>
+<span class="nc" id="L469">    sb.append(&quot;  width: 165px;\n&quot;);</span>
+<span class="nc" id="L470">    sb.append(&quot;  background-color: rgb(&quot; + o.getBackground_r() + &quot;,&quot; + o.getBackground_g() + &quot;,&quot; + o.getBackground_b() + &quot;); \n &quot;);</span>
+<span class="nc" id="L471">    sb.append(&quot;  border: solid 2px rgb(&quot; + o.getForeground_r() + &quot;,&quot; + o.getForeground_g() + &quot;,&quot; + o.getForeground_b() + &quot;);\n&quot;);</span>
+<span class="nc" id="L472">    sb.append(&quot;  padding: 0;\n&quot;);</span>
+<span class="nc" id="L473">    sb.append(&quot;  vertical-align: middle;\n&quot;);</span>
+<span class="nc" id="L474">    sb.append(&quot;  text-align: center;\n&quot;);</span>
+<span class="nc" id="L475">    sb.append(&quot;}\n&quot;);</span>
+<span class="nc" id="L476">    sb.append(&quot;.next {\n&quot;);</span>
+<span class="nc" id="L477">    sb.append(&quot;  text-align: center;\n&quot;);</span>
+<span class="nc" id="L478">    sb.append(&quot;  font-size: 23pt; \n&quot;);</span>
+<span class="nc" id="L479">    sb.append(&quot;}\n&quot;);</span>
+    try
+    {
+<span class="nc" id="L482">      FileOutputStream fos = new FileOutputStream(new File(directory, &quot;styles.css&quot;));</span>
+<span class="nc" id="L483">      fos.write(sb.toString().getBytes());</span>
+<span class="nc" id="L484">      fos.close();</span>
+    }
+<span class="nc" id="L486">    catch (Exception e)</span>
+    {
+<span class="nc" id="L488">      e.printStackTrace();</span>
+<span class="nc" id="L489">    }</span>
+<span class="nc" id="L490">  }</span>
+  
+  private String createTitle(String filename)
+  {
+<span class="nc" id="L494">    filename = filename.substring(0, filename.lastIndexOf(&quot;.&quot;));</span>
+<span class="nc" id="L495">    filename = filename.replace('_', ' ');</span>
+<span class="nc" id="L496">    return filename;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

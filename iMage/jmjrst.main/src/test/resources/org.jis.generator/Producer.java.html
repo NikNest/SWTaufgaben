@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Producer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iMage$GeneratorTest.exec</a> &gt; <a href="index.source.html" class="el_package">org.jis.generator</a> &gt; <span class="el_source">Producer.java</span></div><h1>Producer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2007 - 2009 Johannes Geppert 
+ * 
+ * Licensed under the GPL, Version 2.0 (the &quot;License&quot;); 
+ * you may not use this file except in compliance with the License.
+ * 
+ * You may obtain a copy of the License at
+ * http://www.fsf.org/licensing/licenses/gpl.txt 
+ * 
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the License is distributed on 
+ * an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the 
+ * specific language governing permissions and limitations under the License.
+ */
+package org.jis.generator;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import org.jis.Main;
+import org.jis.options.Options;
+
+/**
+ * @author &lt;a href=&quot;http://www.jgeppert.com&quot;&gt;Johannes Geppert&lt;/a&gt;
+ * 
+ *         &lt;p&gt;
+ *         The class representing the Producer side
+ *         &lt;/p&gt;
+ */
+public class Producer implements Runnable {
+
+  protected BlockingQueue&lt;Element&gt; queue;
+  public final String              praefix;
+  private Element[]                elements;
+<span class="nc" id="L36">  private boolean                  isDone = false;</span>
+  private Main                     m;
+
+<span class="nc" id="L39">  Producer(Main m, Element[] elements, String praefix) {</span>
+<span class="nc" id="L40">    this.queue = new LinkedBlockingQueue&lt;Element&gt;(Runtime.getRuntime().availableProcessors() + 1);</span>
+<span class="nc" id="L41">    this.elements = elements;</span>
+<span class="nc" id="L42">    this.m = m;</span>
+<span class="nc" id="L43">    this.praefix = praefix;</span>
+
+    // print info
+    try
+    {
+<span class="nc" id="L48">      m.jOutputDoc.remove(0, m.jOutputDoc.getLength());</span>
+<span class="nc" id="L49">      m.jOutputDoc.insertString(</span>
+<span class="nc" id="L50">                                m.jOutputDoc.getLength(),</span>
+<span class="nc" id="L51">                                elements.length + m.mes.getString(&quot;Generator.28&quot;) + elements[0].file.getParent() + m.mes.getString(&quot;Generator.29&quot;) + Options.getInstance().getQuality() + m.mes.getString(&quot;Generator.30&quot;) + Options.ls + Options.ls,</span>
+                                m.outputAtr);
+<span class="nc" id="L53">      m.text.setCaretPosition(m.jOutputDoc.getLength());</span>
+    }
+<span class="nc" id="L55">    catch (Exception e)</span>
+    {
+<span class="nc" id="L57">      System.out.println(elements.length + m.mes.getString(&quot;Generator.31&quot;) + elements[0].file.getPath().toString() + m.mes.getString(&quot;Generator.32&quot;) + Options.getInstance().getQuality() + m.mes.getString(&quot;Generator.33&quot;) + Options.ls + Options.ls);</span>
+<span class="nc" id="L58">    }</span>
+
+<span class="nc" id="L60">  }</span>
+
+  public void run()
+  {
+    try
+    {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">      for (int i = 0; i &lt; elements.length; i++)</span>
+      {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (m.p_monitor.isCanceled()) break;</span>
+
+<span class="nc" id="L70">        Element elem = elements[i];</span>
+<span class="nc" id="L71">        queue.put(elem);</span>
+      }
+    }
+<span class="nc" id="L74">    catch (InterruptedException ex)</span>
+    {
+<span class="nc" id="L76">      System.err.println(&quot;Producer INTERRUPTED&quot;);</span>
+<span class="nc" id="L77">    }</span>
+<span class="nc" id="L78">    isDone = true;</span>
+<span class="nc" id="L79">  }</span>
+
+<span class="nc" id="L81">  int index = 0;</span>
+
+  public synchronized void incrementIndex()
+  {
+<span class="nc" id="L85">    m.p_monitor.setProgress(++index);</span>
+<span class="nc" id="L86">  }</span>
+
+  public boolean isDone()
+  {
+<span class="nc" id="L90">    return isDone;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

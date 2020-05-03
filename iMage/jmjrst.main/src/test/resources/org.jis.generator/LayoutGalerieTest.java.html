@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LayoutGalerieTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iMage$GeneratorTest.exec</a> &gt; <a href="index.source.html" class="el_package">org.jis.generator</a> &gt; <span class="el_source">LayoutGalerieTest.java</span></div><h1>LayoutGalerieTest.java</h1><pre class="source lang-java linenums">package org.jis.generator;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.*;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+
+import static org.junit.Assert.*;
+
+<span class="nc" id="L21">public class LayoutGalerieTest {</span>
+	
+	private LayoutGalerie galerieUnderTest;
+	private File fromFile;
+	private File toFile;
+
+	/**
+	 * file for testing {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} with temporary files
+	 */
+<span class="nc" id="L30">	@Rule</span>
+	public TemporaryFolder folder = new TemporaryFolder();
+
+	/**
+	 * Before-Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 */
+	@Before
+	public final void setUp() {
+<span class="nc" id="L38">		galerieUnderTest = new LayoutGalerie(null, null);</span>
+<span class="nc" id="L39">	}</span>
+
+	/**
+	 * After-Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 */
+	@After
+	public final void tearDown() {
+<span class="nc" id="L46">		galerieUnderTest = null;</span>
+<span class="nc" id="L47">	}</span>
+
+	/**
+	 * Test method {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with a folder instead of file
+	 */
+	@Test
+	public final void testCopyFileWithFolder() throws IOException {
+<span class="nc" id="L54">		File createdFile = folder.newFile(&quot;myfile.txt&quot;);</span>
+<span class="nc" id="L55">		File createdFolder = folder.newFolder(&quot;subfolder&quot;);</span>
+<span class="nc" id="L56">		assertThrows(FileNotFoundException.class, () -&gt; {</span>
+<span class="nc" id="L57">			galerieUnderTest.copyFile(createdFolder, createdFile);</span>
+<span class="nc" id="L58">		});</span>
+<span class="nc" id="L59">	}</span>
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with not existing file
+	 */
+	@Test
+	public final void testCopyFileWithNotExistingFile() throws IOException {
+<span class="nc" id="L66">		File createdFile = new File(&quot;myfile1.txt&quot;);</span>
+<span class="nc" id="L67">		File createdFile2 = folder.newFile(&quot;myfile2.txt&quot;);</span>
+<span class="nc" id="L68">		assertThrows(FileNotFoundException.class, () -&gt; {</span>
+<span class="nc" id="L69">			galerieUnderTest.copyFile(createdFile, createdFile2);</span>
+<span class="nc" id="L70">		});</span>
+<span class="nc" id="L71">	}</span>
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with a fromFile with no write permission
+	 */
+	@Test
+	public final void testCopyWithLockedToFile() throws IOException {
+<span class="nc" id="L78">		toFile = folder.newFile(&quot;to.txt&quot;);</span>
+<span class="nc" id="L79">		fromFile = folder.newFile(&quot;from.txt&quot;);</span>
+<span class="nc" id="L80">		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());</span>
+<span class="nc" id="L81">		Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());</span>
+<span class="nc" id="L82">		Files.writeString(toPath, &quot;pupa&quot;);</span>
+<span class="nc" id="L83">		Files.writeString(fromPath, &quot;lupa&quot;);</span>
+
+<span class="nc" id="L85">		Set permissions = new HashSet&lt;&gt;(Files.getPosixFilePermissions(toPath));</span>
+<span class="nc" id="L86">		permissions.remove(PosixFilePermission.OWNER_WRITE);</span>
+<span class="nc" id="L87">		permissions.remove(PosixFilePermission.GROUP_WRITE);</span>
+<span class="nc" id="L88">		permissions.remove(PosixFilePermission.OTHERS_WRITE);</span>
+
+<span class="nc" id="L90">		Files.setPosixFilePermissions(toPath, permissions);</span>
+
+<span class="nc" id="L92">		assertThrows(IOException.class, () -&gt; {</span>
+<span class="nc" id="L93">			galerieUnderTest.copyFile(fromFile, toFile);</span>
+<span class="nc" id="L94">		});</span>
+<span class="nc" id="L95">	}</span>
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with no read permission
+	 */
+	@Test
+	public final void testCopyWithLockedFromFile() throws IOException {
+<span class="nc" id="L102">		toFile = folder.newFile(&quot;to.txt&quot;);</span>
+<span class="nc" id="L103">		fromFile = folder.newFile(&quot;from.txt&quot;);</span>
+<span class="nc" id="L104">		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());</span>
+<span class="nc" id="L105">		Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());</span>
+<span class="nc" id="L106">		Files.writeString(toPath, &quot;pupa&quot;);</span>
+<span class="nc" id="L107">		Files.writeString(fromPath, &quot;lupa&quot;);</span>
+
+<span class="nc" id="L109">		Set permissions = new HashSet&lt;&gt;(Files.getPosixFilePermissions(fromPath));</span>
+<span class="nc" id="L110">		permissions.remove(PosixFilePermission.OWNER_READ);</span>
+<span class="nc" id="L111">		permissions.remove(PosixFilePermission.GROUP_READ);</span>
+<span class="nc" id="L112">		permissions.remove(PosixFilePermission.OTHERS_READ);</span>
+
+<span class="nc" id="L114">		Files.setPosixFilePermissions(fromPath, permissions);</span>
+
+
+<span class="nc" id="L117">		assertThrows(IOException.class, () -&gt; {</span>
+<span class="nc" id="L118">			galerieUnderTest.copyFile(fromFile, toFile);</span>
+<span class="nc" id="L119">		});</span>
+<span class="nc" id="L120">	}</span>
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with coping to an existing file
+	 */
+	@Test
+	public final void testCopyToExistingFile() throws IOException {
+<span class="nc" id="L127">		toFile = folder.newFile(&quot;to.txt&quot;);</span>
+<span class="nc" id="L128">		fromFile = folder.newFile(&quot;from.txt&quot;);</span>
+<span class="nc" id="L129">		Path toPath = FileSystems.getDefault().getPath(toFile.getPath());</span>
+<span class="nc" id="L130">		Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());</span>
+<span class="nc" id="L131">		Files.writeString(toPath, &quot;pupa&quot;);</span>
+<span class="nc" id="L132">		Files.writeString(fromPath, &quot;lupa&quot;);</span>
+<span class="nc" id="L133">		galerieUnderTest.copyFile(fromFile, toFile);</span>
+<span class="nc" id="L134">		String contentsFrom = Files.readString(fromPath);</span>
+<span class="nc" id="L135">		String contentsTo = Files.readString(toPath);</span>
+<span class="nc" id="L136">		assertEquals(contentsFrom, contentsTo);</span>
+<span class="nc" id="L137">	}</span>
+
+	/**
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 */
+	@Test
+	public final void testCopyFile() throws URISyntaxException {
+		try {
+<span class="nc" id="L145">			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());</span>
+<span class="nc" id="L146">			fromFile = new File(resourceFolder, &quot;from&quot;);</span>
+<span class="nc" id="L147">			toFile = new File(resourceFolder, &quot;to&quot;);</span>
+			
+<span class="nc" id="L149">			byte[] array = new byte[10];</span>
+<span class="nc" id="L150">			new Random().nextBytes(array);</span>
+<span class="nc" id="L151">			String randomString = new String(array);</span>
+		 			 
+<span class="nc" id="L153">			fromFile.createNewFile();</span>
+<span class="nc" id="L154">			Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());</span>
+<span class="nc" id="L155">			Files.writeString(fromPath, randomString);</span>
+			 
+<span class="nc" id="L157">			galerieUnderTest.copyFile(fromFile, toFile);</span>
+			 
+<span class="nc" id="L159">			assertTrue(toFile.exists());</span>
+			 
+<span class="nc" id="L161">			Path toPath = FileSystems.getDefault().getPath(toFile.getPath());</span>
+<span class="nc" id="L162">			String contents = Files.readString(toPath);</span>
+			 		 
+<span class="nc" id="L164">			assertEquals(randomString, contents);</span>
+		 }
+<span class="nc" id="L166">		 catch (IOException | URISyntaxException e) {</span>
+<span class="nc" id="L167">			fail();</span>
+<span class="nc" id="L168">		 }</span>
+		
+<span class="nc" id="L170">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

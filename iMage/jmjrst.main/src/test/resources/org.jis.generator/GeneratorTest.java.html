@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GeneratorTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iMage$GeneratorTest.exec</a> &gt; <a href="index.source.html" class="el_package">org.jis.generator</a> &gt; <span class="el_source">GeneratorTest.java</span></div><h1>GeneratorTest.java</h1><pre class="source lang-java linenums">package org.jis.generator;
+
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
+
+import javax.imageio.*;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.*;
+import java.nio.file.attribute.PosixFilePermission;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L29">public class GeneratorTest {</span>
+  /**
+   * Class under test.
+   */
+  private Generator generator;
+
+  private int imageHeight, imageWidth;
+<span class="fc" id="L36">  private static final File TEST_DIR = new File(&quot;target/test&quot;);</span>
+  private static final String IMAGE_FILE = &quot;/image.jpg&quot;;
+  private String imageName;
+
+  /**
+   * Input for test cases
+   */
+  private BufferedImage testImage;
+  /**
+   * Metadata for saving the image
+   */
+  private IIOMetadata imeta;
+  /**
+   * output from test cases
+   */
+  private BufferedImage rotatedImageTestResult;
+
+  /**
+   * Sicherstellen, dass das Ausgabeverzeichnis existiert und leer ist.
+   */
+  @BeforeClass
+  public static void beforeClass() {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">    if (TEST_DIR.exists()) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">      for (File f : TEST_DIR.listFiles()) {</span>
+<span class="fc" id="L60">        f.delete();</span>
+      }
+    } else {
+<span class="nc" id="L63">      TEST_DIR.mkdirs();</span>
+    }
+<span class="fc" id="L65">  }</span>
+
+  @Before
+  public void setUp() {
+<span class="fc" id="L69">    this.generator = new Generator(null, 0);</span>
+
+<span class="fc" id="L71">    this.testImage = null;</span>
+<span class="fc" id="L72">    this.imeta = null;</span>
+<span class="fc" id="L73">    this.rotatedImageTestResult = null;</span>
+    
+<span class="fc" id="L75">    final URL imageResource = this.getClass().getResource(IMAGE_FILE);</span>
+<span class="fc" id="L76">    imageName = extractFileNameWithoutExtension(new File(imageResource.getFile()));</span>
+   
+<span class="fc" id="L78">    try (ImageInputStream iis = ImageIO.createImageInputStream(imageResource.openStream())) {</span>
+<span class="fc" id="L79">      ImageReader reader = ImageIO.getImageReadersByFormatName(&quot;jpg&quot;).next();</span>
+<span class="fc" id="L80">      reader.setInput(iis, true);</span>
+<span class="fc" id="L81">      ImageReadParam params = reader.getDefaultReadParam();</span>
+<span class="fc" id="L82">      this.testImage = reader.read(0, params);</span>
+<span class="fc" id="L83">      this.imageHeight = this.testImage.getHeight();</span>
+<span class="fc" id="L84">      this.imageWidth = this.testImage.getWidth();</span>
+<span class="fc" id="L85">      this.imeta = reader.getImageMetadata(0);</span>
+<span class="fc" id="L86">      reader.dispose();</span>
+<span class="nc" id="L87">    } catch (IOException e) {</span>
+<span class="nc" id="L88">      fail(e.getMessage());</span>
+<span class="fc" id="L89">    }</span>
+<span class="fc" id="L90">  }</span>
+
+  private String extractFileNameWithoutExtension(File file) {
+<span class="fc" id="L93">    String fileName = file.getName();</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">    if (fileName.indexOf(&quot;.&quot;) &gt; 0) {</span>
+<span class="fc" id="L95">      return fileName.substring(0, fileName.lastIndexOf(&quot;.&quot;));</span>
+    } else {
+<span class="nc" id="L97">      return fileName;</span>
+    }
+  }
+
+  /**
+   * Automatisches Speichern von testImage.
+   */
+  @After
+  public void tearDown() {
+<span class="fc" id="L106">    SimpleDateFormat sdf = new SimpleDateFormat(&quot;MM-dd_HH.mm.ss.SSS&quot;);</span>
+<span class="fc" id="L107">    String time = sdf.format(new Date());</span>
+
+<span class="fc" id="L109">    File outputFile = new File(</span>
+<span class="fc" id="L110">        MessageFormat.format(&quot;{0}/{1}_rotated_{2}.jpg&quot;, TEST_DIR, imageName, time));</span>
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">    if (this.rotatedImageTestResult != null) {</span>
+<span class="fc" id="L113">      try (FileOutputStream fos = new FileOutputStream(outputFile);</span>
+<span class="fc" id="L114">           ImageOutputStream ios = ImageIO.createImageOutputStream(fos)) {</span>
+<span class="fc" id="L115">        ImageWriter writer = ImageIO.getImageWritersByFormatName(&quot;jpg&quot;).next();</span>
+<span class="fc" id="L116">        writer.setOutput(ios);</span>
+
+<span class="fc" id="L118">        ImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());</span>
+<span class="fc" id="L119">        iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT); // mode explicit necessary</span>
+
+        // set JPEG Quality
+<span class="fc" id="L122">        iwparam.setCompressionQuality(1f);</span>
+<span class="fc" id="L123">        writer.write(this.imeta, new IIOImage(this.rotatedImageTestResult, null, null), iwparam);</span>
+<span class="fc" id="L124">        writer.dispose();</span>
+<span class="nc" id="L125">      } catch (IOException e) {</span>
+<span class="nc" id="L126">        fail();</span>
+<span class="fc" id="L127">      }</span>
+    }
+<span class="fc" id="L129">  }</span>
+
+  @Test
+  public void testRotateImage_RotateImage0() {
+<span class="fc" id="L133">    this.rotatedImageTestResult = this.generator.rotateImage(this.testImage, 0);</span>
+
+<span class="fc" id="L135">    assertTrue(imageEquals(this.testImage, this.rotatedImageTestResult));</span>
+<span class="fc" id="L136">  }</span>
+
+  @Test
+  public void testRotateImage_RotateNull0() {
+<span class="fc" id="L140">    this.rotatedImageTestResult = this.generator.rotateImage(null, 0);</span>
+
+<span class="fc" id="L142">    assertNull(this.rotatedImageTestResult);</span>
+<span class="fc" id="L143">  }</span>
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testRotateImage_Rotate042() {
+<span class="nc" id="L147">    this.generator.rotateImage(this.testImage, 0.42);</span>
+<span class="nc" id="L148">  }</span>
+
+  @Test
+  public void testRotateImage_Rotate90() {
+<span class="fc" id="L152">    this.rotatedImageTestResult = this.generator.rotateImage(this.testImage, Generator.ROTATE_90);</span>
+
+<span class="fc" id="L154">    assertEquals(this.testImage.getHeight(), this.rotatedImageTestResult.getWidth());</span>
+<span class="fc" id="L155">    assertEquals(this.testImage.getWidth(), this.rotatedImageTestResult.getHeight());</span>
+
+<span class="fc bfc" id="L157" title="All 2 branches covered.">    for (int i = 0; i &lt; this.imageHeight; i++) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">      for (int j = 0; j &lt; this.imageWidth; j++) {</span>
+<span class="fc" id="L159">        assertEquals(this.testImage.getRGB(j, i), this.rotatedImageTestResult.getRGB(this.imageHeight - 1 - i, j));</span>
+      }
+    }
+<span class="fc" id="L162">  }</span>
+
+  @Test
+  public void testRotateImage_Rotate270() {
+<span class="fc" id="L166">    this.rotatedImageTestResult = this.generator.rotateImage(this.testImage, Generator.ROTATE_270);</span>
+
+<span class="fc" id="L168">    assertEquals(this.testImage.getHeight(), this.rotatedImageTestResult.getWidth());</span>
+<span class="fc" id="L169">    assertEquals(this.testImage.getWidth(), this.rotatedImageTestResult.getHeight());</span>
+
+<span class="fc bfc" id="L171" title="All 2 branches covered.">    for (int i = 0; i &lt; this.imageHeight; i++) {</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">      for (int j = 0; j &lt; this.imageWidth; j++) {</span>
+<span class="fc" id="L173">        assertEquals(this.testImage.getRGB(j, i), this.rotatedImageTestResult.getRGB(i, this.imageWidth - 1 - j));</span>
+      }
+    }
+<span class="fc" id="L176">  }</span>
+
+  @Test
+  public void testRotateImage_RotateM90() {
+<span class="fc" id="L180">    this.rotatedImageTestResult = this.generator.rotateImage(this.testImage, Math.toRadians(-90));</span>
+
+<span class="fc" id="L182">    assertEquals(this.testImage.getHeight(), this.rotatedImageTestResult.getWidth());</span>
+<span class="fc" id="L183">    assertEquals(this.testImage.getWidth(), this.rotatedImageTestResult.getHeight());</span>
+
+<span class="fc bfc" id="L185" title="All 2 branches covered.">    for (int i = 0; i &lt; this.imageHeight; i++) {</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">      for (int j = 0; j &lt; this.imageWidth; j++) {</span>
+<span class="fc" id="L187">        assertEquals(this.testImage.getRGB(j, i), this.rotatedImageTestResult.getRGB(i, this.imageWidth - 1 - j));</span>
+      }
+    }
+<span class="fc" id="L190">  }</span>
+
+  @Test
+  public void testRotateImage_RotateM270() {
+<span class="fc" id="L194">    this.rotatedImageTestResult = this.generator.rotateImage(this.testImage, Math.toRadians(-270));</span>
+
+<span class="fc" id="L196">    assertEquals(this.testImage.getHeight(), this.rotatedImageTestResult.getWidth());</span>
+<span class="fc" id="L197">    assertEquals(this.testImage.getWidth(), this.rotatedImageTestResult.getHeight());</span>
+
+<span class="fc bfc" id="L199" title="All 2 branches covered.">    for (int i = 0; i &lt; this.imageHeight; i++) {</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">      for (int j = 0; j &lt; this.imageWidth; j++) {</span>
+<span class="fc" id="L201">        assertEquals(this.testImage.getRGB(j, i), this.rotatedImageTestResult.getRGB(this.imageHeight - 1 - i, j));</span>
+      }
+    }
+<span class="fc" id="L204">  }</span>
+
+  /**
+   * Check if two images are identical - pixel wise.
+   * 
+   * @param expected
+   *          the expected image
+   * @param actual
+   *          the actual image
+   * @return true if images are equal, false otherwise.
+   */
+  protected static boolean imageEquals(BufferedImage expected, BufferedImage actual) {
+<span class="pc bpc" id="L216" title="2 of 4 branches missed.">    if (expected == null || actual == null) {</span>
+<span class="nc" id="L217">      return false;</span>
+    }
+
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">    if (expected.getHeight() != actual.getHeight()) {</span>
+<span class="nc" id="L221">      return false;</span>
+    }
+
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">    if (expected.getWidth() != actual.getWidth()) {</span>
+<span class="nc" id="L225">      return false;</span>
+    }
+
+<span class="fc bfc" id="L228" title="All 2 branches covered.">    for (int i = 0; i &lt; expected.getHeight(); i++) {</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">      for (int j = 0; j &lt; expected.getWidth(); j++) {</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (expected.getRGB(j, i) != actual.getRGB(j, i)) {</span>
+<span class="nc" id="L231">          return false;</span>
+        }
+      }
+    }
+
+<span class="fc" id="L236">    return true;</span>
+  }
+
+<span class="fc" id="L239">  @Rule</span>
+  public TemporaryFolder folder = new TemporaryFolder();
+
+  @Test
+  public void testZipAFile() throws IOException {
+<span class="fc" id="L244">    File copyTo = folder.newFile();</span>
+<span class="fc" id="L245">    File origin = new File(&quot;src/test/resources/image.jpg&quot;);</span>
+<span class="fc" id="L246">    File zipFile = folder.newFile();</span>
+<span class="fc" id="L247">    Files.copy(origin.toPath(), copyTo.toPath(), StandardCopyOption.REPLACE_EXISTING);</span>
+<span class="fc" id="L248">    Vector&lt;File&gt; images = new Vector&lt;&gt;();</span>
+<span class="fc" id="L249">    images.add(copyTo);</span>
+<span class="fc" id="L250">    generator.createZip(zipFile, images);</span>
+    //unzipping
+<span class="fc" id="L252">    File unzipDir = folder.newFolder();</span>
+<span class="fc" id="L253">    byte[] buffer = new byte[1024];</span>
+<span class="fc" id="L254">    ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));</span>
+<span class="fc" id="L255">    ZipEntry zipEntry = zis.getNextEntry();</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">    while (zipEntry != null) {</span>
+<span class="fc" id="L257">      String imgname = zipEntry.getName().split(&quot;/&quot;)[zipEntry.getName().split(&quot;/&quot;).length - 1];</span>
+<span class="fc" id="L258">      File newFile = new File(unzipDir, imgname);</span>
+<span class="fc" id="L259">      FileOutputStream fos = new FileOutputStream(newFile);</span>
+      int len;
+<span class="fc bfc" id="L261" title="All 2 branches covered.">      while ((len = zis.read(buffer)) &gt; 0) {</span>
+<span class="fc" id="L262">        fos.write(buffer, 0, len);</span>
+      }
+<span class="fc" id="L264">      fos.close();</span>
+<span class="fc" id="L265">      zipEntry = zis.getNextEntry();</span>
+<span class="fc" id="L266">    }</span>
+<span class="fc" id="L267">    zis.closeEntry();</span>
+<span class="fc" id="L268">    zis.close();</span>
+    //asserting
+<span class="fc" id="L270">    assertEquals(1, unzipDir.listFiles().length);</span>
+<span class="fc" id="L271">    byte[] originContent = Files.readAllBytes(origin.toPath());</span>
+<span class="fc" id="L272">    byte[] unzippedContent = Files.readAllBytes(unzipDir.listFiles()[0].toPath());</span>
+<span class="fc" id="L273">    assertArrayEquals(originContent, unzippedContent);</span>
+
+<span class="fc" id="L275">  }</span>
+
+
+
+  @Test
+  public void testGenerateImg() throws IOException {
+<span class="fc" id="L281">    File origin = new File(&quot;src/test/resources/image.jpg&quot;);</span>
+<span class="fc" id="L282">    File fileTo = folder.newFile();</span>
+<span class="fc" id="L283">    int width = 100;</span>
+<span class="fc" id="L284">    int height = 1040;</span>
+<span class="fc" id="L285">    generator.generateImage(origin, fileTo, false, width, height, &quot;&quot;);</span>
+<span class="fc" id="L286">    BufferedImage bimg1 = ImageIO.read(origin);</span>
+<span class="fc" id="L287">    int originalWidth          = bimg1.getWidth();</span>
+<span class="fc" id="L288">    int originalHeight         = bimg1.getHeight();</span>
+<span class="fc" id="L289">    BufferedImage bimg2 = ImageIO.read(fileTo);</span>
+<span class="fc" id="L290">    int scaledWidth          = bimg2.getWidth();</span>
+<span class="fc" id="L291">    int scaledHeight         = bimg2.getHeight();</span>
+<span class="fc" id="L292">    int countedWidth = height * originalWidth / originalHeight;</span>
+<span class="fc" id="L293">    assertEquals(height, scaledHeight);</span>
+<span class="fc" id="L294">    assertEquals(countedWidth, scaledWidth);</span>
+<span class="fc" id="L295">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
