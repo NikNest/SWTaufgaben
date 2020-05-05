@@ -3,21 +3,23 @@ package org.jis.generator;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
-import javax.imageio.*;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.*;
-import java.nio.file.attribute.PosixFilePermission;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,7 +33,6 @@ public class GeneratorTest {
    * Class under test.
    */
   private Generator generator;
-
   private int imageHeight, imageWidth;
   private static final File TEST_DIR = new File("target/test");
   private static final String IMAGE_FILE = "/image.jpg";
@@ -67,7 +68,6 @@ public class GeneratorTest {
   @Before
   public void setUp() {
     this.generator = new Generator(null, 0);
-
     this.testImage = null;
     this.imeta = null;
     this.rotatedImageTestResult = null;
@@ -236,9 +236,61 @@ public class GeneratorTest {
     return true;
   }
 
+  /**
+   * file for comfortable temporary files and folders creation
+   */
   @Rule
   public TemporaryFolder folder = new TemporaryFolder();
 
+  /**
+   * checks if the input file not changed for width=0, height=0 params
+   * @throws IOException if temp file could not be created
+   */
+  @Ignore
+  @Test
+  public void testGenerateTest() throws IOException {
+    File originCopy = folder.newFile();
+    File scaledOrigin = folder.newFile();
+    File origin = new File("src/test/resources/image.jpg");
+    Files.copy(origin.toPath(), originCopy.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    generator.generateText(originCopy, scaledOrigin, 0, 0);
+    byte[] originContent = Files.readAllBytes(origin.toPath());
+    byte[] unzippedContent = Files.readAllBytes(scaledOrigin.toPath());
+    assertArrayEquals(originContent, unzippedContent);
+  }
+
+  /**
+   * checks if the input file not changed for image=null params
+   * @throws IOException if temp file could not be created
+   */
+  @Ignore
+  @Test
+  public void testGenerateSingle() throws IOException {
+    File copyTo = folder.newFile();
+    File origin = new File("src/test/resources/image.jpg");
+    Files.copy(origin.toPath(), copyTo.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    BufferedImage generatedImg = null;
+    generator.generateSingle(copyTo, null);
+    byte[] originContent = Files.readAllBytes(origin.toPath());
+    byte[] unzippedContent = Files.readAllBytes(copyTo.toPath());
+    assertArrayEquals(originContent, unzippedContent);
+  }
+
+  /**
+   * tests that the generate method will not delete
+   * @throws IOException if temp file could not be created
+   */
+  @Test
+  public void testGenerateZipWithExistingZip() throws IOException {
+    File tempZip = new File("src/test/resources/tempZip.zip");
+    generator.generate(true);
+    assertTrue(tempZip.exists());
+  }
+
+  /**
+   * zip given images with generator.createZip than unzip it, than compare with zipped images
+   * @throws IOException if temp file could not be created
+   */
   @Test
   public void testZipAFile() throws IOException {
     File copyTo = folder.newFile();
@@ -274,8 +326,31 @@ public class GeneratorTest {
 
   }
 
+  /**
+   * compare 4 times rotated in pi/2 im with the original img
+   * @throws IOException if temp file could not be created
+   */
+  @Ignore
+  @Test
+  public void testRotateImg() throws IOException {
+    File copyTo = folder.newFile();
+    File origin = new File("src/test/resources/image.jpg");
+    Files.copy(origin.toPath(), copyTo.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+    //rotate img in 2pi rad
+    generator.rotate(copyTo);
+    generator.rotate(copyTo);
+    generator.rotate(copyTo);
+    generator.rotate(copyTo);
+    byte[] originContent = Files.readAllBytes(origin.toPath());
+    byte[] unzippedContent = Files.readAllBytes(copyTo.toPath());
+    assertArrayEquals(originContent, unzippedContent);
+  }
 
+  /**
+   * test image scalling
+   * @throws IOException if temp file could not be created
+   */
   @Test
   public void testGenerateImg() throws IOException {
     File origin = new File("src/test/resources/image.jpg");

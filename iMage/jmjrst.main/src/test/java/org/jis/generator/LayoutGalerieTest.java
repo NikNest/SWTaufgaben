@@ -1,13 +1,16 @@
 package org.jis.generator;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +19,10 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class LayoutGalerieTest {
 	
@@ -71,7 +77,8 @@ public class LayoutGalerieTest {
 	}
 
 	/**
-	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with a fromFile with no write permission
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 * with a fromFile with no write permission
 	 */
 	@Test
 	public final void testCopyWithLockedToFile() throws IOException {
@@ -95,7 +102,8 @@ public class LayoutGalerieTest {
 	}
 
 	/**
-	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with no read permission
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 * with no read permission
 	 */
 	@Test
 	public final void testCopyWithLockedFromFile() throws IOException {
@@ -120,7 +128,8 @@ public class LayoutGalerieTest {
 	}
 
 	/**
-	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}. with coping to an existing file
+	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
+	 * with coping to an existing file
 	 */
 	@Test
 	public final void testCopyToExistingFile() throws IOException {
@@ -162,8 +171,7 @@ public class LayoutGalerieTest {
 			String contents = Files.readString(toPath);
 			 		 
 			assertEquals(randomString, contents);
-		 }
-		 catch (IOException | URISyntaxException e) {
+		 } catch (IOException | URISyntaxException e) {
 			fail();
 		 }
 		
