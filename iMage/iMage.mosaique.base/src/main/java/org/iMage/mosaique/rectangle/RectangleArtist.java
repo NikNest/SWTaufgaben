@@ -21,7 +21,7 @@ import org.iMage.mosaique.base.IMosaiqueArtist;
  *
  */
 public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
-  private final ArrayList<RectangleShape> images = null;
+  private final ArrayList<RectangleShape> images;
   private final int tileWidth;
   private final int tileHeight;
   /**
@@ -37,9 +37,11 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
    *           iff tileWidth or tileHeight &lt;= 0, or images is empty.
    */
   public RectangleArtist(Collection<BufferedArtImage> images, int tileWidth, int tileHeight) {
+    ArrayList<RectangleShape> temp = new ArrayList<>();
     images.stream().forEach(image -> {
-      this.images.add(new RectangleShape(image, tileWidth, tileHeight));
+      temp.add(new RectangleShape(image, tileWidth, tileHeight));
     });
+    this.images = temp;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
     //    throw new RuntimeException("not implemented");
@@ -72,6 +74,7 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
       int dist = (int) Math.sqrt(distA + distB + distG + distR);
       if (dist < bestDist) {
         bestPic = temp;
+        bestDist = dist;
       }
     }
     return new BufferedArtImage(bestPic.getThumbnail());

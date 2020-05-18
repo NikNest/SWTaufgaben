@@ -34,10 +34,10 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
 
   @Override
   public int getAverageColor() {
-      long r = 0;
-      long g = 0;
-      long b = 0;
-      long a = 0;
+      int r = 0;
+      int g = 0;
+      int b = 0;
+      int a = 0;
       int w = image.getWidth();
       int h = image.getHeight();
       for (int i = 0; i < w; i++) {
@@ -49,12 +49,12 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
           a += c.getAlpha();
         }
       }
-      long pixAmount = w * h;
+      int pixAmount = w * h;
       r /= pixAmount;
       g /= pixAmount;
       b /= pixAmount;
       a /= pixAmount;
-    return (new Color(r, g, b, a)).getRGB();
+      return (new Color(a, r, g, b)).getRGB();
     //    throw new RuntimeException("not implemented");
   }
 
