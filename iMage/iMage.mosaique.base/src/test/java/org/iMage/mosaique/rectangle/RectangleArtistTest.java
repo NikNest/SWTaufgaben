@@ -2,30 +2,18 @@ package org.iMage.mosaique.rectangle;
 
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class RectangleArtistTest {
     private RectangleArtist artist;
-
-    @Before
-    public void setUp() {
-//        File dir = new File("src/test/resources");
-
-    }
 
     @Test
     public void getTileForRegionTestWithGrayscale() throws IOException {
