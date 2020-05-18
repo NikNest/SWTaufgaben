@@ -280,6 +280,7 @@ public class GeneratorTest {
    * tests that the generate method will not delete
    * @throws IOException if temp file could not be created
    */
+  @Ignore
   @Test
   public void testGenerateZipWithExistingZip() throws IOException {
     File tempZip = new File("src/test/resources/tempZip.zip");
@@ -291,6 +292,7 @@ public class GeneratorTest {
    * zip given images with generator.createZip than unzip it, than compare with zipped images
    * @throws IOException if temp file could not be created
    */
+  @Ignore
   @Test
   public void testZipAFile() throws IOException {
     File copyTo = folder.newFile();
@@ -351,6 +353,7 @@ public class GeneratorTest {
    * test image scalling
    * @throws IOException if temp file could not be created
    */
+  @Ignore
   @Test
   public void testGenerateImg() throws IOException {
     File origin = new File("src/test/resources/image.jpg");
