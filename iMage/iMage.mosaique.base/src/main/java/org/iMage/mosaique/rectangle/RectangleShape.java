@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueShape;
+import org.iMage.mosaique.base.ImageUtils;
 
 /**
  * This class represents a rectangle as {@link IMosaiqueShape} based on an {@link BufferedArtImage}.
@@ -12,7 +13,7 @@ import org.iMage.mosaique.base.IMosaiqueShape;
  *
  */
 public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
-
+  private final BufferedArtImage image;
   /**
    * Create a new {@link IMosaiqueShape}.
    *
@@ -24,7 +25,12 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
    *          the height
    */
   public RectangleShape(BufferedArtImage image, int w, int h) {
-    throw new RuntimeException("not implemented");
+
+    image = new BufferedArtImage(ImageUtils.scaleWidth(image.toBufferedImage(), w));
+    image = new BufferedArtImage(ImageUtils.scaleHeight(image.toBufferedImage(), h));
+    this.image = image;
+    //    throw new RuntimeException("not implemented");
+
   }
 
   @Override
