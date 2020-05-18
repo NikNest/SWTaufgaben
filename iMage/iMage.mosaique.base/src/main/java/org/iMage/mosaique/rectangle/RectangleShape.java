@@ -1,5 +1,6 @@
 package org.iMage.mosaique.rectangle;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import org.iMage.mosaique.base.BufferedArtImage;
@@ -25,17 +26,36 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
    *          the height
    */
   public RectangleShape(BufferedArtImage image, int w, int h) {
-
     image = new BufferedArtImage(ImageUtils.scaleWidth(image.toBufferedImage(), w));
     image = new BufferedArtImage(ImageUtils.scaleHeight(image.toBufferedImage(), h));
     this.image = image;
     //    throw new RuntimeException("not implemented");
-
   }
 
   @Override
   public int getAverageColor() {
-    throw new RuntimeException("not implemented");
+      long r = 0;
+      long g = 0;
+      long b = 0;
+      long a = 0;
+      int w = image.getWidth();
+      int h = image.getHeight();
+      for (int i = 0; i < w; i++) {
+        for (int q = 0; q < h; q++) {
+          Color c = new Color(image.toBufferedImage().getRGB(i, q), true);
+          r += c.getRed();
+          g += c.getGreen();
+          b += c.getBlue();
+          a += c.getAlpha();
+        }
+      }
+      long pixAmount = w * h;
+      r /= pixAmount;
+      g /= pixAmount;
+      b /= pixAmount;
+      a /= pixAmount;
+    return (new Color(r, g, b, a)).getRGB();
+    //    throw new RuntimeException("not implemented");
   }
 
   @Override
