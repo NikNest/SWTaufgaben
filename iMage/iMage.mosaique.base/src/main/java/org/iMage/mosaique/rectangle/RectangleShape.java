@@ -60,7 +60,8 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
 
   @Override
   public BufferedImage getThumbnail() {
-    throw new RuntimeException("not implemented");
+      return this.image.toBufferedImage();
+//      throw new RuntimeException("not implemented");
   }
 
   @Override
