@@ -26,9 +26,11 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
    *          the height
    */
   public RectangleShape(BufferedArtImage image, int w, int h) {
+    BufferedArtImage temp = new BufferedArtImage(ImageUtils.scaleAndCrop(image.toBufferedImage(), w, h));
     image = new BufferedArtImage(ImageUtils.scaleWidth(image.toBufferedImage(), w));
     image = new BufferedArtImage(ImageUtils.scaleHeight(image.toBufferedImage(), h));
-    this.image = image;
+//    this.image = image;
+    this.image = temp;
     //    throw new RuntimeException("not implemented");
   }
 
@@ -66,9 +68,9 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
 
   @Override
   public void drawMe(BufferedArtImage targetRect) {
-    int w = Math.min(targetRect.getWidth(), image.getWidth());
-    int h = Math.min(targetRect.getHeight(), image.getHeight());
-    image.setSubimage(w, h, targetRect);
+    int width = Math.min(targetRect.getWidth(), image.getWidth());
+    int height = Math.min(targetRect.getHeight(), image.getHeight());
+    targetRect.setSubimage(0, 0, image.getSubimage(0,0, width, height));
 //    throw new RuntimeException("not implemented");
   }
 
