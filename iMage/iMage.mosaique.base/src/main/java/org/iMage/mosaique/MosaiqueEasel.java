@@ -16,6 +16,12 @@ import org.iMage.mosaique.rectangle.RectangleShape;
  */
 public class MosaiqueEasel implements IMosaiqueEasel<BufferedArtImage> {
 
+    /**
+     * create mosaique from artist for the input image
+     * @param input image
+     * @param artist artist with tiles and tile's shape
+     * @return image from tiles that looks similar to input image
+     */
   @Override
   public BufferedImage createMosaique(BufferedImage input,
       IMosaiqueArtist<BufferedArtImage> artist) {
@@ -38,7 +44,6 @@ public class MosaiqueEasel implements IMosaiqueEasel<BufferedArtImage> {
       }
       artImage = extendedImg.getSubimage(0,0, inputWidth, inputHeight);
       return artImage.toBufferedImage();
-//    throw new RuntimeException("not implemented");
   }
 
 }

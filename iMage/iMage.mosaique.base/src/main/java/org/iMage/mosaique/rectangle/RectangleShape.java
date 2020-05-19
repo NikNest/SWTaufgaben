@@ -27,13 +27,13 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
    */
   public RectangleShape(BufferedArtImage image, int w, int h) {
     BufferedArtImage temp = new BufferedArtImage(ImageUtils.scaleAndCrop(image.toBufferedImage(), w, h));
-    image = new BufferedArtImage(ImageUtils.scaleWidth(image.toBufferedImage(), w));
-    image = new BufferedArtImage(ImageUtils.scaleHeight(image.toBufferedImage(), h));
-//    this.image = image;
     this.image = temp;
-    //    throw new RuntimeException("not implemented");
   }
 
+    /**
+     * get rgb of the average color of rectangle
+     * @return rgb color
+     */
   @Override
   public int getAverageColor() {
       int r = 0;
@@ -57,32 +57,43 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
       b /= pixAmount;
       a /= pixAmount;
       return (new Color(a, r, g, b)).getRGB();
-    //    throw new RuntimeException("not implemented");
   }
 
+    /**
+     * returns image of the rectangle
+     * @return bufferedImage representation
+     */
   @Override
   public BufferedImage getThumbnail() {
       return this.image.toBufferedImage();
-//      throw new RuntimeException("not implemented");
   }
 
+    /**
+     * draws rectangleSHAPE on the target image
+     * @param targetRect
+     */
   @Override
   public void drawMe(BufferedArtImage targetRect) {
     int width = Math.min(targetRect.getWidth(), image.getWidth());
     int height = Math.min(targetRect.getHeight(), image.getHeight());
     targetRect.setSubimage(0, 0, image.getSubimage(0,0, width, height));
-//    throw new RuntimeException("not implemented");
   }
 
+    /**
+     * getter for rectangle height
+     * @return height
+     */
   @Override
   public int getHeight() {
     return image.getHeight();
-//    throw new RuntimeException("not implemented");
   }
 
+    /**
+     * getter for rectangle width
+     * @return width
+     */
   @Override
   public int getWidth() {
     return image.getWidth();
-//    throw new RuntimeException("not implemented");
   }
 }

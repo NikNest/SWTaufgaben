@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.*;
 
@@ -44,9 +43,12 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
     this.images = temp;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
-    //    throw new RuntimeException("not implemented");
   }
 
+  /**
+   * getter for all tiles
+   * @return list of all tiles
+   */
   @Override
   public List<BufferedImage> getThumbnails() {
     ArrayList<BufferedImage> temp = new ArrayList<>();
@@ -54,12 +56,15 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
       temp.add(img.getThumbnail());
     });
     return temp;
-//    throw new RuntimeException("not implemented");
   }
 
+  /**
+   * get the tile for the region with the best average color distance
+   * @param region image as region
+   * @return best tile for the region
+   */
   @Override
   public BufferedArtImage getTileForRegion(BufferedArtImage region) {
-
     Color regionColor = new Color(new RectangleShape(region, region.getWidth(), region.getHeight()).getAverageColor(), true);
     int bestDist = 10000;
     Iterator<RectangleShape> iter = images.iterator();
@@ -78,15 +83,22 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
       }
     }
     return new BufferedArtImage(bestPic.getThumbnail());
-//    throw new RuntimeException("not implemented");
   }
 
+  /**
+   * getter for tile width
+   * @return width in px
+   */
   @Override
   public int getTileWidth() {
     return this.tileWidth;
 //    throw new RuntimeException("not implemented");
   }
 
+  /**
+   * getter for teil height
+   * @return height in px
+   */
   @Override
   public int getTileHeight() {
     return this.tileHeight;
