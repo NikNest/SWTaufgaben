@@ -15,16 +15,15 @@
  */
 package org.jis.view;
 
+import java.awt.*;
 import java.net.URL;
+import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.UIManager;
+import javax.swing.*;
 
+import org.iMage.plugins.PluginForJmjrst;
+import org.iMage.plugins.PluginManagement;
 import org.jis.Main;
-import org.jis.listner.MenuButtonsListener;
 import org.jis.listner.MenuListner;
 
 /**
@@ -50,6 +49,8 @@ public class Menu extends JMenuBar {
   public JMenuItem          look_motif;
   public JMenuItem          look_gtk;
   public JMenuItem          update_check;
+  public JMenu              pluginName;
+
 
   /**
    * @param m
@@ -63,7 +64,25 @@ public class Menu extends JMenuBar {
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
 
     //
-    JMenu plugins = new JMenu("Load plug-ins");
+    JMenu pluginsMenu = new JMenu("Load plug-ins");
+    ArrayList<PluginForJmjrst> plugins = (ArrayList<PluginForJmjrst>) PluginManagement.getPlugins();
+
+
+    for (PluginForJmjrst plug : plugins) {
+      pluginName = new JMenu(plug.getName());
+      pluginName.add(new JMenuItem("start"));
+      pluginName.add(new JMenuItem("configure"));
+      pluginsMenu.add(pluginName);
+      pluginsMenu.addSeparator();
+    }
+    if (plugins.size() != 0)
+      pluginsMenu.remove(pluginsMenu.getItemCount()-1);
+    else {
+      JLabel emptyPluginsMenuLabel = new JLabel("(No plug-ins available!)");
+      emptyPluginsMenuLabel.setForeground(Color.LIGHT_GRAY);
+      pluginsMenu.add(emptyPluginsMenuLabel);
+    }
+
     //
 
     gener = new JMenuItem(m.mes.getString("Menu.4"));
@@ -120,11 +139,11 @@ public class Menu extends JMenuBar {
     about.add(info);
     this.add(datei);
     this.add(option);
-    this.add(plugins);
+    this.add(pluginsMenu);
     this.add(about);
 
-    MenuButtonsListener menuButtonsListener = new MenuButtonsListener();
-    plugins.addMenuListener(menuButtonsListener);
+//    MenuButtonsListener menuButtonsListener = new MenuButtonsListener();
+//    plugins.addMenuListener(menuButtonsListener);
     MenuListner al = new MenuListner(m, this);
     exit.addActionListener(al);
     gener.addActionListener(al);
