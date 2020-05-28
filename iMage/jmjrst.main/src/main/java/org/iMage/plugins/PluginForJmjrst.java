@@ -49,19 +49,36 @@ public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
 
   @Override
   public int compareTo(PluginForJmjrst otherPlugin) {
-    //TODO: implement me!
-    return 0;
+    if(this.getName().compareTo(otherPlugin.getName()) != 0)
+      return this.getName().compareTo(otherPlugin.getName());
+    return this.getNumberOfParameters() - otherPlugin.getNumberOfParameters();
   }
 
   @Override
   public int hashCode() {
-    //TODO: implement me!
-    return 0;
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + this.getNumberOfParameters();
+    result = prime * result + ((this.getName() == null) ? 0 : this.getName().hashCode());
+    return result;
   }
 
   @Override
   public boolean equals(Object obj) {
-    //TODO: implement me!
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    PluginForJmjrst other = (PluginForJmjrst) obj;
+    if (getNumberOfParameters() != other.getNumberOfParameters())
+      return false;
+    if (getName() != other.getName()) {
+      if (other.getName() != null)
+        return false;
+    } else if (!getName().equals(other.getName()))
+      return false;
     return true;
   }
 }
