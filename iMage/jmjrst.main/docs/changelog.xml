@@ -1,0 +1,127 @@
+<changelog><commit>
+					<time>1588714243</time>
+					<sha1>991ccf3b3847d35b45e212b7b17fa79131f33f0b</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>multiple tests added to cover &gt;35% of generator.Generator class methods</msg>
+				</commit><commit>
+					<time>1588540638</time>
+					<sha1>6340173443d958d68e78b43a5cb630c3c8539c4a</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>test case for Generator.createZip: simple zip img, unzip then, compare files</msg>
+				</commit><commit>
+					<time>1588524470</time>
+					<sha1>c0f71c79d3c8e97b174f794bdfdf42eb46054ec7</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>test added for Generator.generateImage test checks if scaling was actualy applied to choosen file</msg>
+				</commit><commit>
+					<time>1588445983</time>
+					<sha1>14aa0b31872d9218c6e327f12b3b44eb40e1b691</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>starting a3 exercise: groupid changed, required files uploaded</msg>
+				</commit><commit>
+					<time>1588442895</time>
+					<sha1>b039923efe4b37d5fd77e05280ebd61c8c161d77</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>groupid of the jmjrst.main was changed(ex number was corrected)</msg>
+				</commit><commit>
+					<time>1588441268</time>
+					<sha1>f8eb722b958190a32b6fd57f2f497b7755550e45</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>changelog file is with the last commits is added to docs</msg>
+				</commit><commit>
+					<time>1588440568</time>
+					<sha1>7cda8b29b7ae52feb7aa599bedde959ef6ccb1cd</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>clean up code</msg>
+				</commit><commit>
+					<time>1588439066</time>
+					<sha1>e2b4be13072f7bce45bef7ce28df6ba9adcd52ea</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>patch for the problem with text appendening instead of substitution</msg>
+				</commit><commit>
+					<time>1588435817</time>
+					<sha1>b082b187222a06c30421992c5818172b0ef1cd3f</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>Tests for generator.LayoutGalerie.copyFile were added. Case 1: case when read permission for fromFile is missing, case 2: case when write permission for toFile is missing</msg>
+				</commit><commit>
+					<time>1588420670</time>
+					<sha1>58e3f47cf5da5633f6f35f254c37b201ab408d39</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>LayoutGalerie.copyFile debuged: now the content of &quot;fromFile&quot; will override the content of &quot;toFile&quot;</msg>
+				</commit><commit>
+					<time>1588420535</time>
+					<sha1>b77d9304829fd2b2b55f6774bfca954880101cb5</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>test for LayoutGalerie added. case: copy file to existing file. Debug issue: while coping copyFile method appends content</msg>
+				</commit><commit>
+					<time>1588343745</time>
+					<sha1>b024ee7cb5ea3add73928c7cfb663e127e688c1b</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>tests for generator.LayoutGalerie.copyFile were added. Case 1: Folder instead of file; Case 2: not existing file instead of file</msg>
+				</commit><commit>
+					<time>1588336031</time>
+					<sha1>1f7200fc7f3165fdfdb32667fd0fa6b0c6435cf9</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>test for LayoutGalerie was added(tests copy function with a random data)</msg>
+				</commit><commit>
+					<time>1588331711</time>
+					<sha1>b871d2e8236846d909efd57958815c2772c994c8</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>redundant code removed from pom.xml(plugins declaration are already in iMage/pom.xml)</msg>
+				</commit><commit>
+					<time>1588327782</time>
+					<sha1>056cf6159230ec299deab63003ace65f74fcab35</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>changelog files were moved to docs directory. pom.xml peeked plugins from pom.xml of the first UB. src.xml was changed for correctly zip layout</msg>
+				</commit><commit>
+					<time>1588322958</time>
+					<sha1>e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>maven-checkstyle-plugin was added to pom.xml. In file iMage/jmjrst.main/src/main/java/org/jis/listner/MenuListner.java checkstyle warnings were corrected: on line 73 at column 3 [LeftCurlymaven-checkstyle-plugin]; on line 75 at column 5 [LeftCurly]; on line 76 at column 5 [RightCurly]</msg>
+				</commit><commit>
+					<time>1588272053</time>
+					<sha1>a1258b2bd23bf2f8e1cec9756fb3e1fd91102df6</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>pom.xml was edited(maven-jar-plugin added) for executable jar archive creation</msg>
+				</commit><commit>
+					<time>1588182213</time>
+					<sha1>369046e824f2f5744f65bc5589813a6f2fc2bc87</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>src.xml of jmjrst.main edited: now zip created by maven assembly plugin includes the whole iMage and .gitignore</msg>
+				</commit><commit>
+					<time>1588175769</time>
+					<sha1>af78306e09da1bcb1a6b691cf0e8e6d8e2680a58</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>maven project with jmjrst.main module added</msg>
+				</commit><commit>
+					<time>1588175533</time>
+					<sha1>8c1e6abc08af5ceefdc0ffbc44d7bce0069d259c</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>.gitignore edited to untrack .idea folder</msg>
+				</commit><commit>
+					<time>1587976422</time>
+					<sha1>5aa0b174ef80b9e6e99ec91ed9be6fa3f55e6c5f</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>git init</msg>
+				</commit></changelog>

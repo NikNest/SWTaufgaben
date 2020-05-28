@@ -15,6 +15,10 @@ import static org.junit.Assert.assertEquals;
 public class RectangleArtistTest {
     private RectangleArtist artist;
 
+    /**
+     * tests getTileForRegion with grayscaled images
+     * @throws IOException if test files couldn't be properly opened
+     */
     @Test
     public void getTileForRegionTestWithGrayscale() throws IOException {
         File gray0 = new File("src/test/resources/shadesOfGray/black.jpg");
@@ -39,6 +43,10 @@ public class RectangleArtistTest {
         assertEquals(shapeExpected.getAverageColor(), shapeGotten.getAverageColor());
     }
 
+    /**
+     * tests getTileForRegion with color images
+     * @throws IOException if test files couldn't be properly opened
+     */
     @Test
     public void getTileForRegionTestWithRGBpics() throws IOException {
         File likeGreen = new File("src/test/resources/rgbColors/likeGreen.jpg");
