@@ -24,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 import org.jis.Main;
+import org.jis.listner.MenuButtonsListener;
 import org.jis.listner.MenuListner;
 
 /**
@@ -60,6 +61,10 @@ public class Menu extends JMenuBar {
     JMenu option = new JMenu(m.mes.getString("Menu.1"));
     JMenu optionen_look = new JMenu(m.mes.getString("Menu.2"));
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
+
+    //
+    JMenu plugins = new JMenu("Load plug-ins");
+    //
 
     gener = new JMenuItem(m.mes.getString("Menu.4"));
     URL url = ClassLoader.getSystemResource("icons/media-playback-start.png");
@@ -115,8 +120,11 @@ public class Menu extends JMenuBar {
     about.add(info);
     this.add(datei);
     this.add(option);
+    this.add(plugins);
     this.add(about);
 
+    MenuButtonsListener menuButtonsListener = new MenuButtonsListener();
+    plugins.addMenuListener(menuButtonsListener);
     MenuListner al = new MenuListner(m, this);
     exit.addActionListener(al);
     gener.addActionListener(al);
