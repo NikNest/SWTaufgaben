@@ -1,4 +1,10 @@
 <changelog><commit>
+					<time>1590765548</time>
+					<sha1>04c676906f679caaf4ba9d383e3cd56685f0a9f1</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>panel on start frame not seen: bug fix, clean up code</msg>
+				</commit><commit>
 					<time>1590761235</time>
 					<sha1>e57d8115e1fe9fa7f55c8fdb91dc1b9dd283f8ba</sha1>
 					<author>Nikita Nesterov</author>

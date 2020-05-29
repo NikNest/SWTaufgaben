@@ -24,6 +24,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>org.jis.Main</mainClass>
+                            <classpathLayoutType>repository</classpathLayoutType>
                         </manifest>
                     </archive>
                 </configuration>
