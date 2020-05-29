@@ -31,11 +31,6 @@ public class JavaCrashCourse extends PluginForJmjrst {
             "Java SE 17(LTS)"
     };
 
-    public JavaCrashCourse() {
-        javaVersionsList = Arrays.asList(javaVersions);
-        javaVersionsList = Collections.unmodifiableList(javaVersionsList);
-    }
-
     @Override
     public String getName() {
         return "JavaCrashCourse";
@@ -48,11 +43,16 @@ public class JavaCrashCourse extends PluginForJmjrst {
 
     @Override
     public void init(Main main) {
-        System.out.println(String.format("Found %d Java versions since Java 8", getNumberOfParameters()));
+        javaVersionsList = Arrays.asList(javaVersions);
+        javaVersionsList = Collections.unmodifiableList(javaVersionsList);
         this.main = main;
+    }
 
+    @Override
+    public void run() {
+        System.out.println(String.format("Found %d Java versions since Java 8", getNumberOfParameters()));
         JFrame frameStart = new JFrame("Java Crash Course");
-        frameStart.setLocationRelativeTo(null);
+        frameStart.setLocationRelativeTo(main);
         frameStart.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frameStart.setPreferredSize(new Dimension(250, 150));
         JPanel panelStart = new JPanel();
@@ -74,22 +74,21 @@ public class JavaCrashCourse extends PluginForJmjrst {
                 msg = new JLabel("Running late");
                 break;
             default:
-                msg = new JLabel("JavaCrashCourse(7)");
+                msg = new JLabel(String.format("JavaCrashCourse(%d)", getNumberOfParameters()));
                 break;
         }
+//        panelStart.revalidate();
+//        panelStart.repaint();
+        panelStart.removeAll();
         panelStart.add(msg);
+        frameStart.add(panelStart);
         frameStart.pack();
         frameStart.setVisible(true);
     }
 
     @Override
-    public void run() {
-
-    }
-
-    @Override
     public boolean isConfigurable() {
-        return false;
+        return true;
     }
 
     @Override

@@ -72,23 +72,26 @@ public class Menu extends JMenuBar {
     ArrayList<PluginForJmjrst> plugins = (ArrayList<PluginForJmjrst>) PluginManagement.getPlugins();
     if (plugins.size() != 0) {
       for (PluginForJmjrst plug : plugins) {
+        plug.init(m);
         pluginName = new JMenu(plug.getName());
         JMenuItem start = new JMenuItem("start");
-        JMenuItem configure = new JMenuItem("configure");
         start.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            plug.init(m);
-          }
-        });
-        configure.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            plug.configure();
+            plug.run();
           }
         });
         pluginName.add(start);
-        pluginName.add(configure);
+        if (plug.isConfigurable()) {
+          JMenuItem configure = new JMenuItem("configure");
+          configure.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              plug.configure();
+            }
+          });
+          pluginName.add(configure);
+        }
         pluginsMenu.add(pluginName);
         pluginsMenu.addSeparator();
       }
