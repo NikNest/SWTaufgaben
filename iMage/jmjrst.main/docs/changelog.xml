@@ -1,4 +1,142 @@
 <changelog><commit>
+					<time>1590705439</time>
+					<sha1>1d264eb61256fe04fb2be4f36534798e90a4beee</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>drop-down menu with plugins + case when no plugins found(nonclicable light-gray menu item)</msg>
+				</commit><commit>
+					<time>1590694484</time>
+					<sha1>f1f72580007085434bc5f884613ab00acacf1691</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new menu button added to show available plugins(now shows empty frame)</msg>
+				</commit><commit>
+					<time>1590679138</time>
+					<sha1>5a627361160a28e2b6432caa368895b5a0ae8b6e</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>ServiceLoader used to get sorted list of plugins</msg>
+				</commit><commit>
+					<time>1590672217</time>
+					<sha1>da5959f643ea5ce59e310f1e276f104f499de819</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new methods implemented for plugin sorting</msg>
+				</commit><commit>
+					<time>1590670868</time>
+					<sha1>21fb0203928e75056af0267da43c2b20ff5e8134</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>UB3 Aufgabe1 start: adding plugin files</msg>
+				</commit><commit>
+					<time>1590670766</time>
+					<sha1>d494637fcd5b3e88df0abc1771af596cd2eeae58</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>Clean up code before UB3</msg>
+				</commit><commit>
+					<time>1589873809</time>
+					<sha1>0a31b8dc4315dfabcc6ed0c56cfc91aa7978a60d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code clean up</msg>
+				</commit><commit>
+					<time>1589872396</time>
+					<sha1>bf99d7be8d185c30c86a1afec0d36e77cb76b32a</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>mosaique filter implemented A2.4</msg>
+				</commit><commit>
+					<time>1589822281</time>
+					<sha1>fcec71b746540262bf9ab7ac64081476d682742d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code clean up</msg>
+				</commit><commit>
+					<time>1589822149</time>
+					<sha1>f4a6691d1fcf7afc0c013c28b0bd3ee645fb777d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>junit tests added for RectangleArtist.getTileForRegion method: 1. check with plain rgb colors, 2. check with grayscaled colors</msg>
+				</commit><commit>
+					<time>1589822034</time>
+					<sha1>a6ca2ddc395d520016acb47ed790df246d867cda</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code debugged</msg>
+				</commit><commit>
+					<time>1589821971</time>
+					<sha1>ededfff74220a063d8aded98e0686516246d2579</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>pom.xml configured for junit</msg>
+				</commit><commit>
+					<time>1589811062</time>
+					<sha1>320278781246c337768f2d4f0da96884d0ee4cda</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>Functionality of RectangleArtist was implemented. Getter for Thumbnail in RectangleShape was created</msg>
+				</commit><commit>
+					<time>1589805309</time>
+					<sha1>6ec547de6901da66d8345ee397975bdc209de667</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>getter methods were implemented A2.4.d</msg>
+				</commit><commit>
+					<time>1589805152</time>
+					<sha1>09017ff28f30d42e8a19f9010a43ebef408f0292</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>drawMe method was implemented A2.4.c</msg>
+				</commit><commit>
+					<time>1589802808</time>
+					<sha1>a99d51480881f22fdbf353bea68f6131f4f6477c</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>getAverageColor method was implemented A2.4.b</msg>
+				</commit><commit>
+					<time>1589800624</time>
+					<sha1>7c452952a7abf00bf59d8d89684f6e7c4c410770</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>constructor for RectangleShape implemented</msg>
+				</commit><commit>
+					<time>1589799814</time>
+					<sha1>87c0da59ebe6498efba5bcea91da22f143657e52</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>module added for A2.4</msg>
+				</commit><commit>
+					<time>1589799757</time>
+					<sha1>10e9e6d89be9c30a022b4f039997867b875d1fd5</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>some tests ignored to accelarate project</msg>
+				</commit><commit>
+					<time>1589799660</time>
+					<sha1>378a72d0832cd88509f2251ff70f732f6ee107f4</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>pom.xml of the iMage changed to create executable jars</msg>
+				</commit><commit>
+					<time>1589791172</time>
+					<sha1>7254a6ddbf3443f79168796e7e78f211aa6b6e72</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>uml description of the new picture format datatype was added</msg>
+				</commit><commit>
+					<time>1589790969</time>
+					<sha1>c2f4613be241f60ea09a2add2bb2f20f9bfb4171</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>durchfuehrbarkeit of the described in lastenheft task was added</msg>
+				</commit><commit>
+					<time>1589789309</time>
+					<sha1>ea96615a90d185b436d46b3659cf06f28272aace</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>lastenheft for augabe2.1 was created</msg>
+				</commit><commit>
 					<time>1588714243</time>
 					<sha1>991ccf3b3847d35b45e212b7b17fa79131f33f0b</sha1>
 					<author>Nikita Nesterov</author>

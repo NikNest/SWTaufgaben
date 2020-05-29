@@ -8,9 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>swt1.ub1.a3</groupId>
+    <groupId>swt1.ub3.a1</groupId>
     <artifactId>2259058</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <build>
         <plugins>

@@ -16,6 +16,8 @@
 package org.jis.view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ import org.iMage.plugins.PluginForJmjrst;
 import org.iMage.plugins.PluginManagement;
 import org.jis.Main;
 import org.jis.listner.MenuListner;
+
 
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
@@ -64,24 +67,38 @@ public class Menu extends JMenuBar {
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
 
     //
+
     JMenu pluginsMenu = new JMenu("Load plug-ins");
     ArrayList<PluginForJmjrst> plugins = (ArrayList<PluginForJmjrst>) PluginManagement.getPlugins();
-
-
-    for (PluginForJmjrst plug : plugins) {
-      pluginName = new JMenu(plug.getName());
-      pluginName.add(new JMenuItem("start"));
-      pluginName.add(new JMenuItem("configure"));
-      pluginsMenu.add(pluginName);
-      pluginsMenu.addSeparator();
-    }
-    if (plugins.size() != 0)
-      pluginsMenu.remove(pluginsMenu.getItemCount()-1);
-    else {
+    if (plugins.size() != 0) {
+      for (PluginForJmjrst plug : plugins) {
+        pluginName = new JMenu(plug.getName());
+        JMenuItem start = new JMenuItem("start");
+        JMenuItem configure = new JMenuItem("configure");
+        start.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            plug.init(m);
+          }
+        });
+        configure.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            plug.configure();
+          }
+        });
+        pluginName.add(start);
+        pluginName.add(configure);
+        pluginsMenu.add(pluginName);
+        pluginsMenu.addSeparator();
+      }
+      pluginsMenu.remove(pluginsMenu.getItemCount() - 1);
+    } else {
       JLabel emptyPluginsMenuLabel = new JLabel("(No plug-ins available!)");
       emptyPluginsMenuLabel.setForeground(Color.LIGHT_GRAY);
       pluginsMenu.add(emptyPluginsMenuLabel);
     }
+
 
     //
 
