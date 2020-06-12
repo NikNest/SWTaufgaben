@@ -10,7 +10,27 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>swt1.ub4.a1</groupId>
     <artifactId>2259058</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>swt1.ub2.a4</groupId>
+            <artifactId>2259058</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>swt1</groupId>
+            <artifactId>iMage.mosaique</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>swt1</groupId>
+            <artifactId>iMage.mosaique.base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <plugins>

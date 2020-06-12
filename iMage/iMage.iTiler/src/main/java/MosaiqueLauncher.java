@@ -1,10 +1,12 @@
-import actionListeners.LoadInputActionListener;
-import actionListeners.LoadTilesActionListener;
-import actionListeners.ShowTilesActionListener;
+import actionListeners.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 
 public class MosaiqueLauncher {
@@ -27,6 +29,8 @@ public class MosaiqueLauncher {
     private static ShowTilesActionListener showTilesActionListener;
     private static LoadTilesActionListener loadTilesActionListener;
     private static LoadInputActionListener loadInputActionListener;
+    private static RunActionListener runActionListener;
+    private static TilesAmountInputActionListener tilesAmountInputActionListener;
 
 
     public static void main(String[] args) throws IOException {
@@ -40,8 +44,6 @@ public class MosaiqueLauncher {
         inputContent.setBorder(new EmptyBorder(25, 0, 25, 0));
         inputContent.setLayout(new GridLayout());
 
-
-
         confButtonsContent = new JPanel();
         confButtonsContent.setSize(new Dimension(800, 100));
         confButtonsContent.setBackground(new Color(0, 255, 255));
@@ -50,7 +52,6 @@ public class MosaiqueLauncher {
         artistButtonsContent = new JPanel();
         artistButtonsContent.setSize(new Dimension(800, 100));
         artistButtonsContent.setBackground(new Color(255,0, 255));
-
 
         inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
@@ -62,9 +63,10 @@ public class MosaiqueLauncher {
         resultPanel.setPreferredSize(new Dimension(350, 250));
         resultPanel.setBackground(new Color(255, 0, 0));
 
-
+        tilesAmountInputActionListener = new TilesAmountInputActionListener();
         loadTilesActionListener = new LoadTilesActionListener();
         loadInputActionListener = new LoadInputActionListener(mainFrame, inputPanel);
+        runActionListener = new RunActionListener(mainFrame, resultPanel, loadInputActionListener, loadTilesActionListener, tilesAmountInputActionListener);
         showTilesActionListener = new ShowTilesActionListener(mainFrame, loadTilesActionListener);
 
         inputContent.add(inputPanel);
@@ -98,7 +100,19 @@ public class MosaiqueLauncher {
 
         JLabel artistLbl = new JLabel("Artist");
         artists = new JComboBox(new String[]{"Rectangle", "Triangle"});
+        artists.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String value = (String) artists.getSelectedItem();
+                if (value.equals("Rectangle")) {
+                    runActionListener.setUseRectangle(true);
+                } else {
+                    runActionListener.setUseRectangle(false);
+                }
+            }
+        });
         runBtn = new JButton("Run");
+        runBtn.addActionListener(runActionListener);
 
         confButtonsContent.add(loadInputBtnPanel);
         confButtonsContent.add(saveResultBtnPanel);
