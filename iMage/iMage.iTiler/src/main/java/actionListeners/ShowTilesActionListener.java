@@ -1,6 +1,7 @@
 package actionListeners;
 
 
+import frames.ShowTilesFrame;
 import panelPatterns.ImagePanelPattern;
 
 import javax.swing.*;
@@ -12,41 +13,26 @@ import java.util.ArrayList;
 
 public class ShowTilesActionListener implements ActionListener {
     private JFrame mainFrame;
-    private JFrame showTilesFrame;
-    private JPanel tilesContent;
-    private ArrayList<ImagePanelPattern> images;
+    private ShowTilesFrame showTilesFrame = null;
 
 
-    public ShowTilesActionListener(JFrame mainFrame, JFrame showTilesFrame) {
+    private LoadTilesActionListener loadTilesActionListener;
+
+    public ShowTilesActionListener(JFrame mainFrame, LoadTilesActionListener loadTilesActionListener) {
+        this.loadTilesActionListener = loadTilesActionListener;
         this.mainFrame = mainFrame;
-        this.showTilesFrame = showTilesFrame;
-        images = new ArrayList<>();
+    }
 
-        showTilesFrame.setPreferredSize(new Dimension(530, 530));
-        showTilesFrame.setResizable(false);
-        showTilesFrame.setLocationRelativeTo(mainFrame);
-        showTilesFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-
-        tilesContent = new JPanel();
-        tilesContent.setLayout(new GridLayout(15, 7, 1,1));
-
-        for (int i = 0; i < 100; i++) {
-            ImageIcon tile = new ImageIcon("iMage.iTiler/src/main/resources/tiles/likeGreen" + Integer.toString(i) + ".jpg");
-            images.add(new ImagePanelPattern(tile));
+    private void drawImages() {
+        if (showTilesFrame != null) {
+            showTilesFrame.dispose();
         }
-
-        for (int i = 0; i < 100; i++) {
-            tilesContent.add(images.get(i));
-        }
-        JScrollPane scrollPane = new JScrollPane(tilesContent);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        showTilesFrame.getContentPane().add(scrollPane);
-        showTilesFrame.pack();
+        showTilesFrame = new ShowTilesFrame("Thumbnail", mainFrame, loadTilesActionListener.getImages());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        drawImages();
         showTilesFrame.setVisible(true);
     }
 }

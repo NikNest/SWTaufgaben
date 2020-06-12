@@ -1,3 +1,4 @@
+import actionListeners.LoadTilesActionListener;
 import actionListeners.ShowTilesActionListener;
 
 import javax.swing.*;
@@ -7,7 +8,6 @@ import java.io.IOException;
 
 public class MosaiqueLauncher {
     private static JFrame mainFrame;
-    private static JFrame showTilesFrame;
     private static JPanel imgContent;
     private static JPanel imgPanel;
     private static JPanel resultPanel;
@@ -24,6 +24,8 @@ public class MosaiqueLauncher {
     private static JButton runBtn;
     private static JComboBox artists;
     private static ShowTilesActionListener showTilesActionListener;
+    private static LoadTilesActionListener loadTilesActionListener;
+
 
     public static void main(String[] args) throws IOException {
         mainFrame = new JFrame("iTiler");
@@ -71,7 +73,6 @@ public class MosaiqueLauncher {
         showTiles = new JButton("Show Tiles");
         runBtn = new JButton("Run");
 
-
         loadInputBtnPanel = new JPanel();
         loadInputBtnPanel.setLayout(new GridBagLayout());
         loadInputBtnPanel.add(loadInputBtn);
@@ -80,15 +81,22 @@ public class MosaiqueLauncher {
         saveResultBtnPanel.setLayout(new GridBagLayout());
         saveResultBtnPanel.add(saveResultBtn);
 
-        showTilesFrame = new JFrame("Thumbnails");
-        showTilesActionListener = new ShowTilesActionListener(mainFrame, showTilesFrame);
+        loadTilesActionListener = new LoadTilesActionListener();
+
+
+        showTilesActionListener = new ShowTilesActionListener(mainFrame, loadTilesActionListener);
+
+
         JLabel tileSizeLbl = new JLabel("Tile Size");
         JTextField tileSizeH = new JTextField("25");
         JLabel xbetween = new JLabel(" X ");
         JTextField tileSizeW = new JTextField("25");
+
         loadTiles = new JButton("Load Tiles");
+        loadTiles.addActionListener(loadTilesActionListener);
         showTiles = new JButton("Show Tiles");
         showTiles.addActionListener(showTilesActionListener);
+
         JLabel artistLbl = new JLabel("Artist");
         artists = new JComboBox(new String[]{"Rectangle", "Triangle"});
         runBtn = new JButton("Run");

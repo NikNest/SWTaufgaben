@@ -9,7 +9,6 @@ public class ImagePanelPattern extends JPanel {
     private ImageIcon tile;
     public ImagePanelPattern(ImageIcon tile) {
         this.setSize(new Dimension(70, 70));
-//        this.setBorder(new EmptyBorder(1, 1, 1, 1));
         this.setBackground(new Color(200, 200, 250));
         this.setLayout(new GridBagLayout());
         this.tile = tile;
