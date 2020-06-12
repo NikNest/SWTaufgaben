@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 public class ShowTilesActionListener implements ActionListener {
@@ -27,15 +28,20 @@ public class ShowTilesActionListener implements ActionListener {
         showTilesFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         tilesContent = new JPanel();
-        tilesContent.setLayout(new GridLayout());
+        tilesContent.setLayout(new GridLayout(15, 7, 1,1));
 
-        for(int i = 0; i < 9; i++) {
-            ImageIcon tile = new ImageIcon();
-            images.add(new ImagePanelPattern(null));
+        for (int i = 0; i < 100; i++) {
+            ImageIcon tile = new ImageIcon("iMage.iTiler/src/main/resources/tiles/likeGreen" + Integer.toString(i) + ".jpg");
+            images.add(new ImagePanelPattern(tile));
         }
 
-
-        showTilesFrame.getContentPane().add(tilesContent);
+        for (int i = 0; i < 100; i++) {
+            tilesContent.add(images.get(i));
+        }
+        JScrollPane scrollPane = new JScrollPane(tilesContent);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        showTilesFrame.getContentPane().add(scrollPane);
         showTilesFrame.pack();
     }
 

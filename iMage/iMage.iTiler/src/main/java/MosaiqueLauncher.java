@@ -80,7 +80,7 @@ public class MosaiqueLauncher {
         saveResultBtnPanel.setLayout(new GridBagLayout());
         saveResultBtnPanel.add(saveResultBtn);
 
-        showTilesFrame = new JFrame();
+        showTilesFrame = new JFrame("Thumbnails");
         showTilesActionListener = new ShowTilesActionListener(mainFrame, showTilesFrame);
         JLabel tileSizeLbl = new JLabel("Tile Size");
         JTextField tileSizeH = new JTextField("25");
