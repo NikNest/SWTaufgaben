@@ -1,3 +1,4 @@
+import actionListeners.LoadInputActionListener;
 import actionListeners.LoadTilesActionListener;
 import actionListeners.ShowTilesActionListener;
 
@@ -8,8 +9,8 @@ import java.io.IOException;
 
 public class MosaiqueLauncher {
     private static JFrame mainFrame;
-    private static JPanel imgContent;
-    private static JPanel imgPanel;
+    private static JPanel inputContent;
+    private static JPanel inputPanel;
     private static JPanel resultPanel;
     private static JPanel confButtonsContent;
     private static JPanel artistButtonsContent;
@@ -25,6 +26,7 @@ public class MosaiqueLauncher {
     private static JComboBox artists;
     private static ShowTilesActionListener showTilesActionListener;
     private static LoadTilesActionListener loadTilesActionListener;
+    private static LoadInputActionListener loadInputActionListener;
 
 
     public static void main(String[] args) throws IOException {
@@ -33,10 +35,11 @@ public class MosaiqueLauncher {
         mainFrame.setResizable(false);
         mainFrame.setLayout(new BoxLayout(mainFrame.getContentPane(), BoxLayout.PAGE_AXIS));
 
-        imgContent = new JPanel();
-        imgContent.setBackground(new Color(0, 0, 0));
-        imgContent.setBorder(new EmptyBorder(25, 0, 25, 0));
-        imgContent.setLayout(new GridLayout());
+        inputContent = new JPanel();
+        inputContent.setBackground(new Color(0, 0, 0));
+        inputContent.setBorder(new EmptyBorder(25, 0, 25, 0));
+        inputContent.setLayout(new GridLayout());
+
 
 
         confButtonsContent = new JPanel();
@@ -49,25 +52,26 @@ public class MosaiqueLauncher {
         artistButtonsContent.setBackground(new Color(255,0, 255));
 
 
-        imgPanel = new JPanel();
-        imgPanel.setLayout(new GridBagLayout());
-        imgPanel.setPreferredSize(new Dimension(350, 250));
-        imgPanel.setBackground(new Color(255, 255, 0));
+        inputPanel = new JPanel();
+        inputPanel.setLayout(new GridBagLayout());
+        inputPanel.setPreferredSize(new Dimension(350, 250));
+        inputPanel.setBackground(new Color(255, 255, 0));
 
         resultPanel = new JPanel();
         resultPanel.setLayout(new GridBagLayout());
         resultPanel.setPreferredSize(new Dimension(350, 250));
         resultPanel.setBackground(new Color(255, 0, 0));
 
-        img = new ImageIcon("iMage.iTiler/src/main/resources/blue.jpg", "");
-        result = new ImageIcon("iMage.iTiler/src/main/resources/green.jpg", "");
 
-        imgPanel.add(new JLabel(img));
-        resultPanel.add(new JLabel(result));
-        imgContent.add(imgPanel);
-        imgContent.add(resultPanel);
+        loadTilesActionListener = new LoadTilesActionListener();
+        loadInputActionListener = new LoadInputActionListener(mainFrame, inputPanel);
+        showTilesActionListener = new ShowTilesActionListener(mainFrame, loadTilesActionListener);
+
+        inputContent.add(inputPanel);
+        inputContent.add(resultPanel);
 
         loadInputBtn = new JButton("Load Input");
+        loadInputBtn.addActionListener(loadInputActionListener);
         saveResultBtn = new JButton("Save Result");
         loadTiles = new JButton("Load Tiles");
         showTiles = new JButton("Show Tiles");
@@ -80,11 +84,6 @@ public class MosaiqueLauncher {
         saveResultBtnPanel = new JPanel();
         saveResultBtnPanel.setLayout(new GridBagLayout());
         saveResultBtnPanel.add(saveResultBtn);
-
-        loadTilesActionListener = new LoadTilesActionListener();
-
-
-        showTilesActionListener = new ShowTilesActionListener(mainFrame, loadTilesActionListener);
 
 
         JLabel tileSizeLbl = new JLabel("Tile Size");
@@ -114,7 +113,7 @@ public class MosaiqueLauncher {
         artistButtonsContent.add(artists);
         artistButtonsContent.add(runBtn);
 
-        mainFrame.getContentPane().add(imgContent);
+        mainFrame.getContentPane().add(inputContent);
         mainFrame.getContentPane().add(confButtonsContent);
         mainFrame.getContentPane().add(artistButtonsContent);
         mainFrame.pack();
