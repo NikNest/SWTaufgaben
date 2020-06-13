@@ -13,14 +13,16 @@ public class RunActionListener implements ActionListener {
     private LoadInputActionListener loadInputActionListener;
     private LoadTilesActionListener loadTilesActionListener;
     private JPanel outputPanel;
+    private JButton saveBtn;
     private BufferedImage resultImage;
     private ImageIcon resultImageIcon;
     private MosaiqueEasel mosaique;
     private boolean useRectangle = true;
 
 
-    public RunActionListener(JPanel outputPanel) {
+    public RunActionListener(JPanel outputPanel, JButton saveBtn) {
         this.outputPanel = outputPanel;
+        this.saveBtn = saveBtn;
         mosaique = new MosaiqueEasel();
     }
 
@@ -37,17 +39,10 @@ public class RunActionListener implements ActionListener {
         outputPanel.add(new JLabel(resultImageIcon));
         outputPanel.revalidate();
         outputPanel.repaint();
+        saveBtn.setEnabled(true);
     }
 
     private void runMosaique() {
-//        ImageIcon inputImage = loadInputActionListener.getImageIcon();
-//        BufferedImage inputBImage = new BufferedImage(
-//                inputImage.getIconWidth(),
-//                inputImage.getIconHeight(),
-//                BufferedImage.TYPE_INT_ARGB);
-//        Graphics g = inputBImage.createGraphics();
-//        inputImage.paintIcon(null, g, 0, 0);
-//        g.dispose();
         BufferedImage inputBImage = loadInputActionListener.getBufferedImage();
         resultImage = useRectangle ?
                 mosaique.createMosaique(inputBImage, loadTilesActionListener.getRectangleArtist()) :
@@ -58,6 +53,10 @@ public class RunActionListener implements ActionListener {
 
     public void setUseRectangle(boolean useRectangle) {
         this.useRectangle = useRectangle;
+    }
+
+    public BufferedImage getResultImage() {
+        return resultImage;
     }
 
     @Override

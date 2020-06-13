@@ -11,8 +11,8 @@ public class TextFieldDocumentListener implements DocumentListener {
     private JTextField tileSizeH;
     private JTextField tileSizeW;
     private LoadInputActionListener loadInputActionListener;
-    private int tileWidth;
-    private int tileHeight;
+    private int tileWidth = 25;
+    private int tileHeight = 25;
     private boolean tileWidthSetted = false;
     private boolean tileHeightSetted = false;
 
@@ -78,11 +78,10 @@ public class TextFieldDocumentListener implements DocumentListener {
                         tileWidth = (int) (loadInputActionListener.getBufferedImage().getWidth() * 0.1);
                         tileSizeW.setForeground(new Color(255, 0, 0));
                     }
-                } else {
-                    tileSizeW.setForeground(new Color(255, 0, 0));
                 }
+            } else {
+                tileSizeW.setForeground(new Color(255, 0, 0));
             }
-            System.out.println(document.getText(0, document.getLength()));
         }
     }
 

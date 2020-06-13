@@ -31,10 +31,10 @@ public class MosaiqueLauncher {
     private static ShowTilesActionListener showTilesActionListener;
     private static LoadTilesActionListener loadTilesActionListener;
     private static LoadInputActionListener loadInputActionListener;
+    private static TextFieldDocumentListener textFieldDocumentListener;
+    private static ResultSaveActionListener resultSaveActionListener;
     private static RunActionListener runActionListener;
-    private static TilesAmountInputActionListener tilesAmountInputActionListener;
-    private static RectangleArtist rectangleArtist;
-    private static TriangleArtist triangleArtist;
+
 
 
     public static void main(String[] args) throws IOException {
@@ -79,19 +79,20 @@ public class MosaiqueLauncher {
         runBtn = new JButton("Run");
         runBtn.setEnabled(false);
         JLabel tileSizeLbl = new JLabel("Tile Size");
-        JTextField tileSizeH = new JTextField("30", 3);
+        JTextField tileSizeH = new JTextField("25", 3);
         tileSizeH.getDocument().putProperty("tileSizeType", "H");
         JLabel xbetween = new JLabel(" X ");
         JTextField tileSizeW = new JTextField("25", 3);
         tileSizeW.getDocument().putProperty("tileSizeType", "W");
 
 
-        TextFieldDocumentListener textFieldDocumentListener = new TextFieldDocumentListener(tileSizeH, tileSizeW);
-//        tilesAmountInputActionListener = new TilesAmountInputActionListener();
+        textFieldDocumentListener = new TextFieldDocumentListener(tileSizeH, tileSizeW);
+
         loadTilesActionListener = new LoadTilesActionListener(runBtn, showTiles);
         loadInputActionListener = new LoadInputActionListener(inputPanel, runBtn);
-        runActionListener = new RunActionListener(resultPanel);
+        runActionListener = new RunActionListener(resultPanel, saveResultBtn);
         showTilesActionListener = new ShowTilesActionListener(mainFrame);
+        resultSaveActionListener = new ResultSaveActionListener();
 
         textFieldDocumentListener.setLoadInputActionListener(loadInputActionListener);
         runActionListener.setLoadTilesActionListener(loadTilesActionListener);
@@ -101,11 +102,8 @@ public class MosaiqueLauncher {
         loadInputActionListener.setTextFieldDocumentListener(textFieldDocumentListener);
         runActionListener.setLoadInputActionListener(loadInputActionListener);
         showTilesActionListener.setLoadTilesActionListener(loadTilesActionListener);
+        resultSaveActionListener.setRunActionListener(runActionListener);
 
-
-
-        tileSizeH.addActionListener(tilesAmountInputActionListener);
-        tileSizeW.addActionListener(tilesAmountInputActionListener);
         tileSizeW.getDocument().addDocumentListener(textFieldDocumentListener);
         tileSizeH.getDocument().addDocumentListener(textFieldDocumentListener);
 
@@ -125,6 +123,7 @@ public class MosaiqueLauncher {
 
         loadTiles.addActionListener(loadTilesActionListener);
         showTiles.addActionListener(showTilesActionListener);
+        saveResultBtn.addActionListener(resultSaveActionListener);
 
         JLabel artistLbl = new JLabel("Artist");
         artists = new JComboBox(new String[]{"Rectangle", "Triangle"});
