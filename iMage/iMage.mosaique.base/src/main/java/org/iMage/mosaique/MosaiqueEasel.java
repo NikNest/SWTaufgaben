@@ -1,11 +1,14 @@
 package org.iMage.mosaique;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueArtist;
 import org.iMage.mosaique.base.IMosaiqueEasel;
 import org.iMage.mosaique.rectangle.RectangleShape;
+
+import javax.swing.*;
 
 /**
  * This class defines an {@link IMosaiqueEasel} which operates on {@link BufferedArtImage
@@ -35,8 +38,9 @@ public class MosaiqueEasel implements IMosaiqueEasel<BufferedArtImage> {
       BufferedArtImage extendedImg = new BufferedArtImage(blankWidth, blankHeight);
       RectangleShape rectangleShape = new RectangleShape(artImage, input.getWidth(), input.getHeight());
       rectangleShape.drawMe(extendedImg);
-      for (int wi = 0; wi < inputWidth/tileWidth; wi++) {
-        for (int hi = 0; hi < inputHeight/tileHeight; hi++) {
+
+      for (int wi = 0; wi < blankWidth/tileWidth; wi++) {
+        for (int hi = 0; hi < blankHeight/tileHeight; hi++) {
           BufferedArtImage roi = extendedImg.getSubimage(wi*tileWidth, hi*tileHeight, tileWidth, tileHeight);
           BufferedArtImage tile = artist.getTileForRegion(roi);
           extendedImg.setSubimage(wi*tileWidth, hi*tileHeight, tile);
