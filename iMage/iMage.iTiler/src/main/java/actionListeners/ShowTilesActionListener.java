@@ -2,24 +2,21 @@ package actionListeners;
 
 
 import frames.ShowTilesFrame;
-import panelPatterns.ImagePanelPattern;
+import org.iMage.mosaique.base.BufferedArtImage;
+import org.iMage.mosaique.base.IMosaiqueArtist;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class ShowTilesActionListener implements ActionListener {
     private JFrame mainFrame;
     private ShowTilesFrame showTilesFrame = null;
-
-
     private LoadTilesActionListener loadTilesActionListener;
 
-    public ShowTilesActionListener(JFrame mainFrame, LoadTilesActionListener loadTilesActionListener) {
-        this.loadTilesActionListener = loadTilesActionListener;
+    public ShowTilesActionListener(JFrame mainFrame) {
         this.mainFrame = mainFrame;
     }
 
@@ -27,7 +24,13 @@ public class ShowTilesActionListener implements ActionListener {
         if (showTilesFrame != null) {
             showTilesFrame.dispose();
         }
-        showTilesFrame = new ShowTilesFrame("Thumbnail", mainFrame, loadTilesActionListener.getImages());
+
+        showTilesFrame = new ShowTilesFrame("Thumbnail", mainFrame,
+                (ArrayList<BufferedImage>) loadTilesActionListener.getRectangleArtist().getThumbnails());
+    }
+
+    public void setLoadTilesActionListener(LoadTilesActionListener loadTilesActionListener) {
+        this.loadTilesActionListener = loadTilesActionListener;
     }
 
     @Override

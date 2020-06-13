@@ -1,16 +1,19 @@
 package frames;
 
+import org.iMage.mosaique.base.BufferedArtImage;
 import panelPatterns.ImagePanelPattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class ShowTilesFrame extends JFrame {
     private ArrayList<ImagePanelPattern> images;
     private JPanel tilesContent;
 
-    public ShowTilesFrame(String text, JFrame mainFrame, ArrayList<ImageIcon> tiles) {
+    public ShowTilesFrame(String text, JFrame mainFrame, ArrayList<BufferedImage> tiles) {
         super(text);
         setPreferredSize(new Dimension(530, 530));
         setResizable(false);
@@ -18,7 +21,12 @@ public class ShowTilesFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         images = new ArrayList<>();
         if (tiles != null)
-            for (ImageIcon tile : tiles) {
+            for (BufferedImage tileBuf : tiles) {
+//                System.out.println(tileBuf.getWidth());
+//                System.out.println(tileBuf.getHeight());
+                Image img = tileBuf;
+                Image scaledImage = img.getScaledInstance(70, 70, Image.SCALE_FAST);
+                ImageIcon tile = new ImageIcon(scaledImage);
                 images.add(new ImagePanelPattern(tile));
             }
         tilesContent = new JPanel();

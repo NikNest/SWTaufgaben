@@ -6,16 +6,18 @@ import java.awt.event.ActionListener;
 public class TilesAmountInputActionListener implements ActionListener {
 
 
-    public int getHeight() {
-        return 6;
+    public int getTileHeight() {
+        return 10;
     }
 
-    public int getWidth() {
-       return 6;
+    public int getTileWidth() {
+       return 10;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        System.out.println(e.getActionCommand());
+        System.out.println(e.getSource());
+        System.out.println(e.paramString());
     }
 }

@@ -1,4 +1,6 @@
 import actionListeners.*;
+import org.iMage.mosaique.rectangle.RectangleArtist;
+import org.iMage.mosaique.triangle.TriangleArtist;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +33,8 @@ public class MosaiqueLauncher {
     private static LoadInputActionListener loadInputActionListener;
     private static RunActionListener runActionListener;
     private static TilesAmountInputActionListener tilesAmountInputActionListener;
+    private static RectangleArtist rectangleArtist;
+    private static TriangleArtist triangleArtist;
 
 
     public static void main(String[] args) throws IOException {
@@ -63,21 +67,50 @@ public class MosaiqueLauncher {
         resultPanel.setPreferredSize(new Dimension(350, 250));
         resultPanel.setBackground(new Color(255, 0, 0));
 
-        tilesAmountInputActionListener = new TilesAmountInputActionListener();
-        loadTilesActionListener = new LoadTilesActionListener();
-        loadInputActionListener = new LoadInputActionListener(mainFrame, inputPanel);
-        runActionListener = new RunActionListener(mainFrame, resultPanel, loadInputActionListener, loadTilesActionListener, tilesAmountInputActionListener);
-        showTilesActionListener = new ShowTilesActionListener(mainFrame, loadTilesActionListener);
-
         inputContent.add(inputPanel);
         inputContent.add(resultPanel);
 
         loadInputBtn = new JButton("Load Input");
-        loadInputBtn.addActionListener(loadInputActionListener);
         saveResultBtn = new JButton("Save Result");
+        saveResultBtn.setEnabled(false);
         loadTiles = new JButton("Load Tiles");
         showTiles = new JButton("Show Tiles");
+        showTiles.setEnabled(false);
         runBtn = new JButton("Run");
+        runBtn.setEnabled(false);
+        JLabel tileSizeLbl = new JLabel("Tile Size");
+        JTextField tileSizeH = new JTextField("30", 3);
+        tileSizeH.getDocument().putProperty("tileSizeType", "H");
+        JLabel xbetween = new JLabel(" X ");
+        JTextField tileSizeW = new JTextField("25", 3);
+        tileSizeW.getDocument().putProperty("tileSizeType", "W");
+
+
+        TextFieldDocumentListener textFieldDocumentListener = new TextFieldDocumentListener(tileSizeH, tileSizeW);
+//        tilesAmountInputActionListener = new TilesAmountInputActionListener();
+        loadTilesActionListener = new LoadTilesActionListener(runBtn, showTiles);
+        loadInputActionListener = new LoadInputActionListener(inputPanel, runBtn);
+        runActionListener = new RunActionListener(resultPanel);
+        showTilesActionListener = new ShowTilesActionListener(mainFrame);
+
+        textFieldDocumentListener.setLoadInputActionListener(loadInputActionListener);
+        runActionListener.setLoadTilesActionListener(loadTilesActionListener);
+        loadTilesActionListener.setLoadInputActionListener(loadInputActionListener);
+        loadTilesActionListener.setTextFieldDocumentListener(textFieldDocumentListener);
+        loadInputActionListener.setLoadTilesActionListener(loadTilesActionListener);
+        loadInputActionListener.setTextFieldDocumentListener(textFieldDocumentListener);
+        runActionListener.setLoadInputActionListener(loadInputActionListener);
+        showTilesActionListener.setLoadTilesActionListener(loadTilesActionListener);
+
+
+
+        tileSizeH.addActionListener(tilesAmountInputActionListener);
+        tileSizeW.addActionListener(tilesAmountInputActionListener);
+        tileSizeW.getDocument().addDocumentListener(textFieldDocumentListener);
+        tileSizeH.getDocument().addDocumentListener(textFieldDocumentListener);
+
+        runBtn.addActionListener(runActionListener);
+        loadInputBtn.addActionListener(loadInputActionListener);
 
         loadInputBtnPanel = new JPanel();
         loadInputBtnPanel.setLayout(new GridBagLayout());
@@ -88,14 +121,9 @@ public class MosaiqueLauncher {
         saveResultBtnPanel.add(saveResultBtn);
 
 
-        JLabel tileSizeLbl = new JLabel("Tile Size");
-        JTextField tileSizeH = new JTextField("25");
-        JLabel xbetween = new JLabel(" X ");
-        JTextField tileSizeW = new JTextField("25");
 
-        loadTiles = new JButton("Load Tiles");
+
         loadTiles.addActionListener(loadTilesActionListener);
-        showTiles = new JButton("Show Tiles");
         showTiles.addActionListener(showTilesActionListener);
 
         JLabel artistLbl = new JLabel("Artist");
@@ -111,8 +139,8 @@ public class MosaiqueLauncher {
                 }
             }
         });
-        runBtn = new JButton("Run");
-        runBtn.addActionListener(runActionListener);
+
+
 
         confButtonsContent.add(loadInputBtnPanel);
         confButtonsContent.add(saveResultBtnPanel);
