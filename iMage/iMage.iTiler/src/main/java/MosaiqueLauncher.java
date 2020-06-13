@@ -4,6 +4,7 @@ import org.iMage.mosaique.triangle.TriangleArtist;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,28 +45,30 @@ public class MosaiqueLauncher {
         mainFrame.setLayout(new BoxLayout(mainFrame.getContentPane(), BoxLayout.PAGE_AXIS));
 
         inputContent = new JPanel();
-        inputContent.setBackground(new Color(0, 0, 0));
+//        inputContent.setBackground(new Color(0, 0, 0));
         inputContent.setBorder(new EmptyBorder(25, 0, 25, 0));
         inputContent.setLayout(new GridLayout());
 
         confButtonsContent = new JPanel();
         confButtonsContent.setSize(new Dimension(800, 100));
-        confButtonsContent.setBackground(new Color(0, 255, 255));
+        confButtonsContent.setBorder(new TitledBorder("Configuration"));
+//        confButtonsContent.setBackground(new Color(0, 255, 255));
         confButtonsContent.setLayout(new GridLayout());
 
         artistButtonsContent = new JPanel();
         artistButtonsContent.setSize(new Dimension(800, 100));
-        artistButtonsContent.setBackground(new Color(255,0, 255));
+        artistButtonsContent.setBorder(new TitledBorder("Artistic"));
+//        artistButtonsContent.setBackground(new Color(255,0, 255));
 
         inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
         inputPanel.setPreferredSize(new Dimension(350, 250));
-        inputPanel.setBackground(new Color(255, 255, 0));
+//        inputPanel.setBackground(new Color(255, 255, 0));
 
         resultPanel = new JPanel();
         resultPanel.setLayout(new GridBagLayout());
         resultPanel.setPreferredSize(new Dimension(350, 250));
-        resultPanel.setBackground(new Color(255, 0, 0));
+//        resultPanel.setBackground(new Color(255, 0, 0));
 
         inputContent.add(inputPanel);
         inputContent.add(resultPanel);
