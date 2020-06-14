@@ -91,7 +91,7 @@ public class MosaiqueLauncher {
 
         textFieldDocumentListener = new TextFieldDocumentListener(tileSizeH, tileSizeW);
 
-        loadTilesActionListener = new LoadTilesActionListener(runBtn, showTiles);
+        loadTilesActionListener = new LoadTilesActionListener(runBtn, showTiles, mainFrame);
         loadInputActionListener = new LoadInputActionListener(inputPanel, runBtn);
         runActionListener = new RunActionListener(resultPanel, saveResultBtn);
         showTilesActionListener = new ShowTilesActionListener(mainFrame);

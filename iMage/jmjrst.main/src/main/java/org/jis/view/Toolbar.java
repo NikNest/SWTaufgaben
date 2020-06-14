@@ -17,9 +17,7 @@ package org.jis.view;
 
 import java.net.URL;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JToolBar;
+import javax.swing.*;
 
 import org.jis.Main;
 import org.jis.listner.MenuListner;
@@ -45,7 +43,6 @@ public class Toolbar extends JToolBar {
    */
   public Toolbar(Main m) {
     super();
-
     gener = new JButton(m.mes.getString("Menu.4"));
     URL url = ClassLoader.getSystemResource("icons/media-playback-start.png");
     gener.setIcon(new ImageIcon(url));
