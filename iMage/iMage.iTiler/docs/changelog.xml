@@ -1,0 +1,361 @@
+<changelog><commit>
+					<time>1592134269</time>
+					<sha1>c08dfcbee98087c5b016b7bd9954ba14dfc2c866</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>docs dir created with latest commits</msg>
+				</commit><commit>
+					<time>1592131838</time>
+					<sha1>47489cad9c547ecedd8cc4b677a8bf7602001850</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>progressbar added</msg>
+				</commit><commit>
+					<time>1592049091</time>
+					<sha1>9125dad011b5c4fb7b111703712f0377075cef30</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code cleaned up</msg>
+				</commit><commit>
+					<time>1592048378</time>
+					<sha1>32fbed4321c3426f1ca52418009d2ace000dbbd2</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>pre final version. TODO; code clean-up, maven structure check</msg>
+				</commit><commit>
+					<time>1592044033</time>
+					<sha1>1e2477087e9c1c736e969e52955689b2401bca24</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>bug fix: one tile less were used for image covering(in width and in height)</msg>
+				</commit><commit>
+					<time>1592040034</time>
+					<sha1>1e123d40069fb0bf2606fd4545e9520d2a1abe9c</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>text fields modells for tile width and height were added. Code refactoring: we create artists in tiles-load-class now</msg>
+				</commit><commit>
+					<time>1591983849</time>
+					<sha1>ad1dbfa71ba3fb4e53beac577a6ff23705110260</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>mosaique algo usage implemented</msg>
+				</commit><commit>
+					<time>1591977873</time>
+					<sha1>f1dfc106b19b9d88177061da829ff52a52c7e987</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>img load button added</msg>
+				</commit><commit>
+					<time>1591968368</time>
+					<sha1>f2fe4ffe9a976d809c81ae9d13c59ac8810686f1</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>tiles load show swing models created</msg>
+				</commit><commit>
+					<time>1591951837</time>
+					<sha1>0e08171bdf4ca15768cdb600a5005f289002fd5d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>show tiles frame model added</msg>
+				</commit><commit>
+					<time>1591948968</time>
+					<sha1>0753321b55670f0aeff1512b4a663f805fd1ec9c</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new Module created, model of mosaique frame created</msg>
+				</commit><commit>
+					<time>1590780811</time>
+					<sha1>2049b8121a853e0f9c77d8380710a977a9ebe3b0</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new module with executable jar added</msg>
+				</commit><commit>
+					<time>1590765548</time>
+					<sha1>04c676906f679caaf4ba9d383e3cd56685f0a9f1</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>panel on start frame not seen: bug fix, clean up code</msg>
+				</commit><commit>
+					<time>1590761235</time>
+					<sha1>e57d8115e1fe9fa7f55c8fdb91dc1b9dd283f8ba</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>metainf-service plugin version updated</msg>
+				</commit><commit>
+					<time>1590760024</time>
+					<sha1>9c4b22433dd369bd69609a1b5c04aee14855c3a8</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>meta-inf service supportion added, bugs fixed</msg>
+				</commit><commit>
+					<time>1590748792</time>
+					<sha1>babd48d5e5fd84a2d0eb06e7bc6aff43b2c096eb</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new plugin JavaCrushCourse was added</msg>
+				</commit><commit>
+					<time>1590705439</time>
+					<sha1>1d264eb61256fe04fb2be4f36534798e90a4beee</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>drop-down menu with plugins + case when no plugins found(nonclicable light-gray menu item)</msg>
+				</commit><commit>
+					<time>1590694484</time>
+					<sha1>f1f72580007085434bc5f884613ab00acacf1691</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new menu button added to show available plugins(now shows empty frame)</msg>
+				</commit><commit>
+					<time>1590679138</time>
+					<sha1>5a627361160a28e2b6432caa368895b5a0ae8b6e</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>ServiceLoader used to get sorted list of plugins</msg>
+				</commit><commit>
+					<time>1590672217</time>
+					<sha1>da5959f643ea5ce59e310f1e276f104f499de819</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>new methods implemented for plugin sorting</msg>
+				</commit><commit>
+					<time>1590670868</time>
+					<sha1>21fb0203928e75056af0267da43c2b20ff5e8134</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>UB3 Aufgabe1 start: adding plugin files</msg>
+				</commit><commit>
+					<time>1590670766</time>
+					<sha1>d494637fcd5b3e88df0abc1771af596cd2eeae58</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>Clean up code before UB3</msg>
+				</commit><commit>
+					<time>1589873809</time>
+					<sha1>0a31b8dc4315dfabcc6ed0c56cfc91aa7978a60d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code clean up</msg>
+				</commit><commit>
+					<time>1589872396</time>
+					<sha1>bf99d7be8d185c30c86a1afec0d36e77cb76b32a</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>mosaique filter implemented A2.4</msg>
+				</commit><commit>
+					<time>1589822281</time>
+					<sha1>fcec71b746540262bf9ab7ac64081476d682742d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code clean up</msg>
+				</commit><commit>
+					<time>1589822149</time>
+					<sha1>f4a6691d1fcf7afc0c013c28b0bd3ee645fb777d</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>junit tests added for RectangleArtist.getTileForRegion method: 1. check with plain rgb colors, 2. check with grayscaled colors</msg>
+				</commit><commit>
+					<time>1589822034</time>
+					<sha1>a6ca2ddc395d520016acb47ed790df246d867cda</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>code debugged</msg>
+				</commit><commit>
+					<time>1589821971</time>
+					<sha1>ededfff74220a063d8aded98e0686516246d2579</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>pom.xml configured for junit</msg>
+				</commit><commit>
+					<time>1589811062</time>
+					<sha1>320278781246c337768f2d4f0da96884d0ee4cda</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>Functionality of RectangleArtist was implemented. Getter for Thumbnail in RectangleShape was created</msg>
+				</commit><commit>
+					<time>1589805309</time>
+					<sha1>6ec547de6901da66d8345ee397975bdc209de667</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>getter methods were implemented A2.4.d</msg>
+				</commit><commit>
+					<time>1589805152</time>
+					<sha1>09017ff28f30d42e8a19f9010a43ebef408f0292</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>drawMe method was implemented A2.4.c</msg>
+				</commit><commit>
+					<time>1589802808</time>
+					<sha1>a99d51480881f22fdbf353bea68f6131f4f6477c</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>getAverageColor method was implemented A2.4.b</msg>
+				</commit><commit>
+					<time>1589800624</time>
+					<sha1>7c452952a7abf00bf59d8d89684f6e7c4c410770</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>constructor for RectangleShape implemented</msg>
+				</commit><commit>
+					<time>1589799814</time>
+					<sha1>87c0da59ebe6498efba5bcea91da22f143657e52</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>module added for A2.4</msg>
+				</commit><commit>
+					<time>1589799757</time>
+					<sha1>10e9e6d89be9c30a022b4f039997867b875d1fd5</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>some tests ignored to accelarate project</msg>
+				</commit><commit>
+					<time>1589799660</time>
+					<sha1>378a72d0832cd88509f2251ff70f732f6ee107f4</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>pom.xml of the iMage changed to create executable jars</msg>
+				</commit><commit>
+					<time>1589791172</time>
+					<sha1>7254a6ddbf3443f79168796e7e78f211aa6b6e72</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>uml description of the new picture format datatype was added</msg>
+				</commit><commit>
+					<time>1589790969</time>
+					<sha1>c2f4613be241f60ea09a2add2bb2f20f9bfb4171</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>durchfuehrbarkeit of the described in lastenheft task was added</msg>
+				</commit><commit>
+					<time>1589789309</time>
+					<sha1>ea96615a90d185b436d46b3659cf06f28272aace</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>lastenheft for augabe2.1 was created</msg>
+				</commit><commit>
+					<time>1588714243</time>
+					<sha1>991ccf3b3847d35b45e212b7b17fa79131f33f0b</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>multiple tests added to cover &gt;35% of generator.Generator class methods</msg>
+				</commit><commit>
+					<time>1588540638</time>
+					<sha1>6340173443d958d68e78b43a5cb630c3c8539c4a</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>test case for Generator.createZip: simple zip img, unzip then, compare files</msg>
+				</commit><commit>
+					<time>1588524470</time>
+					<sha1>c0f71c79d3c8e97b174f794bdfdf42eb46054ec7</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>test added for Generator.generateImage test checks if scaling was actualy applied to choosen file</msg>
+				</commit><commit>
+					<time>1588445983</time>
+					<sha1>14aa0b31872d9218c6e327f12b3b44eb40e1b691</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>starting a3 exercise: groupid changed, required files uploaded</msg>
+				</commit><commit>
+					<time>1588442895</time>
+					<sha1>b039923efe4b37d5fd77e05280ebd61c8c161d77</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>groupid of the jmjrst.main was changed(ex number was corrected)</msg>
+				</commit><commit>
+					<time>1588441268</time>
+					<sha1>f8eb722b958190a32b6fd57f2f497b7755550e45</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/master</branches>
+					<msg>changelog file is with the last commits is added to docs</msg>
+				</commit><commit>
+					<time>1588440568</time>
+					<sha1>7cda8b29b7ae52feb7aa599bedde959ef6ccb1cd</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>clean up code</msg>
+				</commit><commit>
+					<time>1588439066</time>
+					<sha1>e2b4be13072f7bce45bef7ce28df6ba9adcd52ea</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>patch for the problem with text appendening instead of substitution</msg>
+				</commit><commit>
+					<time>1588435817</time>
+					<sha1>b082b187222a06c30421992c5818172b0ef1cd3f</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>Tests for generator.LayoutGalerie.copyFile were added. Case 1: case when read permission for fromFile is missing, case 2: case when write permission for toFile is missing</msg>
+				</commit><commit>
+					<time>1588420670</time>
+					<sha1>58e3f47cf5da5633f6f35f254c37b201ab408d39</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>LayoutGalerie.copyFile debuged: now the content of &quot;fromFile&quot; will override the content of &quot;toFile&quot;</msg>
+				</commit><commit>
+					<time>1588420535</time>
+					<sha1>b77d9304829fd2b2b55f6774bfca954880101cb5</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>test for LayoutGalerie added. case: copy file to existing file. Debug issue: while coping copyFile method appends content</msg>
+				</commit><commit>
+					<time>1588343745</time>
+					<sha1>b024ee7cb5ea3add73928c7cfb663e127e688c1b</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>tests for generator.LayoutGalerie.copyFile were added. Case 1: Folder instead of file; Case 2: not existing file instead of file</msg>
+				</commit><commit>
+					<time>1588336031</time>
+					<sha1>1f7200fc7f3165fdfdb32667fd0fa6b0c6435cf9</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>test for LayoutGalerie was added(tests copy function with a random data)</msg>
+				</commit><commit>
+					<time>1588331711</time>
+					<sha1>b871d2e8236846d909efd57958815c2772c994c8</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>redundant code removed from pom.xml(plugins declaration are already in iMage/pom.xml)</msg>
+				</commit><commit>
+					<time>1588327782</time>
+					<sha1>056cf6159230ec299deab63003ace65f74fcab35</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>changelog files were moved to docs directory. pom.xml peeked plugins from pom.xml of the first UB. src.xml was changed for correctly zip layout</msg>
+				</commit><commit>
+					<time>1588322958</time>
+					<sha1>e7a9dc6a40fcc04b2bb6ced56f12f09fff237ff8</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>maven-checkstyle-plugin was added to pom.xml. In file iMage/jmjrst.main/src/main/java/org/jis/listner/MenuListner.java checkstyle warnings were corrected: on line 73 at column 3 [LeftCurlymaven-checkstyle-plugin]; on line 75 at column 5 [LeftCurly]; on line 76 at column 5 [RightCurly]</msg>
+				</commit><commit>
+					<time>1588272053</time>
+					<sha1>a1258b2bd23bf2f8e1cec9756fb3e1fd91102df6</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>pom.xml was edited(maven-jar-plugin added) for executable jar archive creation</msg>
+				</commit><commit>
+					<time>1588182213</time>
+					<sha1>369046e824f2f5744f65bc5589813a6f2fc2bc87</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>src.xml of jmjrst.main edited: now zip created by maven assembly plugin includes the whole iMage and .gitignore</msg>
+				</commit><commit>
+					<time>1588175769</time>
+					<sha1>af78306e09da1bcb1a6b691cf0e8e6d8e2680a58</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>maven project with jmjrst.main module added</msg>
+				</commit><commit>
+					<time>1588175533</time>
+					<sha1>8c1e6abc08af5ceefdc0ffbc44d7bce0069d259c</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>.gitignore edited to untrack .idea folder</msg>
+				</commit><commit>
+					<time>1587976422</time>
+					<sha1>5aa0b174ef80b9e6e99ec91ed9be6fa3f55e6c5f</sha1>
+					<author>Nikita Nesterov</author>
+					<branches>refs/heads/test,refs/heads/master</branches>
+					<msg>git init</msg>
+				</commit></changelog>
