@@ -3,6 +3,8 @@ package org.iMage.mosaique.triangle;
 import org.iMage.mosaique.AbstractCalculator;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class LowerTriangleCalculator extends AbstractCalculator {
     private static final LowerTriangleCalculator LOWER_TRIANGLE_CALCULATOR = new LowerTriangleCalculator();
@@ -16,15 +18,16 @@ public class LowerTriangleCalculator extends AbstractCalculator {
     }
 
     @Override
-    public float getYFromBound(BufferedImage region, int x) {
+    public Iterator<Integer> heightIterator(BufferedImage region, int x) {
         float m = (1F * region.getHeight()) / region.getWidth();
         float yBound = Math.max((x + 1) * m, 0);
-        return yBound;
-    }
 
-    @Override
-    public float getYToBound(BufferedImage region, int x) {
-        return region.getHeight();
+        int fromY = (int)yBound;
+        int toY = region.getHeight();
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = fromY; i < toY; i++) {
+            list.add(i);
+        }
+        return list.iterator();
     }
-
 }

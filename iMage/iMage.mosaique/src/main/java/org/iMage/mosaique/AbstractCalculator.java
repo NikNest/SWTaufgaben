@@ -1,13 +1,13 @@
 package org.iMage.mosaique;
 
+import java.util.Iterator;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class AbstractCalculator {
 
-    public abstract float getYFromBound(BufferedImage region, int x);
 
-    public abstract float getYToBound(BufferedImage region, int x);
+    public abstract Iterator<Integer> heightIterator(BufferedImage region, int x);
 
     public final int averageColor(BufferedImage region) {
         long r = 0;
@@ -17,16 +17,17 @@ public abstract class AbstractCalculator {
         int ctr = 0;
 
         for (int x = 0; x < region.getWidth(); x++) {
-            for (int y = (int) getYFromBound(region, x); y < getYToBound(region, x); y++) {
-                int col = region.getRGB(x, y);
-                Color c = new Color(col, true);
-                r += c.getRed();
-                g += c.getGreen();
-                b += c.getBlue();
-                a += c.getAlpha();
-                ctr++;
-            }
-
+                Iterator<Integer> iterator = this.heightIterator(region, x);
+                while(iterator.hasNext()) {
+                    int y = iterator.next();
+                    int col = region.getRGB(x, y);
+                    Color c = new Color(col, true);
+                    r += c.getRed();
+                    g += c.getGreen();
+                    b += c.getBlue();
+                    a += c.getAlpha();
+                    ctr++;
+                }
         }
 
         return new Color((int) (r / ctr), (int) (g / ctr), (int) (b / ctr), (int) (a / ctr)).getRGB();
