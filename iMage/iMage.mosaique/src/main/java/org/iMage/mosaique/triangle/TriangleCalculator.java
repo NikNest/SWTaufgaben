@@ -10,8 +10,15 @@ import java.awt.image.BufferedImage;
  *
  */
 public final class TriangleCalculator {
+  private static final TriangleCalculator triangleCalculator = new TriangleCalculator();
+
   private TriangleCalculator() {
     throw new IllegalAccessError();
+  }
+
+
+  public static TriangleCalculator getInstance() {
+    return triangleCalculator;
   }
 
   /**
@@ -21,7 +28,7 @@ public final class TriangleCalculator {
    *          the region
    * @return the average color as argb
    */
-  public static int averageUpperColor(BufferedImage region) {
+  public int averageUpperColor(BufferedImage region) {
     float m = (1F * region.getHeight()) / region.getWidth();
     long r = 0;
     long g = 0;
@@ -54,7 +61,7 @@ public final class TriangleCalculator {
    *          the region
    * @return the average color as argb
    */
-  public static int averageLowerColor(BufferedImage region) {
+  public int averageLowerColor(BufferedImage region) {
     float m = (1F * region.getHeight()) / region.getWidth();
     long r = 0;
     long g = 0;
