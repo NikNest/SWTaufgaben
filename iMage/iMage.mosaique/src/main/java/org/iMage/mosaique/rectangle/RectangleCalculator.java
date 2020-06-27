@@ -1,5 +1,7 @@
 package org.iMage.mosaique.rectangle;
 
+import org.iMage.mosaique.AbstractCalculator;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -9,48 +11,25 @@ import java.awt.image.BufferedImage;
  * @author Dominik Fuchss
  *
  */
-public final class RectangleCalculator {
+public final class RectangleCalculator extends AbstractCalculator {
 
-  private static final RectangleCalculator rectangleCalculator = new RectangleCalculator();
+  private static final RectangleCalculator RECTANGLE_CALCULATOR = new RectangleCalculator();
 
   private RectangleCalculator() {
     throw new IllegalAccessError();
   }
 
-
   public static RectangleCalculator getInstance() {
-    return rectangleCalculator;
+    return RECTANGLE_CALCULATOR;
   }
 
-  /**
-   * Calculate the average color for an rectangle region.
-   *
-   * @param region
-   *          the region
-   * @return the color as ARGB
-   */
-  public int averageColor(BufferedImage region) {
-    long r = 0;
-    long g = 0;
-    long b = 0;
-    long a = 0;
-    int ctr = 0;
-
-    for (int x = 0; x < region.getWidth(); x++) {
-      for (int y = 0; y < region.getHeight(); y++) {
-        int col = region.getRGB(x, y);
-
-        Color c = new Color(col, true);
-        r += c.getRed();
-        g += c.getGreen();
-        b += c.getBlue();
-        a += c.getAlpha();
-        ctr++;
-      }
-
-    }
-
-    return new Color((int) (r / ctr), (int) (g / ctr), (int) (b / ctr), (int) (a / ctr)).getRGB();
+  @Override
+  public float getYFromBound(BufferedImage region, int x) {
+    return 0;
   }
 
+  @Override
+  public float getYToBound(BufferedImage region, int x) {
+    return region.getHeight();
+  }
 }
