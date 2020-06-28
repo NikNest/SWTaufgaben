@@ -17,16 +17,26 @@ public final class RectangleCalculator extends AbstractCalculator {
 
   private static final RectangleCalculator RECTANGLE_CALCULATOR = new RectangleCalculator();
 
-  private RectangleCalculator() {
-    throw new IllegalAccessError();
-  }
+  private RectangleCalculator() { }
 
   public static RectangleCalculator getInstance() {
     return RECTANGLE_CALCULATOR;
   }
 
+
   @Override
-  public Iterator<Integer> heightIterator(BufferedImage region, int x) {
+  public Iterator<Integer> iteratorX(BufferedImage region) {
+    int fromX = 0;
+    int toX = region.getWidth();
+    ArrayList<Integer> list = new ArrayList<>();
+    for (int i = fromX; i < toX; i++) {
+      list.add(i);
+    }
+    return list.iterator();
+  }
+
+  @Override
+  public Iterator<Integer> iteratorY(BufferedImage region, int x) {
     int fromY = 0;
     int toY = region.getHeight();
     ArrayList<Integer> list = new ArrayList<>();

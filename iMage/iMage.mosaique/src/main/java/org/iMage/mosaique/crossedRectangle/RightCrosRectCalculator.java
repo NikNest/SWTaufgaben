@@ -1,27 +1,28 @@
-package org.iMage.mosaique.triangle;
+package org.iMage.mosaique.crossedRectangle;
 
 import org.iMage.mosaique.AbstractCalculator;
+import org.iMage.mosaique.rectangle.RectangleCalculator;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class UpperTriangleCalculator extends AbstractCalculator {
-    private static final UpperTriangleCalculator UPPER_TRIANGLE_CALCULATOR = new UpperTriangleCalculator();
+public class RightCrosRectCalculator extends AbstractCalculator {
+    private static final RightCrosRectCalculator RIGHT_CROS_RECT_CALCULATOR = new RightCrosRectCalculator();
 
-    private UpperTriangleCalculator() {
+    private RightCrosRectCalculator() {
 
     }
 
-    public static UpperTriangleCalculator getInstance() {
-        return UPPER_TRIANGLE_CALCULATOR;
+    public static RightCrosRectCalculator getInstance() {
+        return RIGHT_CROS_RECT_CALCULATOR;
     }
-
 
     @Override
     public Iterator<Integer> iteratorX(BufferedImage region) {
-        int fromX = 0;
+        int fromX = (int) Math.ceil((float)region.getWidth() / 2);
         int toX = region.getWidth();
+
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = fromX; i < toX; i++) {
             list.add(i);
@@ -31,11 +32,8 @@ public class UpperTriangleCalculator extends AbstractCalculator {
 
     @Override
     public Iterator<Integer> iteratorY(BufferedImage region, int x) {
-        float m = (1F * region.getHeight()) / region.getWidth();
-        float yBound = Math.min((x + 1) * m, region.getHeight());
-
-        int fromY = (int)yBound;
-        int toY = region.getHeight();
+        int fromY = (int) (region.getHeight() - 1 - x * ((double)region.getHeight() / region.getWidth()));
+        int toY = region.getHeight() - fromY;
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = fromY; i < toY; i++) {
             list.add(i);
