@@ -38,11 +38,19 @@ public abstract class AbstractShape implements IMosaiqueShape<BufferedArtImage> 
    */
   protected abstract int calcAverage();
 
+  /**
+   * get the average color
+   * @return color
+   */
   @Override
   public int getAverageColor() {
     return average;
   }
 
+  /**
+   * get the img of the shape
+   * @return img
+   */
   @Override
   public BufferedImage getThumbnail() {
     BufferedArtImage res = new BufferedArtImage(image.getWidth(), image.getHeight());
@@ -50,6 +58,10 @@ public abstract class AbstractShape implements IMosaiqueShape<BufferedArtImage> 
     return res.toBufferedImage();
   }
 
+  /**
+   * draws the shape on the target
+   * @param targetRect target img
+   */
   @Override
   public final void drawMe(BufferedArtImage targetRect) {
     if (targetRect.getWidth() > this.getWidth() || targetRect.getHeight() > this.getHeight()) {
@@ -75,11 +87,19 @@ public abstract class AbstractShape implements IMosaiqueShape<BufferedArtImage> 
    */
   protected abstract void drawShape(BufferedArtImage targetRect, int w, int h);
 
+  /**
+   * width of the used shape
+   * @return width
+   */
   @Override
   public final int getWidth() {
     return image.getWidth();
   }
 
+  /**
+   * height of the used shape
+   * @return height
+   */
   @Override
   public final int getHeight() {
     return image.getHeight();

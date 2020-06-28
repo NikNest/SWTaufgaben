@@ -16,6 +16,12 @@ import org.iMage.mosaique.base.IMosaiqueEasel;
  */
 public class MosaiqueEasel implements IMosaiqueEasel<BufferedArtImage> {
 
+  /**
+   * method creates mosaique
+   * @param input img to be changed
+   * @param artist imgs for mosaique creation
+   * @return created mosaique
+   */
   @Override
   public BufferedImage createMosaique(BufferedImage input,
       IMosaiqueArtist<BufferedArtImage> artist) {

@@ -9,7 +9,11 @@ public abstract class AbstractCalculator {
     public abstract Iterator<Integer> iteratorX(BufferedImage region);
     public abstract Iterator<Integer> iteratorY(BufferedImage region, int x);
 
-
+    /**
+     * get the average color of the img
+     * @param region img
+     * @return color
+     */
     public final int averageColor(BufferedImage region) {
         long r = 0;
         long g = 0;
@@ -23,11 +27,7 @@ public abstract class AbstractCalculator {
             Iterator<Integer> iteratorY = this.iteratorY(region, x);
             while(iteratorY.hasNext()) {
                 int y = iteratorY.next();
-//                System.out.println("-------");
-//                System.out.println("region " + region.getWidth() + " " + region.getHeight());
-//                System.out.println("!!! " + x + " " + y);
                 int col = region.getRGB(x, y);
-//                System.out.println("***");
                 Color c = new Color(col, true);
                 r += c.getRed();
                 g += c.getGreen();
@@ -35,7 +35,6 @@ public abstract class AbstractCalculator {
                 a += c.getAlpha();
                 ctr++;
             }
-//            System.out.println("============");
         }
 
         return new Color((int) (r / ctr), (int) (g / ctr), (int) (b / ctr), (int) (a / ctr)).getRGB();

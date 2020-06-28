@@ -20,11 +20,18 @@ public class CrossedRectangleTest {
     @Before
     public void setUp() {
         mosaiqueEasel = new MosaiqueEasel();
-        File resultFile = new File("src/test/resources/Image/result.png");
-        if (resultFile.exists())
-            resultFile.delete();
+        File resultSquareFile = new File("src/test/resources/Image/resultSquare.png");
+        if (resultSquareFile.exists())
+            resultSquareFile.delete();
+        File resultNotSquareFile = new File("src/test/resources/Image/resultNotSquare.png");
+        if (resultNotSquareFile.exists())
+            resultNotSquareFile.delete();
     }
 
+    /**
+     * test mosaique-"crossedRectangles" with square shape
+     * @throws IOException if files couldn't be opened
+     */
     @Test
     public void createMosaiqueSquareShape() throws IOException {
         ArrayList<BufferedArtImage> images = new ArrayList<>();
@@ -34,16 +41,33 @@ public class CrossedRectangleTest {
                 images.add(new BufferedArtImage(ImageIO.read(fileEntry)));
             }
         }
-        System.out.println("pics choosen: " + images.size());
-        artist = new CrossedRectangleArtist(images, 15, 15);
-        System.out.println("cross rect artist created");
+        artist = new CrossedRectangleArtist(images, 10, 10);
         File tichyPic = new File("src/test/resources/Image/tichy_in.jpg");
         BufferedImage result = mosaiqueEasel.createMosaique(ImageIO.read(tichyPic), artist);
-        System.out.println("result mosaique created");
-        File file = new File("src/test/resources/Image/result.png");
+        File file = new File("src/test/resources/Image/resultSquare.png");
         file.createNewFile();
         ImageIO.write(result, "png", file);
+    }
 
+    /**
+     * test mosaique-"Crossed Rectangles" with not-square shape
+     * @throws IOException if files couldn't be opened
+     */
+    @Test
+    public void createMosaiqueNotSquareShape() throws IOException {
+        ArrayList<BufferedArtImage> images = new ArrayList<>();
+        File folder = new File("src/test/resources/pics");
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isFile()) {
+                images.add(new BufferedArtImage(ImageIO.read(fileEntry)));
+            }
+        }
+        artist = new CrossedRectangleArtist(images, 50, 10);
+        File tichyPic = new File("src/test/resources/Image/tichy_in.jpg");
+        BufferedImage result = mosaiqueEasel.createMosaique(ImageIO.read(tichyPic), artist);
+        File file = new File("src/test/resources/Image/resultNotSquare.png");
+        file.createNewFile();
+        ImageIO.write(result, "png", file);
     }
 
     @After

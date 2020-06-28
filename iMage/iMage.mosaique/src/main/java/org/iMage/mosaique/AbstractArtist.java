@@ -51,6 +51,12 @@ public abstract class AbstractArtist implements IMosaiqueArtist<BufferedArtImage
     return tileHeight;
   }
 
+
+  /**
+   * get th best tile for the img
+   * @param region img part
+   * @return best tile
+   */
   @Override
   public final BufferedArtImage getTileForRegion(BufferedArtImage region) {
     if (region.getWidth() > this.tileWidth || region.getHeight() > this.tileHeight) {

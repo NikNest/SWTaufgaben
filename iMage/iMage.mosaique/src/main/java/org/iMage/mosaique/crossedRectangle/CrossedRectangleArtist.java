@@ -42,7 +42,6 @@ public class CrossedRectangleArtist extends AbstractArtist implements IMosaiqueA
 
     @Override
     protected void drawTileForRegion(BufferedImage region, BufferedArtImage target) {
-        System.out.println("region " + region.getWidth() + " " + region.getHeight());
         int averageDown = DownCrosRectCalculator.getInstance().averageColor(region);
         int averageUp = UpCrosRectCalculator.getInstance().averageColor(region);
         int averageLeft = LeftCrosRectCalculator.getInstance().averageColor(region);

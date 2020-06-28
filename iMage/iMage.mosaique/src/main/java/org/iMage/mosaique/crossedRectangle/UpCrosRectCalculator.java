@@ -30,14 +30,10 @@ public class UpCrosRectCalculator extends AbstractCalculator {
     public Iterator<Integer> iteratorY(BufferedImage region, int x) {
         int fromY = 0;
         int toY = (int) Math.ceil((double) region.getHeight() / (double)region.getWidth() * (double)(x + 1)) - 1;
-//        System.out.println("iteratorY debug: x " + x + " toY " + toY + " w " + region.getWidth() + " h " + region.getHeight());
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = fromY; i <= toY; i++) {
             list.add(i);
         }
-//        if (fromY == toY) {
-//            list.add(fromY);
-//        }
         return list.iterator();
     }
 }
