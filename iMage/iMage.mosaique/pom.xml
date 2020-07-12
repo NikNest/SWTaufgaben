@@ -7,7 +7,7 @@
         <artifactId>iMage</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>swt1.ub5.a4</groupId>
+    <groupId>swt1.ub5.a5</groupId>
     <artifactId>2259058</artifactId>
     <version>0.0.3-SNAPSHOT</version>
     <dependencies>
